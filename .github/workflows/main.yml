@@ -37,12 +37,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      # - name: Deploy
-      #   if: contains(github.ref, 'main')
-      #   id: deploy
-      #   uses: fleekhq/action-deploy@v1
-      #   with:
-      #     apiKey: ${{ secrets.FLEEK_API_KEY }}
+      - name: Deploy
+        if: contains(github.ref, 'main')
+        id: deploy
+        uses: fleekhq/action-deploy@v1
+        with:
+          apiKey: ${{ secrets.FLEEK_API_KEY }}
 
-      # - name: Get the output url
-      #   run: echo 'Deploy url is ${{ steps.deploy.outputs.deployUrl }}'
+      - name: Get the output url
+        run: echo 'Deploy url is ${{ steps.deploy.outputs.deployUrl }}'
