@@ -6,7 +6,7 @@
   },
   "site": {
     "id": "f182b799-c2c1-4af1-85d3-4fca691e1cc1",
-    "name": "blocksui-marketplace",
+    "name": "blocksui-app",
     "platform": "ipfs",
     "source": "ipfs",
     "team": "f542423f-ce7e-4f3b-a537-df4077d730c8"

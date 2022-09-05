@@ -1,17 +1,17 @@
 {
-  "name": "blocksui-marketplace",
+  "name": "blocksui-app",
   "version": "0.0.1",
-  "description": "Blocks UI marketplace",
+  "description": "Blocks UI app",
   "repository": {
     "type": "git",
-    "url": "https://github.com/crcls/blocksui-marketplace.git"
+    "url": "https://github.com/crcls/blocksui-app.git"
   },
   "author": "CRCLS Networks, Inc. <hello@crcls.xyz> (https://crcls.xyz/)",
   "license": "MIT",
   "private": true,
-  "homepage": "https://github.com/crcls/blocksui-marketplace#readme",
+  "homepage": "https://github.com/crcls/blocksui-app#readme",
   "bugs": {
-    "url": "https://github.com/crcls/blocksui-marketplace/issues"
+    "url": "https://github.com/crcls/blocksui-app/issues"
   },
   "scripts": {
     "build": "next build && next export",
