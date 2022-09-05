@@ -1,6 +1,6 @@
-# Blocks UI Marketplace
+# Blocks UI App
 
-Blocks UI marketplace.
+Blocks UI app.
 
 ## Table of Contents
 
