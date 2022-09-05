@@ -1,0 +1,14 @@
+{
+  "build": {
+    "command": "npm run build",
+    "image": "fleek/next-js:node-16",
+    "publicDir": "out"
+  },
+  "site": {
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "xxxx-xxxx-xxxx",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "team": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  }
+}
