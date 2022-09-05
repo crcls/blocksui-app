@@ -1,34 +1,108 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Blocks UI Marketplace
 
-## Getting Started
+Blocks UI marketplace.
 
-First, run the development server:
+## Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
+- [Contributing](#contributing)
+  - [Types](#types)
+  - [Branches](#branches)
+  - [Commits](#commits)
+  - [Pull Requests](#pull-requests)
+  - [Merging Into Main](#merging-into-main)
+
+## Contributing
+
+Code changes can fall into the types from the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+
+### Types
+
+Common types according to [commitlint-config-conventional (based on the Angular convention)](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum) can be:
+
+- **build**—changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm).
+
+- **chore**—other changes that don’t modify src or test files.
+
+- **ci**—changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs).
+
+- **docs**—documentation only changes.
+
+- **feat**—a new feature.
+
+- **fix**—a bug fix.
+
+- **perf**—a code change that improves performance.
+
+- **refactor**—a code change that neither fixes a bug nor adds a feature.
+
+- **revert**—reverts a previous commit.
+
+- **style**—changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
+
+- **test**—adding missing tests or correcting existing tests.
+
+### Branches
+
+Branches are created from `main` and can follow the naming convention below. For common types, see [Types](#types).
+
+Convention:
+
+```shell
+type/description
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Example:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```shell
+feat/add-xyz
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Commits
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Conventional Commits are enforced using [commitlint](https://commitlint.js.org/) in a [husky](https://github.com/typicode/husky) pre-commit hook.
 
-## Learn More
+Convention:
 
-To learn more about Next.js, take a look at the following resources:
+```shell
+type(scope?): description  #scope is optional; multiple scopes are supported (current delimiter options: "/", "\" and ",")
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Example:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```shell
+feat: add xyz
+```
 
-## Deploy on Vercel
+### Pull Requests
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1.  **Title**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    Titles can follow the naming convention below and match the branch name. For common types, see [Types](#types).
+
+    Convention:
+
+    ```shell
+    type: description
+    ```
+
+    Example:
+
+    ```shell
+    feat: add xyz
+    ```
+
+2.  **Body**
+
+    When creating a new pull request, you will automatically see a template with a checklist in the body.
+
+3.  **Reviewers**
+
+    Add at least one reviewer.
+
+4.  **Labels**
+
+    Apply related labels.
+
+### Merging Into Main
+
+Always “Squash & merge” your commits into `main`.
