@@ -27,6 +27,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/triple-slash-reference': 'off',
+    'jsx-a11y/no-redundant-roles': 'off',
     'react/react-in-jsx-scope': 'off',
   },
   settings: {
@@ -34,4 +35,4 @@ module.exports = {
       version: 'detect',
     },
   },
-};
+}
