@@ -2,13 +2,13 @@ import { forwardRef } from 'react'
 import clsx from 'clsx'
 import Link from 'next/link'
 
-const baseStyles = {
+const baseStyles: any = {
   outline:
     'inline-flex justify-center rounded-lg border py-[calc(theme(spacing.2)-1px)] px-[calc(theme(spacing.3)-1px)] text-sm outline-2 outline-offset-2 transition-colors',
   solid:
     'inline-flex justify-center rounded-lg py-2 px-3 text-sm font-semibold outline-2 outline-offset-2 transition-colors',
 }
-const variantStyles = {
+const variantStyles: any = {
   outline: {
     neutral:
       'border-neutral-300 text-neutral-700 hover:border-neutral-400 active:bg-neutral-100 active:text-neutral-700/80',
@@ -21,19 +21,33 @@ const variantStyles = {
   },
 }
 
-export const Button = forwardRef(function Button(
-  { className, href, color = 'neutral', variant = 'solid', ...props },
-  ref
-) {
-  className = clsx(
-    baseStyles[variant],
-    variantStyles[variant][color],
-    className
-  )
+interface Props {
+  className?: string
+  color?: string
+  href?: string
+  variant?: string
+  [x: string]: any
+}
 
-  return href ? (
-    <Link className={className} href={href} ref={ref} {...props} />
-  ) : (
-    <button className={className} ref={ref} {...props} />
-  )
-})
+const Button = forwardRef<any, Props>(
+  (
+    { className, color = 'neutral', href, variant = 'solid', ...props },
+    ref
+  ) => {
+    className = clsx(
+      baseStyles[variant],
+      variantStyles[variant][color],
+      className
+    )
+
+    return href ? (
+      <Link className={className} href={href} ref={ref} {...props} />
+    ) : (
+      <button className={className} ref={ref} {...props} />
+    )
+  }
+)
+
+Button.displayName = 'Button'
+
+export default Button

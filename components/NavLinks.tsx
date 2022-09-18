@@ -2,8 +2,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 
-export function NavLinks() {
-  let [hoveredIndex, setHoveredIndex] = useState(null)
+const NavLinks: any = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return [
     ['Marketplace', '/marketplace'],
@@ -36,3 +36,5 @@ export function NavLinks() {
     </Link>
   ))
 }
+
+export default NavLinks

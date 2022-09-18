@@ -1,9 +1,9 @@
-import { useId } from 'react'
-import Image from 'next/future/image'
+import { FC, useId } from 'react'
 import clsx from 'clsx'
+import Image from 'next/future/image'
 
-import { Button } from '@/components/Button'
-import { Container } from '@/components/Container'
+import Container from '@/components/Container'
+import Button from '@/components/Button'
 
 import logoFilecoin from '@/assets/filecoin.svg'
 import logoIpfs from '@/assets/ipfs.svg'
@@ -11,8 +11,8 @@ import logoLitProtocol from '@/assets/lit-protocol.svg'
 import logoMoralis from '@/assets/moralis.svg'
 import logoWeb3Storage from '@/assets/web3-storage.svg'
 
-function BackgroundIllustration(props) {
-  let id = useId()
+const BackgroundIllustration = (props: any) => {
+  const id = useId()
 
   return (
     <div {...props}>
@@ -80,7 +80,7 @@ function BackgroundIllustration(props) {
   )
 }
 
-export function Hero() {
+const Hero: FC = () => {
   return (
     <div className="overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36">
       <Container>
@@ -109,8 +109,8 @@ export function Hero() {
               Powered by
             </p>
             <ul
-              role="list"
               className="mx-auto mt-8 flex max-w-xl flex-wrap justify-center gap-x-10 gap-y-8 lg:mx-0 lg:justify-start"
+              role="list"
             >
               {[
                 ['Filecoin', logoFilecoin],
@@ -119,13 +119,8 @@ export function Hero() {
                 ['Moralis', logoMoralis],
                 ['Web3 Storage', logoWeb3Storage],
               ].map(([name, logo, className]) => (
-                <li key={name} className={clsx('flex', className)}>
-                  <Image
-                    src={logo}
-                    alt={name}
-                    className="h-8 w-auto"
-                    unoptimized
-                  />
+                <li className={clsx('flex', className)} key={name}>
+                  <Image alt={name} className="h-8 w-auto" src={logo} />
                 </li>
               ))}
             </ul>
@@ -135,3 +130,5 @@ export function Hero() {
     </div>
   )
 }
+
+export default Hero
