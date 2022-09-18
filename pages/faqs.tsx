@@ -2,10 +2,10 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import Header from '@/components/Header'
-import Hero from '@/components/Hero'
+import Faqs from '@/components/Faqs'
 import Footer from '@/components/Footer'
 
-const Home: NextPage = () => {
+const FaqsPage: NextPage = () => {
   return (
     <>
       <Head>
@@ -17,10 +17,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <Hero />
+      <Faqs />
       <Footer />
     </>
   )
 }
 
-export default Home
+export default FaqsPage
