@@ -17,13 +17,13 @@ const DragItem: FC<DragItemProps> = ({ type }) => {
   const [, drag] = useDrag(() => ({
     type: type,
     item: { name: type },
-    end: (item, monitor) => {
-      const dropResult = monitor.getDropResult()
-      if (item && dropResult) {
-        // console.log('item name', item.name)
-        dispatch({ type: 'DROP_ITEM', payload: item.name })
-      }
-    },
+    // end: (item, monitor) => {
+    //   const dropResult = monitor.getDropResult()
+    //   if (item && dropResult) {
+    //     console.log('dropResult', dropResult)
+    //     dispatch({ type: 'DROP_ITEM', payload: item.name })
+    //   }
+    // },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

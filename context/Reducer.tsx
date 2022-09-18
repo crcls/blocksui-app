@@ -8,6 +8,7 @@ const Reducer = (
     case 'CONNECT_WALLET':
       return { ...state, connectWallet: { open: action.payload } }
     case 'DROP_ITEM':
+      console.log([...state.droppedItems, action.payload])
       return { ...state, droppedItems: [...state.droppedItems, action.payload] }
     default:
       return state
