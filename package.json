@@ -35,6 +35,8 @@
     "framer-motion": "^7.3.5",
     "next": "^12.3.0",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.1.8",
     "use-debounce": "^8.0.4",
