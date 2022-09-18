@@ -1,11 +1,8 @@
 import { FC } from 'react'
-import { useDrag } from 'react-dnd'
-import DnDPrimitiveTypes from './DnDPrimitiveTypes'
 
 const PrimitiveInput: FC = () => {
-  const [, drag] = useDrag(() => ({ type: DnDPrimitiveTypes.PRIMITIVE_INPUT }))
   return (
-    <div ref={drag}>
+    <div>
       <label
         htmlFor="email"
         className="block text-sm font-medium text-gray-700"

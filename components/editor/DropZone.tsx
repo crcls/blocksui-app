@@ -7,10 +7,11 @@ import PrimitiveContainer from './PrimitiveContainer'
 const DropZone = () => {
   const { state } = useContext(GlobalContext)
   const { droppedItems } = state
-  console.log(droppedItems)
+  // console.log(droppedItems)
   // const [config, setConfig] = useState({})
   // const [droppedItems, setDroppedItems] = useState([])
   const ACCEPTS = Object.values(DnDPrimitiveTypes)
+  // console.log(ACCEPTS)
   const [, drop] = useDrop(() => ({
     accept: ACCEPTS,
     drop: () => ({ name: 'DropZone' }),
