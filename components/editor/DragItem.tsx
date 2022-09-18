@@ -8,10 +8,10 @@ import PrimitiveButton from './PrimitiveButton'
 import PrimitiveForm from './PrimitiveForm'
 import PrimitiveMoonmailConnector from './PrimitiveMoonmailConnector'
 
-interface DrugItemProps {
+interface DragItemProps {
   type: string
 }
-const DrugItem: FC<DrugItemProps> = ({ type }) => {
+const DragItem: FC<DragItemProps> = ({ type }) => {
   const { dispatch } = useContext(GlobalContext)
   // console.log(type)
   const [, drag] = useDrag(() => ({
@@ -51,4 +51,4 @@ const DrugItem: FC<DrugItemProps> = ({ type }) => {
   )
 }
 
-export default DrugItem
+export default DragItem

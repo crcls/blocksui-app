@@ -4,10 +4,17 @@ import PrimitiveForm from '@/components/editor/PrimitiveForm'
 import PrimitiveInput from '@/components/editor/PrimitiveInput'
 import PrimitiveMooonmailConnector from '@/components/editor/PrimitiveMoonmailConnector'
 
+export type DnDTypeToComponentKeyType =
+  | 'PRIMITIVE_BUTTON'
+  | 'PRIMITIVE_INPUT'
+  | 'PRIMITIVE_MOONMAIL_CONNECTOR'
+  | 'PRIMITIVE_FORM'
+  | 'PRIMITIVE_CONTAINER'
+
 const DnDTypeToComponent = {
   PRIMITIVE_BUTTON: <PrimitiveButton />,
   PRIMITIVE_INPUT: <PrimitiveInput />,
-  PRIMITIVE_MOONMAIN_CONNECTOR: <PrimitiveMooonmailConnector />,
+  PRIMITIVE_MOONMAIL_CONNECTOR: <PrimitiveMooonmailConnector />,
   PRIMITIVE_FORM: <PrimitiveForm />,
   PRIMITIVE_CONTAINER: <PrimitiveContainer />,
 }

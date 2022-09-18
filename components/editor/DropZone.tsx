@@ -2,12 +2,14 @@ import { useDrop } from 'react-dnd'
 import DnDPrimitiveTypes from './DnDPrimitiveTypes'
 import { useContext } from 'react'
 import { GlobalContext } from '@/context/GlobalContext'
-import PrimitiveContainer from './PrimitiveContainer'
+import DnDTypeToComponent, {
+  DnDTypeToComponentKeyType,
+} from './DnDTypeToComponent'
 
 const DropZone = () => {
   const { state } = useContext(GlobalContext)
   const { droppedItems } = state
-  // console.log(droppedItems)
+  console.log(droppedItems)
   // const [config, setConfig] = useState({})
   // const [droppedItems, setDroppedItems] = useState([])
   const ACCEPTS = Object.values(DnDPrimitiveTypes)
@@ -26,9 +28,12 @@ const DropZone = () => {
       ref={drop}
       className="h-full overflow-hidden rounded-lg bg-fuchsia-50 bg-white shadow"
     >
-      {droppedItems.includes(DnDPrimitiveTypes.PRIMITIVE_CONTAINER) && (
-        <PrimitiveContainer />
-      )}
+      {droppedItems.map((droppedItem) => {
+        const typeName = droppedItem
+        const nameAsType = typeName as DnDTypeToComponentKeyType
+        console.log(droppedItem)
+        return DnDTypeToComponent[nameAsType]
+      })}
     </div>
   )
 }

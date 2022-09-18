@@ -17,7 +17,8 @@ import NavLinks from '@/components/NavLinks'
 import SidebarNavigation from '@/components/SidebarNavigation'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import DrugItem from '@/components/editor/DrugItem'
+import DragItem from '@/components/editor/DragItem'
+import DragItemWithDropZone from '@/components/editor/DragItemWithDropZone'
 import DropZone from '@/components/editor/DropZone'
 import DnDPrimitiveTypes from '@/components/editor/DnDPrimitiveTypes'
 
@@ -47,31 +48,37 @@ const elements = [
     id: 1,
     variation: 'Primary',
     name: 'PrimitiveContainer',
-    preview: <DrugItem type={DnDPrimitiveTypes.PRIMITIVE_CONTAINER} />,
+    preview: (
+      <DragItemWithDropZone type={DnDPrimitiveTypes.PRIMITIVE_CONTAINER} />
+    ),
   },
   {
     id: 2,
     variation: 'Secondary',
     name: 'PrimitiveMoonmailConnector',
-    preview: <DrugItem type={DnDPrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR} />,
+    preview: (
+      <DragItemWithDropZone
+        type={DnDPrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR}
+      />
+    ),
   },
   {
     id: 3,
     variation: 'Default',
     name: 'PrimitiveForm',
-    preview: <DrugItem type={DnDPrimitiveTypes.PRIMITIVE_FORM} />,
+    preview: <DragItemWithDropZone type={DnDPrimitiveTypes.PRIMITIVE_FORM} />,
   },
   {
     id: 4,
     variation: 'Default',
     name: 'PrimitiveInput',
-    preview: <DrugItem type={DnDPrimitiveTypes.PRIMITIVE_INPUT} />,
+    preview: <DragItem type={DnDPrimitiveTypes.PRIMITIVE_INPUT} />,
   },
   {
     id: 5,
     variation: 'Default',
     name: 'PrimitiveButton',
-    preview: <DrugItem type={DnDPrimitiveTypes.PRIMITIVE_BUTTON} />,
+    preview: <DragItem type={DnDPrimitiveTypes.PRIMITIVE_BUTTON} />,
   },
   {
     id: 6,
