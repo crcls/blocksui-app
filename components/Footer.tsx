@@ -1,13 +1,14 @@
+import { FC } from 'react'
 import Image from 'next/future/image'
 import Link from 'next/link'
 
-import { Container } from '@/components/Container'
-import { NavLinks } from '@/components/NavLinks'
-import { Logo } from '@/components/Logo'
+import Container from '@/components/Container'
+import Logo from '@/components/Logo'
+import NavLinks from '@/components/NavLinks'
 import github from '@/assets/github.svg'
-import { CrclsLogo } from '@/components/CrclsLogo'
+import CrclsLogo from '@/components/CrclsLogo'
 
-export function Footer() {
+const Footer: FC = () => {
   return (
     <footer className="border-t border-neutral-200">
       <Container>
@@ -28,7 +29,7 @@ export function Footer() {
           </div>
           <div className="group relative -mx-4 flex items-center self-stretch p-4 transition-colors hover:bg-neutral-100 sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6">
             <div className="relative flex h-24 w-24 flex-none items-center justify-center">
-              <Image src={github} alt="" unoptimized className="w-full" />
+              <Image alt="" className="w-full" src={github} />
             </div>
             <div className="ml-8 lg:w-64">
               <p className="text-base font-semibold text-black">
@@ -57,3 +58,5 @@ export function Footer() {
     </footer>
   )
 }
+
+export default Footer

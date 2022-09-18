@@ -4,6 +4,7 @@ import {
   RectangleStackIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/outline'
+import { FC } from 'react'
 import clsx from 'clsx'
 
 const sidebarNavigation = [
@@ -17,7 +18,7 @@ const sidebarNavigation = [
   { current: false, icon: Cog8ToothIcon, name: 'Settings' },
 ]
 
-export function SidebarNavigation() {
+const SidebarNavigation: FC = () => {
   return (
     <>
       {sidebarNavigation.map((item) => (
@@ -46,3 +47,5 @@ export function SidebarNavigation() {
     </>
   )
 }
+
+export default SidebarNavigation

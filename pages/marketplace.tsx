@@ -11,9 +11,10 @@ import {
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import clsx from 'clsx'
-import { Header } from '@/components/Header'
-import { Footer } from '@/components/Footer'
-import { Logo } from '@/components/Logo'
+
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import Logo from '@/components/Logo'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },

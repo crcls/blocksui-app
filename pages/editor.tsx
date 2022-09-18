@@ -10,11 +10,11 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import type { NextPage } from 'next'
 import clsx from 'clsx'
 
-import { Button } from '@/components/Button'
-import { FakeContainer } from '@/components/FakeContainer'
-import { Logo } from '@/components/Logo'
-import { NavLinks } from '@/components/NavLinks'
-import { SidebarNavigation } from '@/components/SidebarNavigation'
+import Button from '@/components/Button'
+import FakeContainer from '@/components/FakeContainer'
+import Logo from '@/components/Logo'
+import NavLinks from '@/components/NavLinks'
+import SidebarNavigation from '@/components/SidebarNavigation'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import PrimitiveContainer from '@/components/editor/PrimitiveContainer'
@@ -132,11 +132,11 @@ const Editor: NextPage = () => {
             </div>
             <div className="mx-auto lg:hidden">
               <div className="relative">
-                <label htmlFor="inbox-select" className="sr-only">
-                  Choose inbox
+                <label htmlFor="primitives-select" className="sr-only">
+                  Choose primitives
                 </label>
                 <select
-                  id="inbox-select"
+                  id="primitives-select"
                   className="rounded-md border-0 bg-none pl-3 pr-8 text-base font-medium text-black focus:ring-2 focus:ring-neutral-600"
                 >
                   <option value="">Connectors</option>
@@ -209,41 +209,38 @@ const Editor: NextPage = () => {
                         <div className="py-1">
                           <Menu.Item>
                             {({ active }) => (
-                              <a
-                                href="#"
+                              <button
                                 className={clsx(
                                   active ? 'bg-neutral-100' : '',
                                   'block px-4 py-2 text-sm text-neutral-700'
                                 )}
                               >
                                 Profile
-                              </a>
+                              </button>
                             )}
                           </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
-                              <a
-                                href="#"
+                              <button
                                 className={clsx(
                                   active ? 'bg-neutral-100' : '',
                                   'block px-4 py-2 text-sm text-neutral-700'
                                 )}
                               >
                                 My Blocks
-                              </a>
+                              </button>
                             )}
                           </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
-                              <a
-                                href="#"
+                              <button
                                 className={clsx(
                                   active ? 'bg-neutral-100' : '',
                                   'block px-4 py-2 text-sm text-neutral-700'
                                 )}
                               >
                                 Disconnect
-                              </a>
+                              </button>
                             )}
                           </Menu.Item>
                         </div>
@@ -329,7 +326,7 @@ const Editor: NextPage = () => {
                             >
                               {item.name}
                             </a>
-                            {item.children.map((child) => (
+                            {item.children.map((child: any) => (
                               <a
                                 key={child.name}
                                 href={child.href}

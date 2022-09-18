@@ -17,7 +17,7 @@ export const GlobalContext = createContext<{
   dispatch: () => null,
 })
 
-export const GlobalProvider: FC = ({ children }) => {
+export const GlobalProvider: FC = ({ children }: any) => {
   const [state, dispatch] = useReducer(Reducer, initialState)
 
   return (

@@ -1,18 +1,19 @@
-import { useId } from 'react'
-import Image from 'next/future/image'
+import { FC, useId } from 'react'
 import clsx from 'clsx'
+import Image from 'next/future/image'
 
-import { Button } from '@/components/Button'
-import { Container } from '@/components/Container'
+import Container from '@/components/Container'
+import Button from '@/components/Button'
 
 import logoFilecoin from '@/assets/filecoin.svg'
 import logoIpfs from '@/assets/ipfs.svg'
 import logoLitProtocol from '@/assets/lit-protocol.svg'
 import logoMoralis from '@/assets/moralis.svg'
+import logoPolygon from '@/assets/polygon.svg'
 import logoWeb3Storage from '@/assets/web3-storage.svg'
 
-function BackgroundIllustration(props) {
-  let id = useId()
+const BackgroundIllustration = (props: any) => {
+  const id = useId()
 
   return (
     <div {...props}>
@@ -80,14 +81,14 @@ function BackgroundIllustration(props) {
   )
 }
 
-export function Hero() {
+const Hero: FC = () => {
   return (
     <div className="overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36">
       <Container>
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
           <div className="relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
             <h1 className="text-4xl font-medium tracking-tight text-black">
-              Decentralized UI software as an NFT.
+              Decentralized UI Software as an NFT.
             </h1>
             <p className="mt-6 text-lg text-neutral-600">
               Providing an open and decentralized framework for building user
@@ -109,23 +110,19 @@ export function Hero() {
               Powered by
             </p>
             <ul
-              role="list"
               className="mx-auto mt-8 flex max-w-xl flex-wrap justify-center gap-x-10 gap-y-8 lg:mx-0 lg:justify-start"
+              role="list"
             >
               {[
                 ['Filecoin', logoFilecoin],
                 ['IPFS', logoIpfs],
                 ['Lit Protocol', logoLitProtocol],
                 ['Moralis', logoMoralis],
+                ['Polygon', logoPolygon],
                 ['Web3 Storage', logoWeb3Storage],
               ].map(([name, logo, className]) => (
-                <li key={name} className={clsx('flex', className)}>
-                  <Image
-                    src={logo}
-                    alt={name}
-                    className="h-8 w-auto"
-                    unoptimized
-                  />
+                <li className={clsx('flex', className)} key={name}>
+                  <Image alt={name} className="h-8 w-auto" src={logo} />
                 </li>
               ))}
             </ul>
@@ -135,3 +132,5 @@ export function Hero() {
     </div>
   )
 }
+
+export default Hero

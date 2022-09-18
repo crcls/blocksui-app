@@ -1,4 +1,10 @@
-export function CrclsLogo(props) {
+import { FC } from 'react'
+
+interface Props {
+  [x: string]: any
+}
+
+const CrclsLogo: FC<Props> = (props) => {
   return (
     <svg
       width="248"
@@ -36,3 +42,5 @@ export function CrclsLogo(props) {
     </svg>
   )
 }
+
+export default CrclsLogo

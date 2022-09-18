@@ -1,6 +1,7 @@
+import { FC } from 'react'
 import Link from 'next/link'
 
-import { Container } from '@/components/Container'
+import Container from '@/components/Container'
 
 const faqs = [
   [
@@ -43,7 +44,7 @@ const faqs = [
   ],
 ]
 
-export function Faqs() {
+const Faqs: FC = () => {
   return (
     <section
       aria-labelledby="faqs-title"
@@ -94,3 +95,5 @@ export function Faqs() {
     </section>
   )
 }
+
+export default Faqs

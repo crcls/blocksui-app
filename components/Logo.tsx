@@ -1,4 +1,10 @@
-export function Logo(props) {
+import { FC } from 'react'
+
+interface Props {
+  [x: string]: any
+}
+
+const Logo: FC<Props> = (props) => {
   return (
     <svg
       viewBox="0 0 64 64"
@@ -28,3 +34,5 @@ export function Logo(props) {
     </svg>
   )
 }
+
+export default Logo
