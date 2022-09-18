@@ -3,7 +3,10 @@ import { useDrag } from 'react-dnd'
 import DnDPrimitiveTypes from './DnDPrimitiveTypes'
 
 const PrimitiveButton: FC = () => {
-  const [, drag] = useDrag(() => ({ type: DnDPrimitiveTypes.PRIMITIVE_BUTTON }))
+  const [, drag] = useDrag(() => ({
+    type: DnDPrimitiveTypes.PRIMITIVE_BUTTON,
+    item: 'PrimitiveButton',
+  }))
 
   return (
     <button

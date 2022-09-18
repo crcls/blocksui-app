@@ -22,6 +22,7 @@ import PrimitiveMoonmailConnector from '@/components/editor/PrimitiveMoonmailCon
 import PrimitiveForm from '@/components/editor/PrimitiveForm'
 import PrimitiveInput from '@/components/editor/PrimitiveInput'
 import PrimitiveButton from '@/components/editor/PrimitiveButton'
+import DropZone from '@/components/editor/DropZone'
 
 const user = {
   name: 'Whitney Francis',
@@ -485,7 +486,7 @@ const Editor: NextPage = () => {
                 >
                   <li className="bg-white px-4 py-6 shadow sm:rounded-lg sm:px-6"></li>
                 </ul> */}
-                  <div></div>
+                  <DropZone />
                 </div>
               </section>
               <aside className="hidden xl:order-first xl:block xl:flex-shrink-0">
