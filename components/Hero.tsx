@@ -9,6 +9,7 @@ import logoFilecoin from '@/assets/filecoin.svg'
 import logoIpfs from '@/assets/ipfs.svg'
 import logoLitProtocol from '@/assets/lit-protocol.svg'
 import logoMoralis from '@/assets/moralis.svg'
+import logoPolygon from '@/assets/polygon.svg'
 import logoWeb3Storage from '@/assets/web3-storage.svg'
 
 const BackgroundIllustration = (props: any) => {
@@ -87,7 +88,7 @@ const Hero: FC = () => {
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
           <div className="relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
             <h1 className="text-4xl font-medium tracking-tight text-black">
-              Decentralized UI software as an NFT.
+              Decentralized UI Software as an NFT.
             </h1>
             <p className="mt-6 text-lg text-neutral-600">
               Providing an open and decentralized framework for building user
@@ -117,6 +118,7 @@ const Hero: FC = () => {
                 ['IPFS', logoIpfs],
                 ['Lit Protocol', logoLitProtocol],
                 ['Moralis', logoMoralis],
+                ['Polygon', logoPolygon],
                 ['Web3 Storage', logoWeb3Storage],
               ].map(([name, logo, className]) => (
                 <li className={clsx('flex', className)} key={name}>
