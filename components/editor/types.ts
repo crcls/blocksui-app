@@ -1,0 +1,22 @@
+export const DnDPrimitiveTypes = {
+  PRIMITIVE_BUTTON: 'PRIMITIVE_BUTTON',
+  PRIMITIVE_CONTAINER: 'PRIMITIVE_CONTAINER',
+  PRIMITIVE_FORM: 'PRIMITIVE_FORM',
+  PRIMITIVE_INPUT: 'PRIMITIVE_INPUT',
+  PRIMITIVE_MOONMAIL_CONNECTOR: 'PRIMITIVE_MOONMAIL_CONNECTOR',
+}
+
+export type DnDTypeToComponentKeyType =
+  | 'PRIMITIVE_BUTTON'
+  | 'PRIMITIVE_CONTAINER'
+  | 'PRIMITIVE_FORM'
+  | 'PRIMITIVE_INPUT'
+  | 'PRIMITIVE_MOONMAIL_CONNECTOR'
+
+export type DragItemProps = {
+  type: string
+}
+
+export type DragItemWithDropZoneProps = {
+  type: string
+}
