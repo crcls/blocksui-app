@@ -13,9 +13,13 @@ export type DropItemInItemAction = {
   type: 'DROP_ITEM_IN_ITEM'
 }
 
+type DroppedItem = {
+  [key: string]: any
+}
+
 export type State = {
   connectWallet: {
     open: boolean
   }
-  droppedItems: object[]
+  droppedItems: DroppedItem[]
 }

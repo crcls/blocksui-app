@@ -20,7 +20,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import DragItem from '@/components/editor/DragItem'
 import DragItemWithDropZone from '@/components/editor/DragItemWithDropZone'
 import DropZone from '@/components/editor/DropZone'
-import DnDPrimitiveTypes from '@/components/editor/DnDPrimitiveTypes'
+import { DnDPrimitiveTypes } from '@/components/editor/types'
 
 const user = {
   name: 'Whitney Francis',

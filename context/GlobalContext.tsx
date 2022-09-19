@@ -1,6 +1,11 @@
 import { createContext, FC, ReactNode, useReducer } from 'react'
 
-import { ConnectWalletAction, DropItemAction, State } from './types'
+import {
+  ConnectWalletAction,
+  DropItemAction,
+  DropItemInItemAction,
+  State,
+} from './types'
 import Reducer from './Reducer'
 
 const initialState: State = {
@@ -12,7 +17,9 @@ const initialState: State = {
 
 export const GlobalContext = createContext<{
   state: State
-  dispatch: React.Dispatch<ConnectWalletAction | DropItemAction>
+  dispatch: React.Dispatch<
+    ConnectWalletAction | DropItemAction | DropItemInItemAction
+  >
 }>({
   state: initialState,
   dispatch: () => null,

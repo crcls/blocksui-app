@@ -1,52 +1,49 @@
-import { useDrop } from 'react-dnd'
-import DnDPrimitiveTypes from './DnDPrimitiveTypes'
 import { useContext } from 'react'
+import { useDrop } from 'react-dnd'
+
+import { DnDPrimitiveTypes } from '@/components/editor//types'
 import { GlobalContext } from '@/context/GlobalContext'
-import DnDTypeToComponent, {
-  DnDTypeToComponentKeyType,
-} from './DnDTypeToComponent'
+import { DnDTypeToComponentKeyType } from '@/components/editor/types'
+import DnDTypeToComponent from '@/components/editor/DnDTypeToComponent'
 
 const DropZone = () => {
+  const ACCEPTS = Object.values(DnDPrimitiveTypes)
+  const { dispatch } = useContext(GlobalContext)
   const { state } = useContext(GlobalContext)
   const { droppedItems } = state
-  const { dispatch } = useContext(GlobalContext)
-  // const [config, setConfig] = useState({})
-  // const [droppedItems, setDroppedItems] = useState([])
-  const ACCEPTS = Object.values(DnDPrimitiveTypes)
   const [, drop] = useDrop(() => ({
     accept: ACCEPTS,
-    drop: (item) => {
+    drop: (item: any) => {
       dispatch({
-        type: 'DROP_ITEM',
         payload: {
+          children: [],
+          connections: [],
           id: item.name,
+          props: {},
           type: item.name
             .split('_')
             .map(
-              (element) => element.charAt(0) + element.slice(1).toLowerCase()
+              (element: any) =>
+                element.charAt(0) + element.slice(1).toLowerCase()
             )
             .join(''),
-          props: {},
-          connections: [],
-          children: [],
         },
+        type: 'DROP_ITEM',
       })
+
       return { name: 'DropZone' }
     },
-    // collect: (monitor) => ({
-    //   isOver: monitor.isOver(),
-    //   canDrop: monitor.canDrop(),
-    // }),
   }))
 
   return (
     <div
-      ref={drop}
       className="h-full overflow-hidden rounded-lg bg-fuchsia-50 bg-white shadow"
+      ref={drop}
     >
-      {droppedItems.map((droppedItem, index) => {
+      {droppedItems.map((droppedItem: any, index) => {
         const typeName = droppedItem.id
         const nameAsType = typeName as DnDTypeToComponentKeyType
+
         return <div key={index}>{DnDTypeToComponent[nameAsType]}</div>
       })}
     </div>
