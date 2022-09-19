@@ -396,7 +396,9 @@ const Editor: NextPage = () => {
                           </span>
                         </div>
                       </div>
-                      <Button className="bg-green-500">Publish Block</Button>
+                      <Button className="bg-green-600" href="/publish">
+                        Publish Block
+                      </Button>
                     </div>
                   </div>
                 </div>
