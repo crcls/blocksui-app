@@ -1,9 +1,10 @@
-import { createContext, FC, ReactNode, useReducer } from 'react'
+import { createContext, FC, useReducer } from 'react'
 
 import {
   ConnectWalletAction,
   DropItemAction,
   DropItemInItemAction,
+  GlobalProviderProps,
   State,
 } from './types'
 import Reducer from './Reducer'
@@ -25,11 +26,7 @@ export const GlobalContext = createContext<{
   dispatch: () => null,
 })
 
-interface Props {
-  children: ReactNode
-}
-
-export const GlobalProvider: FC<Props> = (props) => {
+export const GlobalProvider: FC<GlobalProviderProps> = (props) => {
   const [state, dispatch] = useReducer(Reducer, initialState)
 
   return (

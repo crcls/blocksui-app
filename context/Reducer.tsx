@@ -17,6 +17,7 @@ const Reducer = (
     case 'DROP_ITEM_IN_ITEM': {
       const newDroppedItems = state.droppedItems
       newDroppedItems[action.payload.id].children = action.payload
+
       return { ...state, droppedItems: [newDroppedItems] }
     }
     default:
