@@ -1,4 +1,4 @@
-import { Fragment, useReducer, useState } from 'react'
+import { FC, Fragment, useReducer, useState } from 'react'
 import { ChevronRightIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 import { Popover, Transition } from '@headlessui/react'
 import type { NextPage } from 'next'
@@ -21,15 +21,33 @@ const reducer = (state: any, action: any) => {
   return state
 }
 
+enum StepStatus {
+  complete,
+  upcoming,
+}
+
+type Step = { name: string; href?: string; status: StepStatus }
+
+const StepNav: FC<{ step: Step }> = ({ step }) => {
+  const Comp = step.href !== undefined ? 'a' : 'span'
+
+  if (step.status === 'current') {
+    return (
+      <Comp href={step.href} aria-current="page" className="text-green-600">
+        {step.name}
+      </Comp>
+    )
+  } else {
+    return <Comp href={step.href}>{step.name}</Comp>
+  }
+}
+
 const Publish: NextPage = () => {
-  const [steps, dispatch] = useReducer(reducer, [
+  const [steps, dispatch] = useReducer<Step[]>(reducer, [
     { name: 'Build', href: '/editor', status: 'complete' },
-    { name: 'Compile', href: '#', status: 'current' },
+    { name: 'Compiling', status: 'current' },
     { name: 'Metadata', href: '#', status: 'upcoming' },
-    { name: 'Encrypt', href: '#', status: 'upcoming' },
-    { name: 'Save to IPFS', href: '#', status: 'upcoming' },
-    { name: 'Decryption Conditions', href: '#', status: 'upcoming' },
-    { name: 'Sign', href: '#', status: 'upcoming' },
+    { name: 'Saving', status: 'upcoming' },
     { name: 'Mint', href: '#', status: 'upcoming' },
   ])
   const [step, setStep] = useState(1)
@@ -78,17 +96,7 @@ const Publish: NextPage = () => {
               <ol role="list" className="flex space-x-4">
                 {steps.map((step: any, stepIdx: any) => (
                   <li key={step.name} className="flex items-center">
-                    {step.status === 'current' ? (
-                      <a
-                        href={step.href}
-                        aria-current="page"
-                        className="text-green-600"
-                      >
-                        {step.name}
-                      </a>
-                    ) : (
-                      <a href={step.href}>{step.name}</a>
-                    )}
+                    <StepNav step={step} />
                     {stepIdx !== steps.length - 1 ? (
                       <ChevronRightIcon
                         className="ml-4 h-5 w-5 text-neutral-300"
@@ -311,64 +319,22 @@ const Publish: NextPage = () => {
               </>
             )}
             {step === 3 && (
-              <section aria-labelledby="encrypting-heading">
+              <section aria-labelledby="saving-heading">
                 <h2
-                  id="encrypting-heading"
+                  id="saving-heading"
                   className="text-lg font-medium text-neutral-900"
                 >
-                  Encrypting
+                  Saving
                 </h2>
-                <p className="mt-6 text-sm font-medium text-neutral-700">
-                  Lorem ipsum
-                </p>
               </section>
             )}
             {step === 4 && (
-              <section aria-labelledby="ipfs-heading">
-                <h2
-                  id="ipfs-heading"
-                  className="text-lg font-medium text-neutral-900"
-                >
-                  Saving to IPFS
-                </h2>
-                <p className="mt-6 text-sm font-medium text-neutral-700">
-                  Lorem ipsum
-                </p>
-              </section>
-            )}
-            {step === 5 && (
-              <section aria-labelledby="decryption-heading">
-                <h2
-                  id="decryption-heading"
-                  className="text-lg font-medium text-neutral-900"
-                >
-                  Saving decryption conditions
-                </h2>
-                <p className="mt-6 text-sm font-medium text-neutral-700">
-                  Lorem ipsum
-                </p>
-              </section>
-            )}
-            {step === 6 && (
-              <section aria-labelledby="sign-heading">
-                <h2
-                  id="sign-heading"
-                  className="text-lg font-medium text-neutral-900"
-                >
-                  Sign transaction
-                </h2>
-                <p className="mt-6 text-sm font-medium text-neutral-700">
-                  Lorem ipsum
-                </p>
-              </section>
-            )}
-            {step === 7 && (
               <section aria-labelledby="mint-heading">
                 <h2
                   id="mint-heading"
                   className="text-lg font-medium text-neutral-900"
                 >
-                  Mint block NFT
+                  Mint Block NFT
                 </h2>
                 <p className="mt-6 text-sm font-medium text-neutral-700">
                   Lorem ipsum
@@ -376,13 +342,15 @@ const Publish: NextPage = () => {
               </section>
             )}
             <div className="mt-10 border-t border-neutral-200 pt-6 sm:flex sm:items-center sm:justify-between">
-              <button
-                type="submit"
-                className="w-full rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-50 sm:order-last sm:ml-6 sm:w-auto"
-                onClick={handleContinue}
-              >
-                {buttonLabel}
-              </button>
+              {[2, 4].includes(step) && (
+                <button
+                  type="submit"
+                  className="w-full rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-50 sm:order-last sm:ml-6 sm:w-auto"
+                  onClick={handleContinue}
+                >
+                  {buttonLabel}
+                </button>
+              )}
               <p className="mt-4 text-center text-sm text-neutral-500 sm:mt-0 sm:text-left">
                 Lorem ipsum.
               </p>
