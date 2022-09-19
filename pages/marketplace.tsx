@@ -45,9 +45,9 @@ const products = [
   {
     id: 1,
     name: 'MoonMail Contact Form',
-    href: '#',
+    href: '/block/1',
     price: '0.33 ETH',
-    availability:
+    description:
       'A simple MoonMail contact form block with some validation that you can embed in your website',
     imageSrc: '',
     imageAlt:
@@ -56,9 +56,9 @@ const products = [
   {
     id: 2,
     name: 'MoonMail Contact Form',
-    href: '#',
+    href: '/block/2',
     price: '0.33 ETH',
-    availability:
+    description:
       'A simple MoonMail contact form block with some validation that you can embed in your website',
     imageSrc: '',
     imageAlt:
@@ -195,7 +195,7 @@ const Marketplace: NextPage = () => {
       </Transition.Root>
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-baseline justify-between border-b border-neutral-200 pt-24 pb-6">
-          <h1 className="text-4xl font-bold tracking-tight text-black">
+          <h1 className="text-4xl font-medium tracking-tight text-black">
             Marketplace
           </h1>
           <div className="flex items-center">
@@ -347,13 +347,13 @@ const Marketplace: NextPage = () => {
                       alt={product.imageAlt}
                       className="h-full w-full object-cover object-center"
                     /> */}
-                    <Logo className="h-full w-full object-cover object-center" />
+                    <Logo className="h-full w-full object-cover object-center p-24" />
                   </div>
                   <h3 className="mt-4 font-medium text-black">
                     {product.name}
                   </h3>
                   <p className="italic text-neutral-500">
-                    {product.availability}
+                    {product.description}
                   </p>
                   <p className="mt-2 font-medium text-black">{product.price}</p>
                 </a>

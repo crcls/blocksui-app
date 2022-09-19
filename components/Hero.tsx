@@ -21,7 +21,7 @@ const BackgroundIllustration = (props: any) => {
         viewBox="0 0 1026 1026"
         fill="none"
         aria-hidden="true"
-        className="animate-spin-slow absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-full animate-spin-slow"
       >
         <path
           d="M1025 513c0 282.77-229.23 512-512 512S1 795.77 1 513 230.23 1 513 1s512 229.23 512 512Z"
@@ -42,8 +42,8 @@ const BackgroundIllustration = (props: any) => {
             y2="1025"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#06b6d4" />
-            <stop offset="1" stopColor="#06b6d4" stopOpacity="0" />
+            <stop stopColor="black" />
+            <stop offset="1" stopColor="black" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>
@@ -51,7 +51,7 @@ const BackgroundIllustration = (props: any) => {
         viewBox="0 0 1026 1026"
         fill="none"
         aria-hidden="true"
-        className="animate-spin-reverse-slower absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-full animate-spin-reverse-slower"
       >
         <path
           d="M913 513c0 220.914-179.086 400-400 400S113 733.914 113 513s179.086-400 400-400 400 179.086 400 400Z"
@@ -72,8 +72,8 @@ const BackgroundIllustration = (props: any) => {
             y2="913"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#06b6d4" />
-            <stop offset="1" stopColor="#06b6d4" stopOpacity="0" />
+            <stop stopColor="black" />
+            <stop offset="1" stopColor="black" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>
@@ -88,7 +88,7 @@ const Hero: FC = () => {
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
           <div className="relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
             <h1 className="text-4xl font-medium tracking-tight text-black">
-              Decentralized UI Software as an NFT.
+              Blocks UI Protocol—Decentralized UI Software as an NFT.
             </h1>
             <p className="mt-6 text-lg text-neutral-600">
               Providing an open and decentralized framework for building user
