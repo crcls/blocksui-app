@@ -36,9 +36,31 @@ const DragItemWithDropZone: FC<DragItemWithDropZoneProps> = ({ type }) => {
         handlerId: monitor.getHandlerId(),
       }
     },
-    drop: (item) => {
-      dispatch({ type: 'DROP_ITEM', payload: item.name })
-      return { name: 'Drop2' }
+    drop: (item, monitor) => {
+      dispatch({
+        type: 'DROP_ITEM_IN_ITEM',
+        payload: {
+          id: type.name
+            .split('_')
+            .map(
+              (element) => element.charAt(0) + element.slice(1).toLowerCase()
+            )
+            .join(''),
+          block: {
+            id: item.name,
+            type: item.name
+              .split('_')
+              .map(
+                (element) => element.charAt(0) + element.slice(1).toLowerCase()
+              )
+              .join(''),
+            props: {},
+            connections: [],
+            children: [],
+          },
+        },
+      })
+      return { name: type }
     },
   })
   return (

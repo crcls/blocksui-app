@@ -4,13 +4,18 @@ export type ConnectWalletAction = {
 }
 
 export type DropItemAction = {
-  payload: string
+  payload: any
   type: 'DROP_ITEM'
+}
+
+export type DropItemInItemAction = {
+  payload: any
+  type: 'DROP_ITEM_IN_ITEM'
 }
 
 export type State = {
   connectWallet: {
     open: boolean
   }
-  droppedItems: string[]
+  droppedItems: object[]
 }

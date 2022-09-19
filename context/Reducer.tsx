@@ -1,8 +1,13 @@
-import { ConnectWalletAction, DropItemAction, State } from './types'
+import {
+  ConnectWalletAction,
+  DropItemAction,
+  DropItemInItemAction,
+  State,
+} from './types'
 
 const Reducer = (
   state: State,
-  action: ConnectWalletAction | DropItemAction
+  action: ConnectWalletAction | DropItemAction | DropItemInItemAction
 ): State => {
   switch (action.type) {
     case 'CONNECT_WALLET':
@@ -10,6 +15,10 @@ const Reducer = (
     case 'DROP_ITEM':
       console.log([...state.droppedItems, action.payload])
       return { ...state, droppedItems: [...state.droppedItems, action.payload] }
+    case 'DROP_ITEM_IN_ITEM':
+      const newDroppedItems = state.droppedItems
+      newDroppedItems[action.payload.id].children = action.payload
+      return { ...state, droppedItems: [newDroppedItems] }
     default:
       return state
   }
