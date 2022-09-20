@@ -2,10 +2,10 @@ import { FC } from 'react'
 
 const PrimitiveInput: FC = () => {
   return (
-    <div>
+    <div className="cursor-move">
       <label
         htmlFor="email"
-        className="block text-sm font-medium text-gray-700"
+        className="block text-sm font-medium text-neutral-700"
       >
         Email
       </label>
@@ -14,7 +14,7 @@ const PrimitiveInput: FC = () => {
           type="email"
           name="email"
           id="email"
-          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           placeholder="you@example.com"
         />
       </div>

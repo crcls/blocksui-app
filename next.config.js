@@ -6,6 +6,11 @@ const nextConfig = {
   ) {
     return {
       '/': { page: '/' },
+      '/documentation': { page: '/documentation' },
+      '/editor': { page: '/editor' },
+      '/faqs': { page: '/faqs' },
+      '/marketplace': { page: '/marketplace' },
+      '/publish': { page: '/publish' },
     }
   },
   experimental: {

@@ -1,64 +1,82 @@
-import { FC, useContext } from 'react'
+import { FC, useContext, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
+import shortid from 'shortid'
 
 import {
-  DnDPrimitiveTypes,
   DragItemWithDropZoneProps,
+  PrimitiveTypes,
 } from '@/components/editor/types'
 import { GlobalContext } from '@/context/GlobalContext'
 import PrimitiveContainer from '@/components/editor/primitives/PrimitiveContainer'
 import PrimitiveForm from '@/components/editor/primitives/PrimitiveForm'
-import PrimitiveMoonmailConnector from '@/components/editor/primitives/PrimitiveMoonmailConnector'
+import PrimitiveMoonMailConnector from '@/components/editor/primitives/PrimitiveMoonMailConnector'
+import PrimitiveTransition from '@/components/editor/primitives/PrimitiveTransition'
 
-const DragItemWithDropZone: FC<DragItemWithDropZoneProps> = ({ type }) => {
-  const { dispatch } = useContext(GlobalContext)
+const DragItemWithDropZone: FC<DragItemWithDropZoneProps> = ({
+  children,
+  id,
+  type,
+}) => {
   const [, drag] = useDrag(() => ({
     item: { name: type },
-    type: type,
+    type,
   }))
-  const [, drop] = useDrop({
-    accept: [DnDPrimitiveTypes.PRIMITIVE_BUTTON],
-    drop: (item: any) => {
-      dispatch({
-        payload: {
-          block: {
-            children: [],
-            connections: [],
-            id: item.name,
-            props: {},
-            type: item.name
-              .split('_')
-              .map(
-                (element: any) =>
-                  element.charAt(0) + element.slice(1).toLowerCase()
-              )
-              .join(''),
-          },
-          id: type
-            .split('_')
-            .map(
-              (element: any) =>
-                element.charAt(0) + element.slice(1).toLowerCase()
-            )
-            .join(''),
-        },
-        type: 'DROP_ITEM_IN_ITEM',
-      })
+  const ACCEPTS = Object.values(PrimitiveTypes)
+  const { dispatch } = useContext(GlobalContext)
+  const greedy = false
+  // eslint-disable-next-line
+  const [hasDropped, setHasDropped] = useState(false)
+  // eslint-disable-next-line
+  const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false)
+  // eslint-disable-next-line
+  const [{ isOver, isOverCurrent }, drop] = useDrop(
+    () => ({
+      accept: ACCEPTS,
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        isOverCurrent: monitor.isOver({ shallow: true }),
+      }),
+      drop(_item: any, monitor) {
+        const didDrop = monitor.didDrop()
+        if (didDrop && !greedy) {
+          return
+        }
 
-      return { name: type }
-    },
-  })
+        dispatch({
+          payload: {
+            block: {
+              children: [],
+              connections: [],
+              id: shortid.generate(),
+              props: {},
+              type: _item.name,
+            },
+            id,
+          },
+          type: 'DROP_ITEM_IN_ITEM',
+        })
+      },
+    }),
+    [greedy, setHasDropped, setHasDroppedOnChild]
+  )
+
   return (
     <div ref={drag}>
       <div ref={drop}>
         {(() => {
           switch (type) {
-            case DnDPrimitiveTypes.PRIMITIVE_CONTAINER:
-              return <PrimitiveContainer />
-            case DnDPrimitiveTypes.PRIMITIVE_FORM:
-              return <PrimitiveForm />
-            case DnDPrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR:
-              return <PrimitiveMoonmailConnector />
+            case PrimitiveTypes.PRIMITIVE_CONTAINER:
+              return <PrimitiveContainer>{children}</PrimitiveContainer>
+            case PrimitiveTypes.PRIMITIVE_FORM:
+              return <PrimitiveForm>{children}</PrimitiveForm>
+            case PrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR:
+              return (
+                <PrimitiveMoonMailConnector>
+                  {children}
+                </PrimitiveMoonMailConnector>
+              )
+            case PrimitiveTypes.PRIMITIVE_TRANSITION:
+              return <PrimitiveTransition>{children}</PrimitiveTransition>
             default:
               return null
           }
