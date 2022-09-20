@@ -1,11 +1,28 @@
-import { FC, Fragment, useReducer, useState } from 'react'
+import {
+  FC,
+  FormEvent,
+  Fragment,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react'
 import { ChevronRightIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 import { Popover, Transition } from '@headlessui/react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { chain, useAccount, useSigner, useConnect } from 'wagmi'
+import { InjectedConnector } from 'wagmi/connectors/injected'
 
 import Logo from '@/components/Logo'
+
+import useContracts from '../hooks/use-contracts'
+import useLit from '../hooks/use-lit'
+import useIPFS from '../hooks/use-ipfs'
+import { resolver } from '../utils/async'
+import { cidToBytes32, strToUint8, uint8ToStr } from '../utils/bytes'
 
 const reducer = (state: any, action: any) => {
   const { step } = action
@@ -28,6 +45,34 @@ enum StepStatus {
 
 type Step = { name: string; href?: string; status: StepStatus }
 
+const blockConfig = [
+  {
+    children: [
+      {
+        children: ['Hello!'],
+        props: {
+          level: ['value', 1],
+        },
+        type: 'Heading',
+      },
+      {
+        children: [
+          'Aenean sodales nunc augue, quis mollis dolor tempor at. Nam interdum, mauris nec commodo rutrum, velit felis tempor dui, vitae elementum massa diam eget nulla. Vivamus rutrum ullamcorper lorem sed sollicitudin. Praesent maximus lorem sed accumsan convallis. Etiam nec risus ac arcu pulvinar placerat. Proin fermentum ligula gravida purus fermentum malesuada. Maecenas condimentum tempor pulvinar.',
+        ],
+        type: 'Paragraph',
+      },
+      {
+        children: ["Let's go!"],
+        props: {
+          href: 'https://crcls.xyz',
+        },
+        type: 'Link',
+      },
+    ],
+    type: 'Container',
+  },
+]
+
 const StepNav: FC<{ step: Step }> = ({ step }) => {
   const Comp = step.href !== undefined ? 'a' : 'span'
 
@@ -42,30 +87,246 @@ const StepNav: FC<{ step: Step }> = ({ step }) => {
   }
 }
 
+interface NFTMetaData {
+  description: string
+  image: string
+  name: string
+  buiProperties: {
+    cid: string
+    encryptedKey: string
+    authConditions: Array<{ [key: string]: any }>
+  }
+}
+
+function generateBlockMeta({
+  description,
+  blockName,
+  image,
+  tags,
+  cid,
+  key,
+  authConditions,
+}): NFTMetaData {
+  return {
+    description,
+    image,
+    name: blockName,
+    buiProperties: {
+      authConditions,
+      cid,
+      key,
+      tags,
+    },
+    // TODO: add attributes
+  }
+}
+
+function serialize(data: FormData): { [key: string]: any } {
+  const params: { [key: string]: any } = {}
+
+  for (const pair of data.entries()) {
+    params[pair[0]] = pair[1]
+  }
+
+  return params
+}
+
+function normalizeName(name: string): string {
+  return name.replace(/[^a-z0-9]/gi, '_').toLowerCase()
+}
+
 const Publish: NextPage = () => {
+  const account = useAccount()
+  const { connect } = useConnect({
+    chain: chain.polygonMumbai.id,
+    connector: new InjectedConnector(),
+  })
+  const { getContract } = useContracts()
+  const { data: signer } = useSigner()
+  const { createAuthCondition, encryptFile, saveEncryption } = useLit()
+  const { addIPFS, addWeb3Storage } = useIPFS()
   const [steps, dispatch] = useReducer<Step[]>(reducer, [
     { name: 'Build', href: '/editor', status: 'complete' },
-    { name: 'Compiling', status: 'current' },
     { name: 'Metadata', href: '#', status: 'upcoming' },
-    { name: 'Saving', status: 'upcoming' },
     { name: 'Mint', href: '#', status: 'upcoming' },
   ])
   const [step, setStep] = useState(1)
   const router = useRouter()
   const [buttonLabel, setButtonlabel] = useState('Continue')
+  const [error, setError] = useState<Error | undefined>()
+  const formRef = useRef<HTMLFormElement>()
+  const [progressMsg, setProgressMsg] = useState('Initializing...')
+  const [isMinting, setIsMinting] = useState(false)
 
-  const handleContinue = async (event: any) => {
-    event.preventDefault()
-
-    if (step === 6) {
-      setButtonlabel('My Blocks')
-    } else if (step === 7) {
-      await router.push('/marketplace')
+  useEffect(() => {
+    if (!account.isConnected) {
+      connect()
     }
+  }, [account, connect])
 
-    dispatch({ step })
-    setStep(step + 1)
-  }
+  const handleContinue = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+      setError(undefined)
+
+      if (step === steps.length - 1) {
+        setButtonlabel('My Blocks')
+      } else if (step === steps.length) {
+        await router.push('/marketplace')
+      }
+
+      // Need to get this before the dispatch removes the inputs
+      const formdata = new FormData(event.currentTarget)
+
+      dispatch({ step })
+      setStep(step + 1)
+
+      if (step + 1 === 2) {
+        if (!signer) {
+          setError(new Error('Please connect your wallet.'))
+          setStep(step)
+          setIsMinting(false)
+          // FIXME: need better step management. No way to revert the dispatch.
+          return
+        }
+
+        setIsMinting(true)
+
+        const data = strToUint8(JSON.stringify(blockConfig))
+
+        const { encryptedFile, symmetricKey } = await encryptFile(data)
+        const [err, cid] = await resolver(addIPFS('block', encryptedFile))
+        if (err !== undefined || cid === undefined) {
+          console.log('IPFS uplod error')
+          setError(err)
+          setStep(step)
+          setIsMinting(false)
+          return
+        }
+
+        const cidHash = cidToBytes32(cid)
+        const evmContractConditions = [
+          createAuthCondition('BUIBlockNFT', 'ownerOfBlock', [
+            cidHash,
+            ':userAddress',
+          ]),
+          // TODO: Add LicenseNFT auth condition
+          // Verify there is a license with the
+          // given CID belonging to the calling
+          // authSig.
+        ]
+
+        const [eerr, encryptedKey] = await resolver(
+          saveEncryption(symmetricKey, evmContractConditions)
+        )
+        if (eerr !== undefined || encryptedKey === undefined) {
+          console.log('lit encryption error')
+          setError(eerr)
+          setStep(step)
+          setIsMinting(false)
+          return
+        }
+
+        const key = uint8ToStr(encryptedKey, 'base16')
+
+        const image = formdata.get('image-upload')
+        formdata.delete('image-upload')
+
+        const formParams = serialize(formdata)
+
+        if (image.size !== 0) {
+          console.log(image)
+          if (!image.type.startsWith('image')) {
+            setError(new Error('Uploaded file is not an image'))
+            setStep(step)
+            setIsMinting(false)
+            return
+          }
+
+          setProgressMsg('Uploading metadata...')
+          const imgData = image.arrayBuffer()
+          const fileName = normalizeName(formdata.get('blockName'))
+          const ext = image.type.split('/')[1]
+          const file = new File(
+            [new Blob([imgData], { type: image.type })],
+            `${fileName}.${ext as string}`,
+            {
+              type: image.type,
+            }
+          )
+
+          const [uerr, cid] = await resolver(addWeb3Storage([file]))
+          if (uerr !== undefined || cid === undefined) {
+            setError(new Error('Failed to upload image to Web3.Storage'))
+            setStep(step)
+            setIsMinting(false)
+            return
+          }
+
+          formParams.image = `ipfs://${cid}/${fileName}.${ext as string}`
+        }
+
+        // TODO: perform validation on input
+        const metadata = generateBlockMeta({
+          ...formParams,
+          cid,
+          key,
+          authConditions: evmContractConditions,
+        })
+
+        console.log(metadata)
+
+        const metaFile = new File(
+          [new Blob([JSON.stringify(metadata)], { type: 'application/json' })],
+          'metadata.json'
+        )
+
+        const [merr, mcid] = await resolver(addWeb3Storage([metaFile]))
+        if (merr !== undefined || mcid === undefined) {
+          setError(new Error('Failed to upload metadata to Web3.Storage'))
+          setStep(step)
+          setIsMinting(false)
+          return
+        }
+        const metaURI = `ipfs://${mcid}/metadata.json`
+
+        console.log(metaURI)
+
+        setProgressMsg('Minting your BlockNFT')
+        const contract = await getContract('BUIBlockNFT', signer)
+        const cost = await contract.publishPrice()
+        const [terr, tx] = await resolver(
+          contract.publish(cidHash, metaURI, { value: cost })
+        )
+        if (terr !== undefined || tx === undefined) {
+          setError(new Error(terr ? terr.message : 'Transaction was empty'))
+          setStep(step)
+          setIsMinting(false)
+          return
+        }
+
+        setProgressMsg('Confirming the transaction')
+        const { transactionHash, gasUsed } = await tx.wait()
+        setProgressMsg(`Transaction Confirmed: ${transactionHash as string}`)
+        console.log(transactionHash, gasUsed)
+        setIsMinting(false)
+      }
+    },
+    [
+      addIPFS,
+      addWeb3Storage,
+      encryptFile,
+      getContract,
+      router,
+      connect,
+      signer,
+      step,
+      steps,
+      formRef.current,
+      saveEncryption,
+      createAuthCondition,
+    ]
+  )
 
   return (
     <>
@@ -195,22 +456,13 @@ const Publish: NextPage = () => {
             </Popover>
           </div>
         </section>
-        <form className="px-4 pt-16 pb-36 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16">
+        <form
+          className="px-4 pt-16 pb-36 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16"
+          onSubmit={handleContinue}
+          ref={formRef}
+        >
           <div className="mx-auto max-w-lg lg:max-w-none">
             {step === 1 && (
-              <section aria-labelledby="compiling-heading">
-                <h2
-                  id="compiling-heading"
-                  className="text-lg font-medium text-neutral-900"
-                >
-                  Compiling
-                </h2>
-                <p className="mt-6 text-sm font-medium text-neutral-700">
-                  Lorem ipsum
-                </p>
-              </section>
-            )}
-            {step === 2 && (
               <>
                 <section aria-labelledby="metadata-heading">
                   <h2
@@ -231,7 +483,7 @@ const Publish: NextPage = () => {
                         <input
                           type="text"
                           id="name"
-                          name="name"
+                          name="blockName"
                           className="block w-full rounded-md border-neutral-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                         />
                       </div>
@@ -284,7 +536,7 @@ const Publish: NextPage = () => {
                                 <span>Upload a file</span>
                                 <input
                                   id="file-upload"
-                                  name="file-upload"
+                                  name="image-upload"
                                   type="file"
                                   className="sr-only"
                                 />
@@ -318,17 +570,7 @@ const Publish: NextPage = () => {
                 </section>
               </>
             )}
-            {step === 3 && (
-              <section aria-labelledby="saving-heading">
-                <h2
-                  id="saving-heading"
-                  className="text-lg font-medium text-neutral-900"
-                >
-                  Saving
-                </h2>
-              </section>
-            )}
-            {step === 4 && (
+            {step === 2 && (
               <section aria-labelledby="mint-heading">
                 <h2
                   id="mint-heading"
@@ -337,16 +579,16 @@ const Publish: NextPage = () => {
                   Mint Block NFT
                 </h2>
                 <p className="mt-6 text-sm font-medium text-neutral-700">
-                  Lorem ipsum
+                  {error === undefined ? '' : error.message}
+                  {!error && progressMsg}
                 </p>
               </section>
             )}
             <div className="mt-10 border-t border-neutral-200 pt-6 sm:flex sm:items-center sm:justify-between">
-              {[2, 4].includes(step) && (
+              {!isMinting && (
                 <button
                   type="submit"
                   className="w-full rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-50 sm:order-last sm:ml-6 sm:w-auto"
-                  onClick={handleContinue}
                 >
                   {buttonLabel}
                 </button>
