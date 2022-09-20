@@ -117,14 +117,18 @@ const Header: FC = () => {
                             </MobileNavLink>
                           </div>
                           <div className="mt-8 flex flex-col gap-4">
-                            <Button
-                              onClick={() => {
-                                console.log('hello')
-                                setModalOpened(true)
-                              }}
-                            >
-                              Connect Wallet
-                            </Button>
+                            {isAuthenticated ? (
+                              <LoggedInButtonPopUp />
+                            ) : (
+                              <Button
+                                onClick={() => {
+                                  console.log('hello')
+                                  setModalOpened(true)
+                                }}
+                              >
+                                Connect Wallet
+                              </Button>
+                            )}
                           </div>
                         </Popover.Panel>
                       </>
@@ -133,15 +137,18 @@ const Header: FC = () => {
                 </>
               )}
             </Popover>
-            <Button
-              className="hidden lg:block"
-              onClick={() => {
-                console.log('hello')
-                setModalOpened(true)
-              }}
-            >
-              {connectButtonText}
-            </Button>
+            {isAuthenticated ? (
+              <LoggedInButtonPopUp />
+            ) : (
+              <Button
+                onClick={() => {
+                  console.log('hello')
+                  setModalOpened(true)
+                }}
+              >
+                Connect Wallet
+              </Button>
+            )}
           </div>
           {modalOpened && (
             <LoginModal

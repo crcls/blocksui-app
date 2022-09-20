@@ -1,19 +1,14 @@
-import { Dialog, Menu, Transition } from '@headlessui/react'
+import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Button from '@/components/Button'
+import clsx from 'clsx'
 
-import {
-  useAccount,
-  useBalance,
-  useConnect,
-  useDisconnect,
-  useEnsAvatar,
-  useEnsName,
-} from 'wagmi'
+import { useAccount, useEnsAvatar } from 'wagmi'
 
 const LoggedInButtonPopUp = () => {
   const account = useAccount()
   const { data: ensAvatar } = useEnsAvatar({ addressOrName: account?.address })
+  // TODO ensAvatar not working
   return (
     <div className="flex items-center space-x-8">
       <Menu as="div" className="relative inline-block text-left">
