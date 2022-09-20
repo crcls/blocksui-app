@@ -1,12 +1,15 @@
 import { Popover } from '@headlessui/react'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useMoralis } from 'react-moralis'
 
 import Container from '@/components/Container'
 import Logo from '@/components/Logo'
 import NavLinks from '@/components/NavLinks'
 import Button from '@/components/Button'
+import LoginModal from '@/components/LoginModal/LoginModal'
+import LoggedInButtonPopUp from '@/components/LoggedInButtonPopUp'
 
 const ChevronUpIcon = (props: any) => (
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
@@ -41,6 +44,17 @@ const MobileNavLink = ({ children, ...props }: any) => (
 )
 
 const Header: FC = () => {
+  const { isAuthenticated, authenticate } = useMoralis()
+  const connectButtonText = isAuthenticated
+    ? 'Disconnect Wallet'
+    : 'Connect Wallet'
+
+  const [modalOpened, setModalOpened] = useState(false)
+  useEffect(() => {
+    if (isAuthenticated) {
+      setModalOpened(false)
+    }
+  }, [isAuthenticated, setModalOpened])
   return (
     <header>
       <nav>
@@ -59,7 +73,7 @@ const Header: FC = () => {
                 <>
                   <Popover.Button
                     aria-label="Toggle site navigation"
-                    className="relative z-10 -m-2 inline-flex items-center rounded-lg stroke-black p-2 hover:bg-neutral-200/50 hover:stroke-neutral-600 active:stroke-black [&:not(:focus-visible)]:focus:outline-none"
+                    className="[&:not(:focus-visible)]:focus:outline-none relative z-10 -m-2 inline-flex items-center rounded-lg stroke-black p-2 hover:bg-neutral-200/50 hover:stroke-neutral-600 active:stroke-black"
                   >
                     {({ open }) =>
                       open ? (
@@ -103,7 +117,14 @@ const Header: FC = () => {
                             </MobileNavLink>
                           </div>
                           <div className="mt-8 flex flex-col gap-4">
-                            <Button href="/login">Connect Wallet</Button>
+                            <Button
+                              onClick={() => {
+                                console.log('hello')
+                                setModalOpened(true)
+                              }}
+                            >
+                              Connect Wallet
+                            </Button>
                           </div>
                         </Popover.Panel>
                       </>
@@ -112,10 +133,22 @@ const Header: FC = () => {
                 </>
               )}
             </Popover>
-            <Button className="hidden lg:block" href="/login">
-              Connect Wallet
+            <Button
+              className="hidden lg:block"
+              onClick={() => {
+                console.log('hello')
+                setModalOpened(true)
+              }}
+            >
+              {connectButtonText}
             </Button>
           </div>
+          {modalOpened && (
+            <LoginModal
+              open={modalOpened}
+              handleClose={() => setModalOpened(false)}
+            />
+          )}
         </Container>
       </nav>
     </header>
