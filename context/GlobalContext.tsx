@@ -38,8 +38,8 @@ export const GlobalProvider: FC<GlobalProviderProps> = (props) => {
       value={{
         state,
         dispatch,
-        // apiHost: 'https://blocksui.io',
-        apiHost: 'http://127.0.0.1:8081',
+        apiHost: 'https://blocksui.io',
+        // apiHost: 'http://127.0.0.1:8081',
         web3Token:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDc5NDI1OGJmOTNDNTUyMmU0ZTFkNzEyMkRBNjdFZERlRENCNUZkNzIiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjMyMDc4Mjg4MTUsIm5hbWUiOiJCbG9ja3NVSSJ9.u0b4cN7AUkr56iD_juch7OyFjgQRkaiictzmyxAIix0',
       }}

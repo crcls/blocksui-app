@@ -197,7 +197,6 @@ const Publish: NextPage = () => {
         const { encryptedFile, symmetricKey } = await encryptFile(data)
         const [err, cid] = await resolver(addIPFS('block', encryptedFile))
         if (err !== undefined || cid === undefined) {
-          console.log('IPFS uplod error')
           setError(err)
           setStep(step)
           setIsMinting(false)
@@ -220,7 +219,6 @@ const Publish: NextPage = () => {
           saveEncryption(symmetricKey, evmContractConditions)
         )
         if (eerr !== undefined || encryptedKey === undefined) {
-          console.log('lit encryption error')
           setError(eerr)
           setStep(step)
           setIsMinting(false)
@@ -235,7 +233,6 @@ const Publish: NextPage = () => {
         const formParams = serialize(formdata)
 
         if (image.size !== 0) {
-          console.log(image)
           if (!image.type.startsWith('image')) {
             setError(new Error('Uploaded file is not an image'))
             setStep(step)
@@ -274,7 +271,7 @@ const Publish: NextPage = () => {
           authConditions: evmContractConditions,
         })
 
-        console.log(metadata)
+        // console.log(metadata)
 
         const metaFile = new File(
           [new Blob([JSON.stringify(metadata)], { type: 'application/json' })],
@@ -290,8 +287,6 @@ const Publish: NextPage = () => {
         }
         const metaURI = `ipfs://${mcid}/metadata.json`
 
-        console.log(metaURI)
-
         setProgressMsg('Minting your BlockNFT')
         const contract = await getContract('BUIBlockNFT', signer)
         const cost = await contract.publishPrice()
@@ -306,9 +301,8 @@ const Publish: NextPage = () => {
         }
 
         setProgressMsg('Confirming the transaction')
-        const { transactionHash, gasUsed } = await tx.wait()
+        const { transactionHash } = await tx.wait()
         setProgressMsg(`Transaction Confirmed: ${transactionHash as string}`)
-        console.log(transactionHash, gasUsed)
         setIsMinting(false)
       }
     },

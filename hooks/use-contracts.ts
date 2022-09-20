@@ -16,13 +16,26 @@ const useContracts = (): ContractsHookValue => {
 
   const getContractABI = useCallback(
     (name: string): any => {
-      return ctx[name]
+      if (ctx === null) {
+        throw new Error(`Contract configs not loaded.`)
+      }
+
+      const abi = ctx[name]
+      if (abi === undefined) {
+        throw new Error(`Contract abi for ${name} not found`)
+      }
+
+      return abi
     },
     [ctx]
   )
 
   const getContract = useCallback(
     (name: string, signer: Signer): Contract => {
+      if (ctx === null) {
+        throw new Error(`Contract configs not loaded.`)
+      }
+
       const config = ctx[name]
       if (config === undefined) {
         throw new Error(`Config not found for ${name}`)
@@ -33,6 +46,10 @@ const useContracts = (): ContractsHookValue => {
   )
 
   useEffect(() => {
+    if (ctx === null) {
+      throw new Error(`Contract configs not loaded.`)
+    }
+
     setChain(ctx.network === 'mainnet' ? ctx.chain : ctx.network)
   }, [ctx])
 
