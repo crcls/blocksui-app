@@ -1,3 +1,4 @@
+// @ts-nocheck
 import '@/styles/globals.css'
 import 'focus-visible'
 import type { AppProps } from 'next/app'

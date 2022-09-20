@@ -5,7 +5,6 @@ import {
   useCallback,
   useEffect,
   useReducer,
-  useRef,
   useState,
 } from 'react'
 import { ChevronRightIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
@@ -15,6 +14,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { chain, useAccount, useSigner, useConnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { TransactionResponse } from '@ethersproject/abstract-provider'
 
 import Logo from '@/components/Logo'
 
@@ -41,6 +41,7 @@ const reducer = (state: any, action: any) => {
 enum StepStatus {
   complete,
   upcoming,
+  current,
 }
 
 type Step = { name: string; href?: string; status: StepStatus }
@@ -76,7 +77,7 @@ const blockConfig = [
 const StepNav: FC<{ step: Step }> = ({ step }) => {
   const Comp = step.href !== undefined ? 'a' : 'span'
 
-  if (step.status === 'current') {
+  if (step.status === StepStatus.current) {
     return (
       <Comp href={step.href} aria-current="page" className="text-green-600">
         {step.name}
@@ -88,14 +89,25 @@ const StepNav: FC<{ step: Step }> = ({ step }) => {
 }
 
 interface NFTMetaData {
-  description: string
-  image: string
+  description?: string
+  image?: string
   name: string
   buiProperties: {
     cid: string
     encryptedKey: string
     authConditions: Array<{ [key: string]: any }>
+    tags?: string
   }
+}
+
+type GenerateBlockMetaParams = {
+  description?: string
+  blockName: string
+  image?: string
+  tags?: string
+  cid: string
+  key: string
+  authConditions: Array<{ [key: string]: any }>
 }
 
 function generateBlockMeta({
@@ -106,7 +118,7 @@ function generateBlockMeta({
   cid,
   key,
   authConditions,
-}): NFTMetaData {
+}: GenerateBlockMetaParams): NFTMetaData {
   return {
     description,
     image,
@@ -114,7 +126,7 @@ function generateBlockMeta({
     buiProperties: {
       authConditions,
       cid,
-      key,
+      encryptedKey: key,
       tags,
     },
     // TODO: add attributes
@@ -138,23 +150,22 @@ function normalizeName(name: string): string {
 const Publish: NextPage = () => {
   const account = useAccount()
   const { connect } = useConnect({
-    chain: chain.polygonMumbai.id,
+    chainId: chain.polygonMumbai.id,
     connector: new InjectedConnector(),
   })
   const { getContract } = useContracts()
   const { data: signer } = useSigner()
   const { createAuthCondition, encryptFile, saveEncryption } = useLit()
   const { addIPFS, addWeb3Storage } = useIPFS()
-  const [steps, dispatch] = useReducer<Step[]>(reducer, [
-    { name: 'Build', href: '/editor', status: 'complete' },
-    { name: 'Metadata', href: '#', status: 'upcoming' },
-    { name: 'Mint', href: '#', status: 'upcoming' },
+  const [steps, dispatch] = useReducer(reducer, [
+    { name: 'Build', href: '/editor', status: StepStatus.complete },
+    { name: 'Metadata', href: '#', status: StepStatus.upcoming },
+    { name: 'Mint', href: '#', status: StepStatus.upcoming },
   ])
   const [step, setStep] = useState(1)
   const router = useRouter()
   const [buttonLabel, setButtonlabel] = useState('Continue')
   const [error, setError] = useState<Error | undefined>()
-  const formRef = useRef<HTMLFormElement>()
   const [progressMsg, setProgressMsg] = useState('Initializing...')
   const [isMinting, setIsMinting] = useState(false)
 
@@ -195,7 +206,9 @@ const Publish: NextPage = () => {
         const data = strToUint8(JSON.stringify(blockConfig))
 
         const { encryptedFile, symmetricKey } = await encryptFile(data)
-        const [err, cid] = await resolver(addIPFS('block', encryptedFile))
+        const buffer = await new Response(encryptedFile).arrayBuffer()
+        const fileUint = new Uint8Array(buffer)
+        const [err, cid] = await resolver(addIPFS('block', fileUint))
         if (err !== undefined || cid === undefined) {
           setError(err)
           setStep(step)
@@ -227,13 +240,13 @@ const Publish: NextPage = () => {
 
         const key = uint8ToStr(encryptedKey, 'base16')
 
-        const image = formdata.get('image-upload')
+        const image = formdata.get('image-upload') as File | null
         formdata.delete('image-upload')
 
         const formParams = serialize(formdata)
 
-        if (image.size !== 0) {
-          if (!image.type.startsWith('image')) {
+        if (image?.size !== 0) {
+          if (!image?.type.startsWith('image')) {
             setError(new Error('Uploaded file is not an image'))
             setStep(step)
             setIsMinting(false)
@@ -241,15 +254,16 @@ const Publish: NextPage = () => {
           }
 
           setProgressMsg('Uploading metadata...')
-          const imgData = image.arrayBuffer()
-          const fileName = normalizeName(formdata.get('blockName'))
+          const imgData = await image.arrayBuffer()
+          let nameVal = formdata.get('blockName')
+          if (nameVal === null) {
+            nameVal = 'BlocksUI Block'
+          }
+          const fileName = normalizeName(nameVal as string)
           const ext = image.type.split('/')[1]
           const file = new File(
             [new Blob([imgData], { type: image.type })],
-            `${fileName}.${ext as string}`,
-            {
-              type: image.type,
-            }
+            `${fileName}.${ext}`
           )
 
           const [uerr, cid] = await resolver(addWeb3Storage([file]))
@@ -260,12 +274,16 @@ const Publish: NextPage = () => {
             return
           }
 
-          formParams.image = `ipfs://${cid}/${fileName}.${ext as string}`
+          formParams.image = `ipfs://${cid}/${fileName}.${ext}`
         }
 
         // TODO: perform validation on input
         const metadata = generateBlockMeta({
-          ...formParams,
+          ...(formParams as {
+            blockName: string
+            description?: string
+            image?: string
+          }),
           cid,
           key,
           authConditions: evmContractConditions,
@@ -290,10 +308,10 @@ const Publish: NextPage = () => {
         setProgressMsg('Minting your BlockNFT')
         const contract = await getContract('BUIBlockNFT', signer)
         const cost = await contract.publishPrice()
-        const [terr, tx] = await resolver(
+        const [terr, tx] = await resolver<TransactionResponse>(
           contract.publish(cidHash, metaURI, { value: cost })
         )
-        if (terr !== undefined || tx === undefined) {
+        if (terr !== undefined || tx === undefined || tx === null) {
           setError(new Error(terr ? terr.message : 'Transaction was empty'))
           setStep(step)
           setIsMinting(false)
@@ -302,7 +320,7 @@ const Publish: NextPage = () => {
 
         setProgressMsg('Confirming the transaction')
         const { transactionHash } = await tx.wait()
-        setProgressMsg(`Transaction Confirmed: ${transactionHash as string}`)
+        setProgressMsg(`Transaction Confirmed: ${transactionHash}`)
         setIsMinting(false)
       }
     },
@@ -316,7 +334,6 @@ const Publish: NextPage = () => {
       signer,
       step,
       steps,
-      formRef.current,
       saveEncryption,
       createAuthCondition,
     ]
@@ -453,7 +470,6 @@ const Publish: NextPage = () => {
         <form
           className="px-4 pt-16 pb-36 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16"
           onSubmit={handleContinue}
-          ref={formRef}
         >
           <div className="mx-auto max-w-lg lg:max-w-none">
             {step === 1 && (

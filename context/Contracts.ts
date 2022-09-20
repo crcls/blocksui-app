@@ -6,4 +6,5 @@ export interface ContractsContextType {
   [key: string]: any
 }
 
-export default createContext<ContractsContextType | null>(null)
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export default createContext<ContractsContextType | Record<string, any>>(null!)

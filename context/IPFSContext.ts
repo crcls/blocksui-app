@@ -5,4 +5,5 @@ export interface IPFSContextType {
   w3sClient: Web3Storage | null
 }
 
-export default createContext<IPFSContextType | null>(null)
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export default createContext<IPFSContextType>(null!)

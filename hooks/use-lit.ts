@@ -35,7 +35,7 @@ const useLit = (): LitHookValue => {
 
   const encryptFile = async (
     data: Uint8Array
-  ): { encryptedFile: Blob; symmetricKey: Uint8Array } => {
+  ): Promise<{ encryptedFile: Blob; symmetricKey: Uint8Array }> => {
     return LitJsSdk.encryptFile({ file: new Blob([data]) })
   }
 
@@ -62,24 +62,32 @@ const useLit = (): LitHookValue => {
         )
 
         if (err !== undefined || encryptedSymmetricKey === undefined) {
-          console.log('saveEncryptionKey', err.message)
-          return []
+          const message = err ? err.message : 'Failed to enrcypt the key'
+          console.log('saveEncryptionKey', message)
         }
 
-        return encryptedSymmetricKey
+        return encryptedSymmetricKey as Uint8Array
       }
+
+      throw new Error('Chain not loaded')
     },
     [chain, getAuthSig]
   )
 
   const createAuthCondition = useCallback(
-    (contractName: string, functionName: string, functionParams: string[]) => {
+    (
+      contractName: string,
+      functionName: string,
+      functionParams: string[]
+    ): { [key: string]: any } => {
       const config = getContractABI(contractName)
       if (config === undefined) {
         throw new Error(`ABI not found for ${contractName}`)
       }
 
-      const functionAbi = config.abi.filter((abi) => abi.name === functionName)
+      const functionAbi = config.abi.filter(
+        (abi: { name: string }) => abi.name === functionName
+      )
 
       if (functionAbi.length === 0) {
         throw new Error('Function not found in the contract ABI')

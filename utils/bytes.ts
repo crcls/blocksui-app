@@ -18,6 +18,6 @@ export function strToUint8(data: string): Uint8Array {
   return fromString(data)
 }
 
-export function uint8ToStr(data: Uint8Array, enc?: string): string {
+export function uint8ToStr(data: Uint8Array, enc: any): string {
   return toString(data, enc)
 }

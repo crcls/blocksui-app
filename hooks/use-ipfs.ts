@@ -16,10 +16,14 @@ const useIPFS = (): IPFSHookValue => {
   const { w3sClient } = useContext(IPFSContext)
 
   const getWeb3Storage = useCallback(
-    async (cid: string): Web3File[] => {
+    async (cid: string): Promise<Web3File[]> => {
+      if (w3sClient === null) {
+        throw new Error('web3.storage client not found')
+      }
+
       const [err, res] = await resolver(w3sClient.get(cid))
-      if (err !== undefined || !res.ok) {
-        throw new Error(error ? err.message : 'Response not OK.')
+      if (err !== undefined || !res?.ok) {
+        throw new Error(err ? err.message : 'Response not OK.')
       }
 
       const files = await res.files()
@@ -30,13 +34,17 @@ const useIPFS = (): IPFSHookValue => {
 
   const addWeb3Storage = useCallback(
     async (files: File[]): Promise<string> => {
-      return w3sClient.put(files)
+      if (w3sClient === null) {
+        throw new Error('web3.storage client not found')
+      }
+
+      return await w3sClient.put(files)
     },
     [w3sClient]
   )
 
   const addIPFS = useCallback(
-    async (name: string, file: Uint8Array): string => {
+    async (name: string, file: Uint8Array): Promise<string> => {
       const formData = new FormData()
       formData.append(name, new Blob([file]), `${name}.block`)
 
@@ -47,8 +55,8 @@ const useIPFS = (): IPFSHookValue => {
       })
       const [err, resp] = await resolver(fetch(req))
 
-      if (err !== undefined || !resp.ok || resp === undefined) {
-        throw new Error(error ? err.message : 'IPFS Upload response empty.')
+      if (err !== undefined || !resp?.ok || resp === undefined) {
+        throw new Error(err ? err.message : 'IPFS Upload response empty.')
       }
 
       const cid = await resp.text()

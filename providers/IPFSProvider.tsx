@@ -1,10 +1,10 @@
-import { FC, useContext, useEffect, useState } from 'react'
+import { FC, ReactNode, useContext, useEffect, useState } from 'react'
 import { Web3Storage } from 'web3.storage'
 
 import { GlobalContext } from '../context/GlobalContext'
 import IPFSContext from '../context/IPFSContext'
 
-const IPFSProvider: FC = ({ children }) => {
+const IPFSProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { web3Token } = useContext(GlobalContext)
   const [client, setClient] = useState<Web3Storage | null>(null)
 

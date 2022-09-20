@@ -1,11 +1,11 @@
-import { FC, useContext, useEffect, useState } from 'react'
+import { FC, ReactNode, useContext, useEffect, useState } from 'react'
 
 import { GlobalContext } from '../context/GlobalContext'
 import ContractsContext, {
   type ContractsContextType,
 } from '../context/Contracts'
 
-const ContractsProvider: FC = ({ children }) => {
+const ContractsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { apiHost } = useContext(GlobalContext)
   const [data, setData] = useState<ContractsContextType | Record<string, any>>(
     {}
