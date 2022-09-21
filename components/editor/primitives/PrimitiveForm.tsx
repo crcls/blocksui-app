@@ -1,11 +1,16 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 
-const PrimitiveMoonmailConnector: FC = () => {
+interface Props {
+  children?: ReactNode
+}
+
+const PrimitiveForm: FC<Props> = ({ children }) => {
   return (
-    <div className="overflow-hidden rounded-lg bg-pink-300 shadow">
-      <div className="px-4 py-5 sm:p-6"></div>
+    <div className="relative cursor-move space-y-2 border-2 border-dashed bg-white px-4 py-6 sm:rounded-lg sm:px-6">
+      <div className="absolute top-2 left-2 text-xs text-neutral-500">Form</div>
+      {children}
     </div>
   )
 }
 
-export default PrimitiveMoonmailConnector
+export default PrimitiveForm

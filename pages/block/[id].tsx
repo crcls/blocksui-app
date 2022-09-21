@@ -84,10 +84,10 @@ const Block: NextPage = () => {
         <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
           <div className="lg:col-span-5 lg:col-start-8">
             <div className="flex justify-between">
-              <h1 className="text-xl font-medium text-gray-900">
+              <h1 className="text-xl font-medium text-neutral-900">
                 {product.name}
               </h1>
-              <p className="text-xl font-medium text-gray-900">
+              <p className="text-xl font-medium text-neutral-900">
                 {product.price}
               </p>
             </div>
@@ -95,7 +95,7 @@ const Block: NextPage = () => {
             <div className="mt-4">
               <h2 className="sr-only">Reviews</h2>
               <div className="flex items-center">
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-neutral-700">
                   {reviews.average}
                   <span className="sr-only"> out of 5 stars</span>
                 </p>
@@ -106,14 +106,17 @@ const Block: NextPage = () => {
                       className={clsx(
                         reviews.average > rating
                           ? 'text-yellow-400'
-                          : 'text-gray-200',
+                          : 'text-neutral-200',
                         'h-5 w-5 flex-shrink-0'
                       )}
                       aria-hidden="true"
                     />
                   ))}
                 </div>
-                <div aria-hidden="true" className="ml-4 text-sm text-gray-300">
+                <div
+                  aria-hidden="true"
+                  className="ml-4 text-sm text-neutral-300"
+                >
                   ·
                 </div>
                 <div className="ml-4 flex">
@@ -161,16 +164,18 @@ const Block: NextPage = () => {
               </button>
             </form>
             <div className="mt-10">
-              <h2 className="text-sm font-medium text-gray-900">Description</h2>
+              <h2 className="text-sm font-medium text-neutral-900">
+                Description
+              </h2>
 
               <div
-                className="prose prose-sm mt-4 text-gray-500"
+                className="prose prose-sm mt-4 text-neutral-500"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             </div>
-            <div className="mt-8 border-t border-gray-200 pt-8">
-              <h2 className="text-sm font-medium text-gray-900">Features</h2>
-              <div className="prose prose-sm mt-4 text-gray-500">
+            <div className="mt-8 border-t border-neutral-200 pt-8">
+              <h2 className="text-sm font-medium text-neutral-900">Features</h2>
+              <div className="prose prose-sm mt-4 text-neutral-500">
                 <ul role="list">
                   {product.details.map((item) => (
                     <li key={item}>{item}</li>
@@ -186,18 +191,18 @@ const Block: NextPage = () => {
                 {policies.map((policy) => (
                   <div
                     key={policy.name}
-                    className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center"
+                    className="rounded-lg border border-neutral-200 bg-neutral-50 p-6 text-center"
                   >
                     <dt>
                       <policy.icon
-                        className="mx-auto h-6 w-6 flex-shrink-0 text-gray-400"
+                        className="mx-auto h-6 w-6 flex-shrink-0 text-neutral-400"
                         aria-hidden="true"
                       />
-                      <span className="mt-4 text-sm font-medium text-gray-900">
+                      <span className="mt-4 text-sm font-medium text-neutral-900">
                         {policy.name}
                       </span>
                     </dt>
-                    <dd className="mt-1 text-sm text-gray-500">
+                    <dd className="mt-1 text-sm text-neutral-500">
                       {policy.description}
                     </dd>
                   </div>
@@ -209,11 +214,11 @@ const Block: NextPage = () => {
         <section aria-labelledby="reviews-heading" className="mt-16 sm:mt-24">
           <h2
             id="reviews-heading"
-            className="text-lg font-medium text-gray-900"
+            className="text-lg font-medium text-neutral-900"
           >
             Recent reviews
           </h2>
-          <div className="mt-6 space-y-10 divide-y divide-gray-200 border-t border-b border-gray-200 pb-10">
+          <div className="mt-6 space-y-10 divide-y divide-neutral-200 border-t border-b border-neutral-200 pb-10">
             {reviews.featured.map((review) => (
               <div
                 key={review.id}
@@ -228,33 +233,35 @@ const Block: NextPage = () => {
                           className={clsx(
                             review.rating > rating
                               ? 'text-yellow-400'
-                              : 'text-gray-200',
+                              : 'text-neutral-200',
                             'h-5 w-5 flex-shrink-0'
                           )}
                           aria-hidden="true"
                         />
                       ))}
                     </div>
-                    <p className="ml-3 text-sm text-gray-700">
+                    <p className="ml-3 text-sm text-neutral-700">
                       {review.rating}
                       <span className="sr-only"> out of 5 stars</span>
                     </p>
                   </div>
                   <div className="mt-4 lg:mt-6 xl:col-span-2 xl:mt-0">
-                    <h3 className="text-sm font-medium text-gray-900">
+                    <h3 className="text-sm font-medium text-neutral-900">
                       {review.title}
                     </h3>
                     <div
-                      className="mt-3 space-y-6 text-sm text-gray-500"
+                      className="mt-3 space-y-6 text-sm text-neutral-500"
                       dangerouslySetInnerHTML={{ __html: review.content }}
                     />
                   </div>
                 </div>
                 <div className="mt-6 flex items-center text-sm lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:flex-col lg:items-start xl:col-span-3">
-                  <p className="font-medium text-gray-900">{review.author}</p>
+                  <p className="font-medium text-neutral-900">
+                    {review.author}
+                  </p>
                   <time
                     dateTime={review.datetime}
-                    className="ml-4 border-l border-gray-200 pl-4 text-gray-500 lg:ml-0 lg:mt-2 lg:border-0 lg:pl-0"
+                    className="ml-4 border-l border-neutral-200 pl-4 text-neutral-500 lg:ml-0 lg:mt-2 lg:border-0 lg:pl-0"
                   >
                     {review.date}
                   </time>
@@ -266,7 +273,7 @@ const Block: NextPage = () => {
         <section aria-labelledby="related-heading" className="mt-16 sm:mt-24">
           <h2
             id="related-heading"
-            className="text-lg font-medium text-gray-900"
+            className="text-lg font-medium text-neutral-900"
           >
             Customers also purchased
           </h2>
@@ -283,14 +290,14 @@ const Block: NextPage = () => {
                 </div>
                 <div className="mt-4 flex justify-between">
                   <div>
-                    <h3 className="text-sm text-gray-700">
+                    <h3 className="text-sm text-neutral-700">
                       <a href={relatedProduct.href}>
                         <span aria-hidden="true" className="absolute inset-0" />
                         {relatedProduct.name}
                       </a>
                     </h3>
                   </div>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-neutral-900">
                     {relatedProduct.price}
                   </p>
                 </div>

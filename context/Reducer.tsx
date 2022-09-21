@@ -5,6 +5,24 @@ import {
   State,
 } from './types'
 
+const addBlockToChild = (element: any, payload: any) => {
+  if (element.id === payload.id) {
+    return {
+      ...element,
+      children: [...element.children, payload.block],
+    }
+  }
+
+  return {
+    ...element,
+    children: [
+      ...element.children.map((childElement: any) =>
+        addBlockToChild(childElement, payload)
+      ),
+    ],
+  }
+}
+
 const Reducer = (
   state: State,
   action: ConnectWalletAction | DropItemAction | DropItemInItemAction
@@ -15,10 +33,14 @@ const Reducer = (
     case 'DROP_ITEM':
       return { ...state, droppedItems: [...state.droppedItems, action.payload] }
     case 'DROP_ITEM_IN_ITEM': {
-      const newDroppedItems = state.droppedItems
-      newDroppedItems[action.payload.id].children = action.payload
-
-      return { ...state, droppedItems: [newDroppedItems] }
+      return {
+        ...state,
+        droppedItems: [
+          ...state.droppedItems.map((element) =>
+            addBlockToChild(element, action.payload)
+          ),
+        ],
+      }
     }
     default:
       return state
