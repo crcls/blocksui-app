@@ -73,7 +73,7 @@ const Header: FC = () => {
                 <>
                   <Popover.Button
                     aria-label="Toggle site navigation"
-                    className="[&:not(:focus-visible)]:focus:outline-none relative z-10 -m-2 inline-flex items-center rounded-lg stroke-black p-2 hover:bg-neutral-200/50 hover:stroke-neutral-600 active:stroke-black"
+                    className="relative z-10 -m-2 inline-flex items-center rounded-lg stroke-black p-2 hover:bg-neutral-200/50 hover:stroke-neutral-600 active:stroke-black [&:not(:focus-visible)]:focus:outline-none"
                   >
                     {({ open }) =>
                       open ? (
