@@ -3,6 +3,7 @@ import {
   FormEvent,
   Fragment,
   useCallback,
+  useContext,
   useReducer,
   useState,
 } from 'react'
@@ -13,14 +14,15 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useSigner } from 'wagmi'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
-
 import Logo from '@/components/Logo'
 
+import { GlobalContext } from '../context/GlobalContext'
 import useContracts from '../hooks/use-contracts'
 import useLit from '../hooks/use-lit'
 import useIPFS from '../hooks/use-ipfs'
 import { resolver } from '../utils/async'
 import { cidToBytes32, strToUint8, uint8ToStr } from '../utils/bytes'
+import { BlockContainer } from '@crcls/blocksui-sdk'
 
 const reducer = (state: any, action: any) => {
   const { step } = action
@@ -44,31 +46,97 @@ enum StepStatus {
 
 type Step = { name: string; href?: string; status: StepStatus }
 
-const blockConfig = [
+// TODO: Remove this once we complete the editor
+const blockTemplate = [
   {
-    children: [
+    id: 'moonMailConnector',
+    type: 'MoonmailConnector',
+    props: {
+      accountId: blockProp('2a397d1e-86db-4eb9-8191-78ae896744ab'),
+    },
+    connections: [
       {
-        children: ['Hello!'],
-        props: {
-          level: ['value', 1],
+        action: 'success',
+        hooks: {
+          fadeTransitionSuccess: ['show'],
+          fadeTransitionInProgress: ['hide'],
+          fadeTransitionError: ['hide'],
         },
-        type: 'Heading',
       },
       {
-        children: [
-          'Aenean sodales nunc augue, quis mollis dolor tempor at. Nam interdum, mauris nec commodo rutrum, velit felis tempor dui, vitae elementum massa diam eget nulla. Vivamus rutrum ullamcorper lorem sed sollicitudin. Praesent maximus lorem sed accumsan convallis. Etiam nec risus ac arcu pulvinar placerat. Proin fermentum ligula gravida purus fermentum malesuada. Maecenas condimentum tempor pulvinar.',
-        ],
-        type: 'Paragraph',
+        action: 'error',
+        hooks: {
+          fadeTransitionSuccess: ['hide'],
+          fadeTransitionInProgress: ['hide'],
+          fadeTransitionError: ['show'],
+        },
       },
       {
-        children: ["Let's go!"],
-        props: {
-          href: 'https://crcls.xyz',
+        action: 'inProgress',
+        hooks: {
+          fadeTransitionSuccess: ['hide'],
+          fadeTransitionInProgress: ['show'],
+          fadeTransitionError: ['hide'],
         },
-        type: 'Link',
       },
     ],
-    type: 'Container',
+  },
+  {
+    connections: [{ action: 'submit', hooks: { moonMailConnector: ['post'] } }],
+    children: [
+      {
+        children: ['Submit'],
+        connections: [
+          {
+            action: 'click',
+            hooks: { logger: ['log'] },
+          },
+        ],
+        id: 'button',
+        props: {
+          type: blockProp('submit'),
+        },
+        type: 'Button',
+      },
+      {
+        id: 'input',
+        props: {
+          autocomplete: blockProp('off'),
+          autofocus: blockProp(false),
+          name: blockProp('Address'),
+          placeholder: blockProp('dobby@hogwarts.com'),
+          type: blockProp('email'),
+          label: blockProp('Email'),
+          required: blockProp(false),
+        },
+        state: {
+          value: '',
+        },
+        type: 'Input',
+      },
+    ],
+    type: 'Form',
+  },
+  {
+    id: 'fadeTransitionSuccess',
+    type: 'FadeTransition',
+    children: ['Success'],
+    className: 'fade-in',
+  },
+  {
+    id: 'fadeTransitionInProgress',
+    type: 'FadeTransition',
+    children: ['Loading ...'],
+    className: 'fade-in-loading',
+  },
+  {
+    id: 'fadeTransitionError',
+    type: 'FadeTransition',
+    children: ['Error!'],
+    className: 'fade-in',
+    props: {
+      time: blockProp('10s'),
+    },
   },
 ]
 
@@ -146,6 +214,7 @@ function normalizeName(name: string): string {
 }
 
 const Publish: NextPage = () => {
+  const globalCtx = useContext(GlobalContext)
   const { getContract } = useContracts()
   const { data: signer } = useSigner()
   const { createAuthCondition, encryptFile, saveEncryption } = useLit()
@@ -382,14 +451,11 @@ const Publish: NextPage = () => {
             >
               MoonMail Contact Form
             </h2>
-            <button
-              type="button"
-              className="relative my-6 block w-full rounded-lg border-2 border-dashed border-neutral-300 p-12 text-center hover:border-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
-            >
-              <span className="mt-2 block text-sm font-medium text-neutral-900">
-                Block Preview
-              </span>
-            </button>
+            {/**
+             * This is how the Block config is rendered. See implementation
+             * here: https://github.com/crcls/blocksui-sdk/blob/main/src/components/BlockContainer.tsx
+             */}
+            <BlockContainer host={globalCtx.apiHost} config={blockTemplate} />
             <dl className="hidden space-y-6 border-t border-neutral-200 pt-6 text-sm font-medium text-neutral-900 lg:block">
               <div className="flex items-center justify-between">
                 <dt className="text-base">Price</dt>

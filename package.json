@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "next build && next export",
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--es-module-specifier-resolution=node' next dev",
     "format": "prettier --write \"**/*.{cjs,css,js,json,jsx,md,mjs,scss,ts,tsx,yml}\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -25,7 +25,7 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@crcls/blocksui-sdk": "^0.0.7",
+    "@crcls/blocksui-sdk": "^0.0.11",
     "@headlessui/react": "^1.7.0",
     "@heroicons/react": "^2.0.10",
     "@lit-protocol/sdk-browser": "^1.1.225",
