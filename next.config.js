@@ -10,6 +10,7 @@ const nextConfig = {
       '/editor': { page: '/editor' },
       '/faqs': { page: '/faqs' },
       '/marketplace': { page: '/marketplace' },
+      '/my-blocks': { page: '/my-blocks' },
       '/publish': { page: '/publish' },
     }
   },
