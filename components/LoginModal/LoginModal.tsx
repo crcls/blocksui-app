@@ -1,18 +1,14 @@
-import { Fragment, useState, useEffect } from 'react'
-import { Dialog, RadioGroup, Transition } from '@headlessui/react'
+import { Fragment, FC } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { StarIcon } from '@heroicons/react/20/solid'
-import { useMoralis } from 'react-moralis'
 import ConnectWalletModalContent from './ConnectWalletModalContent'
-import DisconnectWalletModalContent from './DisconnectWalletModalContent'
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+interface Props {
+  open: boolean
+  handleClose: any
 }
 
-export default function LoginModal({ open, handleClose }) {
-  const { isAuthenticated, authenticate } = useMoralis()
-
+const LoginModal: FC<Props> = ({ open, handleClose }) => {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={handleClose}>
@@ -71,3 +67,5 @@ export default function LoginModal({ open, handleClose }) {
     </Transition.Root>
   )
 }
+
+export default LoginModal

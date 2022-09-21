@@ -1,28 +1,34 @@
-/** eslint-disable */
+// @ts-nocheck
 import '@/styles/globals.css'
 import 'focus-visible'
+import { createClient, WagmiConfig } from 'wagmi'
+import { getDefaultProvider } from 'ethers'
 import type { AppProps } from 'next/app'
 import { MoralisProvider } from 'react-moralis'
-import { WagmiConfig, createClient } from 'wagmi'
-import { getDefaultProvider } from 'ethers'
+
+import { GlobalProvider } from '@/context/GlobalContext'
+import ContractsProvider from '@/providers/ContractsProvider'
+import IPFSProvider from '@/providers/IPFSProvider'
 
 const client = createClient({
   autoConnect: true,
   provider: getDefaultProvider(),
 })
 
-import { GlobalProvider } from 'context/GlobalContext'
-
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <GlobalProvider>
       <WagmiConfig client={client}>
-        <MoralisProvider
-          appId={process.env.NEXT_PUBLIC_APP_ID!}
-          serverUrl={process.env.NEXT_PUBLIC_SERVER_URL!}
-        >
-          <Component {...pageProps} />
-        </MoralisProvider>
+        <ContractsProvider>
+          <IPFSProvider>
+            <MoralisProvider
+              appId={process.env.NEXT_PUBLIC_APP_ID}
+              serverUrl={process.env.NEXT_PUBLIC_SERVER_URL}
+            >
+              <Component {...pageProps} />
+            </MoralisProvider>
+          </IPFSProvider>
+        </ContractsProvider>
       </WagmiConfig>
     </GlobalProvider>
   )

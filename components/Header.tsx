@@ -44,10 +44,7 @@ const MobileNavLink = ({ children, ...props }: any) => (
 )
 
 const Header: FC = () => {
-  const { isAuthenticated, authenticate } = useMoralis()
-  const connectButtonText = isAuthenticated
-    ? 'Disconnect Wallet'
-    : 'Connect Wallet'
+  const { isAuthenticated } = useMoralis()
 
   const [modalOpened, setModalOpened] = useState(false)
   useEffect(() => {

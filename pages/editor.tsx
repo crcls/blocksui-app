@@ -10,18 +10,17 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import type { NextPage } from 'next'
 import clsx from 'clsx'
 
-import Button from '@/components/Button'
-import FakeContainer from '@/components/FakeContainer'
-import Logo from '@/components/Logo'
-import NavLinks from '@/components/NavLinks'
-import SidebarNavigation from '@/components/SidebarNavigation'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import DragItem from '@/components/editor/DragItem'
 import DragItemWithDropZone from '@/components/editor/DragItemWithDropZone'
-import DropZone from '@/components/editor/DropZone'
-import { DnDPrimitiveTypes } from '@/components/editor/types'
+import { PrimitiveTypes } from '@/components/editor/types'
+import DragItem from '@/components/editor/DragItem'
+import Logo from '@/components/Logo'
+import NavLinks from '@/components/NavLinks'
 import LoggedInButtonPopUp from '@/components/LoggedInButtonPopUp'
+import Button from '@/components/Button'
+import SidebarNavigation from '@/components/SidebarNavigation'
+import DropZone from '@/components/editor/DropZone'
 
 const user = {
   name: 'Whitney Francis',
@@ -47,57 +46,49 @@ const userNavigation = [
 const elements = [
   {
     id: 1,
-    variation: 'Primary',
-    name: 'PrimitiveContainer',
-    preview: (
-      <DragItemWithDropZone type={DnDPrimitiveTypes.PRIMITIVE_CONTAINER} />
-    ),
+    name: 'PrimitiveButton',
+    preview: <DragItem type={PrimitiveTypes.PRIMITIVE_BUTTON} />,
   },
   {
     id: 2,
-    variation: 'Secondary',
-    name: 'PrimitiveMoonmailConnector',
+    name: 'PrimitiveContainer',
+    preview: <DragItemWithDropZone type={PrimitiveTypes.PRIMITIVE_CONTAINER} />,
+  },
+  {
+    id: 3,
+    name: 'PrimitiveForm',
+    preview: <DragItemWithDropZone type={PrimitiveTypes.PRIMITIVE_FORM} />,
+  },
+  {
+    id: 4,
+    name: 'PrimitiveHeading',
+    preview: <DragItem type={PrimitiveTypes.PRIMITIVE_HEADING} />,
+  },
+  {
+    id: 5,
+    name: 'PrimitiveInput',
+    preview: <DragItem type={PrimitiveTypes.PRIMITIVE_INPUT} />,
+  },
+  {
+    id: 6,
+    name: 'PrimitiveMoonMailConnector',
     preview: (
       <DragItemWithDropZone
-        type={DnDPrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR}
+        type={PrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR}
       />
     ),
   },
   {
-    id: 3,
-    variation: 'Default',
-    name: 'PrimitiveForm',
-    preview: <DragItemWithDropZone type={DnDPrimitiveTypes.PRIMITIVE_FORM} />,
-  },
-  {
-    id: 4,
-    variation: 'Default',
-    name: 'PrimitiveInput',
-    preview: <DragItem type={DnDPrimitiveTypes.PRIMITIVE_INPUT} />,
-  },
-  {
-    id: 5,
-    variation: 'Default',
-    name: 'PrimitiveButton',
-    preview: <DragItem type={DnDPrimitiveTypes.PRIMITIVE_BUTTON} />,
-  },
-  {
-    id: 6,
-    variation: 'Default',
-    name: 'Heading',
-    preview: <FakeContainer />,
-  },
-  {
     id: 7,
-    variation: 'Default',
-    name: 'Input',
-    preview: <FakeContainer />,
+    name: 'PrimitiveParagraph',
+    preview: <DragItem type={PrimitiveTypes.PRIMITIVE_PARAGRAPH} />,
   },
   {
     id: 8,
-    variation: 'Default',
-    name: 'Paragraph',
-    preview: <FakeContainer />,
+    name: 'PrimitiveTransition',
+    preview: (
+      <DragItemWithDropZone type={PrimitiveTypes.PRIMITIVE_TRANSITION} />
+    ),
   },
 ]
 const block = {
@@ -422,12 +413,6 @@ const Editor: NextPage = () => {
                       </div>
                     </div>
                   </div>
-                  {/* <ul
-                  role="list"
-                  className="space-y-2 py-4 sm:space-y-4 sm:px-6 lg:px-8"
-                >
-                  <li className="bg-white px-4 py-6 shadow sm:rounded-lg sm:px-6"></li>
-                </ul> */}
                   <DropZone />
                 </div>
               </section>
@@ -465,9 +450,6 @@ const Editor: NextPage = () => {
                             <div className="min-w-0 flex-1">
                               <p className="truncate text-sm font-medium text-black">
                                 {element.name}
-                              </p>
-                              <p className="truncate text-sm text-neutral-500">
-                                {element.variation}
                               </p>
                             </div>
                           </div>

@@ -25,8 +25,10 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "@crcls/blocksui-sdk": "^0.0.7",
     "@headlessui/react": "^1.7.0",
     "@heroicons/react": "^2.0.10",
+    "@lit-protocol/sdk-browser": "^1.1.225",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.7",
@@ -36,15 +38,18 @@
     "focus-visible": "^5.2.0",
     "framer-motion": "^7.3.5",
     "moralis": "^2.4.0",
+    "multihashes": "^4.0.3",
     "next": "^12.3.0",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-moralis": "^1.4.2",
+    "shortid": "^2.2.16",
     "tailwindcss": "^3.1.8",
     "use-debounce": "^8.0.4",
-    "wagmi": "^0.6.6"
+    "wagmi": "^0.6.6",
+    "web3.storage": "^4.4.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -53,6 +58,7 @@
     "@types/node": "^18.7.16",
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
+    "@types/shortid": "^0.0.29",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "autoprefixer": "^10.4.8",
     "eslint": "^8.23.0",

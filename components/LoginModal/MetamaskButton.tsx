@@ -5,8 +5,8 @@ const MetamaskButton = () => {
 
   return (
     <button
-      onClick={() =>
-        authenticate({
+      onClick={async () =>
+        await authenticate({
           signingMessage: 'Authorize linking of your wallet',
         })
       }

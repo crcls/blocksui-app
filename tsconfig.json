@@ -17,6 +17,7 @@
       "@/components/*": ["components/*"],
       "@/context/*": ["context/*"],
       "@/pages/*": ["pages/*"],
+      "@/providers/*": ["providers/*"],
       "@/styles/*": ["styles/*"]
     },
     "resolveJsonModule": true,

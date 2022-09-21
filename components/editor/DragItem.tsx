@@ -1,33 +1,30 @@
 import { FC } from 'react'
 import { useDrag } from 'react-dnd'
 
-import { DnDPrimitiveTypes, DragItemProps } from './types'
+import { DragItemProps, PrimitiveTypes } from '@/components/editor/types'
 import PrimitiveButton from '@/components/editor/primitives/PrimitiveButton'
-import PrimitiveContainer from '@/components/editor/primitives/PrimitiveContainer'
-import PrimitiveForm from '@/components/editor/primitives/PrimitiveForm'
+import PrimitiveHeading from '@/components/editor/primitives/PrimitiveHeading'
 import PrimitiveInput from '@/components/editor/primitives/PrimitiveInput'
-import PrimitiveMoonmailConnector from '@/components/editor/primitives/PrimitiveMoonmailConnector'
+import PrimitiveParagraph from '@/components/editor/primitives/PrimitiveParagraph'
 
 const DragItem: FC<DragItemProps> = ({ type }) => {
   const [, drag] = useDrag(() => ({
     item: { name: type },
-    type: type,
+    type,
   }))
 
   return (
     <div ref={drag}>
       {(() => {
         switch (type) {
-          case DnDPrimitiveTypes.PRIMITIVE_BUTTON:
+          case PrimitiveTypes.PRIMITIVE_BUTTON:
             return <PrimitiveButton />
-          case DnDPrimitiveTypes.PRIMITIVE_CONTAINER:
-            return <PrimitiveContainer />
-          case DnDPrimitiveTypes.PRIMITIVE_FORM:
-            return <PrimitiveForm />
-          case DnDPrimitiveTypes.PRIMITIVE_INPUT:
+          case PrimitiveTypes.PRIMITIVE_HEADING:
+            return <PrimitiveHeading />
+          case PrimitiveTypes.PRIMITIVE_INPUT:
             return <PrimitiveInput />
-          case DnDPrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR:
-            return <PrimitiveMoonmailConnector />
+          case PrimitiveTypes.PRIMITIVE_PARAGRAPH:
+            return <PrimitiveParagraph />
           default:
             return null
         }
