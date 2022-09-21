@@ -14,6 +14,7 @@ const nextConfig = {
     }
   },
   experimental: {
+    esmExternals: 'loose',
     newNextLinkBehavior: true,
     scrollRestoration: true,
   },

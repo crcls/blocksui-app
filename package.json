@@ -25,7 +25,7 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@crcls/blocksui-sdk": "^0.0.11",
+    "@crcls/blocksui-sdk": "^0.0.14",
     "@headlessui/react": "^1.7.0",
     "@heroicons/react": "^2.0.10",
     "@lit-protocol/sdk-browser": "^1.1.225",
