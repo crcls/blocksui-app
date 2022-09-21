@@ -38,7 +38,7 @@ const useIPFS = (): IPFSHookValue => {
         throw new Error('web3.storage client not found')
       }
 
-      return await w3sClient.put(files)
+      return w3sClient.put(files)
     },
     [w3sClient]
   )

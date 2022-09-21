@@ -9,8 +9,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "es2020",
+    "moduleResolution": "NodeNext",
     "noEmit": true,
     "paths": {
       "@/assets/*": ["assets/*"],
