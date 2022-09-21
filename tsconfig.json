@@ -16,8 +16,11 @@
       "@/assets/*": ["assets/*"],
       "@/components/*": ["components/*"],
       "@/context/*": ["context/*"],
+      "@/hooks/*": ["hooks/*"],
       "@/pages/*": ["pages/*"],
-      "@/styles/*": ["styles/*"]
+      "@/providers/*": ["providers/*"],
+      "@/styles/*": ["styles/*"],
+      "@/utils/*": ["utils/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

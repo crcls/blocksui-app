@@ -44,6 +44,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "react-jazzicon": "^1.0.4",
     "react-moralis": "^1.4.2",
     "shortid": "^2.2.16",
     "tailwindcss": "^3.1.8",

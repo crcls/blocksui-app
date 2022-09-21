@@ -14,7 +14,7 @@ const PrimitiveInput: FC = () => {
           type="email"
           name="email"
           id="email"
-          className="block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="block w-full rounded-md border-neutral-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
           placeholder="you@example.com"
         />
       </div>

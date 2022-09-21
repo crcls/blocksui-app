@@ -1,12 +1,15 @@
 import { Popover } from '@headlessui/react'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useMoralis } from 'react-moralis'
 
 import Container from '@/components/Container'
 import Logo from '@/components/Logo'
 import NavLinks from '@/components/NavLinks'
 import Button from '@/components/Button'
+import LoggedInButtonPopUp from '@/components/LoggedInButtonPopUp'
+import LoginModal from '@/components/LoginModal/LoginModal'
 
 const ChevronUpIcon = (props: any) => (
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
@@ -41,6 +44,15 @@ const MobileNavLink = ({ children, ...props }: any) => (
 )
 
 const Header: FC = () => {
+  const { isAuthenticated } = useMoralis()
+  const [modalOpened, setModalOpened] = useState(false)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setModalOpened(false)
+    }
+  }, [isAuthenticated, setModalOpened])
+
   return (
     <header>
       <nav>
@@ -103,7 +115,17 @@ const Header: FC = () => {
                             </MobileNavLink>
                           </div>
                           <div className="mt-8 flex flex-col gap-4">
-                            <Button href="/login">Connect Wallet</Button>
+                            {isAuthenticated ? (
+                              <LoggedInButtonPopUp />
+                            ) : (
+                              <Button
+                                onClick={() => {
+                                  setModalOpened(true)
+                                }}
+                              >
+                                Connect Wallet
+                              </Button>
+                            )}
                           </div>
                         </Popover.Panel>
                       </>
@@ -112,10 +134,24 @@ const Header: FC = () => {
                 </>
               )}
             </Popover>
-            <Button className="hidden lg:block" href="/login">
-              Connect Wallet
-            </Button>
+            {isAuthenticated ? (
+              <LoggedInButtonPopUp />
+            ) : (
+              <Button
+                onClick={() => {
+                  setModalOpened(true)
+                }}
+              >
+                Connect Wallet
+              </Button>
+            )}
           </div>
+          {modalOpened && (
+            <LoginModal
+              handleClose={() => setModalOpened(false)}
+              open={modalOpened}
+            />
+          )}
         </Container>
       </nav>
     </header>
