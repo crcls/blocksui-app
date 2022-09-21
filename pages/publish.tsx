@@ -386,7 +386,9 @@ const Publish: NextPage = () => {
             >
               MoonMail Contact Form
             </h2>
-            <BlockContainer config={blockConfig} host={globalCtx.apiHost} />
+            {typeof window !== 'undefined' && (
+              <BlockContainer config={blockConfig} host={globalCtx.apiHost} />
+            )}
             <dl className="hidden space-y-6 border-t border-neutral-200 pt-6 text-sm font-medium text-neutral-900 lg:block">
               <div className="flex items-center justify-between">
                 <dt className="text-base">Price</dt>
