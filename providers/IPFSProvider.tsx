@@ -9,10 +9,10 @@ const IPFSProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [client, setClient] = useState<Web3Storage | null>(null)
 
   useEffect(() => {
-    if (web3Token) {
+    if (web3Token && client === null) {
       setClient(new Web3Storage({ token: web3Token }))
     }
-  }, [web3Token])
+  }, [web3Token, client])
 
   return (
     <IPFSContext.Provider

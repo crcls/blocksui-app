@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import LitJsSdk from '@lit-protocol/sdk-browser'
 
 import useContracts from './use-contracts'
@@ -50,8 +50,9 @@ const useLit = (): LitHookValue => {
       evmContractConditions: Array<{ [key: string]: any }>
     ): Promise<Uint8Array> => {
       if (chain) {
-        const authSig = await getAuthSig()
+        await client.connect()
 
+        const authSig = await getAuthSig()
         const [err, encryptedSymmetricKey] = await resolver(
           client.saveEncryptionKey({
             authSig,
@@ -107,10 +108,6 @@ const useLit = (): LitHookValue => {
     },
     [chain, getContractABI]
   )
-
-  useEffect(() => {
-    client.connect()
-  }, [])
 
   return {
     createAuthCondition,

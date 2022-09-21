@@ -46,12 +46,15 @@ const useContracts = (): ContractsHookValue => {
   )
 
   useEffect(() => {
-    if (ctx === null) {
-      throw new Error(`Contract configs not loaded.`)
+    const newChain = ctx
+      ? ctx.network === 'mainnet'
+        ? ctx.chain
+        : ctx.network
+      : 'ethereum'
+    if (chain !== newChain) {
+      setChain(newChain)
     }
-
-    setChain(ctx.network === 'mainnet' ? ctx.chain : ctx.network)
-  }, [ctx])
+  }, [chain, ctx])
 
   return {
     chain,

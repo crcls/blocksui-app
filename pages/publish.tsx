@@ -3,7 +3,6 @@ import {
   FormEvent,
   Fragment,
   useCallback,
-  useEffect,
   useReducer,
   useState,
 } from 'react'
@@ -12,8 +11,7 @@ import { Popover, Transition } from '@headlessui/react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { chain, useAccount, useSigner, useConnect } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
+import { useSigner } from 'wagmi'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 
 import Logo from '@/components/Logo'
@@ -148,11 +146,6 @@ function normalizeName(name: string): string {
 }
 
 const Publish: NextPage = () => {
-  const account = useAccount()
-  const { connect } = useConnect({
-    chainId: chain.polygonMumbai.id,
-    connector: new InjectedConnector(),
-  })
   const { getContract } = useContracts()
   const { data: signer } = useSigner()
   const { createAuthCondition, encryptFile, saveEncryption } = useLit()
@@ -168,12 +161,6 @@ const Publish: NextPage = () => {
   const [error, setError] = useState<Error | undefined>()
   const [progressMsg, setProgressMsg] = useState('Initializing...')
   const [isMinting, setIsMinting] = useState(false)
-
-  useEffect(() => {
-    if (!account.isConnected) {
-      connect()
-    }
-  }, [account, connect])
 
   const handleContinue = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -330,7 +317,6 @@ const Publish: NextPage = () => {
       encryptFile,
       getContract,
       router,
-      connect,
       signer,
       step,
       steps,
