@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { BlockContainer } from '@crcls/blocksui-sdk'
 
 import Header from '@/components/Header'
 import Hero from '@/components/Hero'
@@ -17,7 +16,6 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <BlockContainer />
       <Header />
       <Hero />
       <Footer />
