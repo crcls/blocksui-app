@@ -3,6 +3,7 @@ import {
   FormEvent,
   Fragment,
   useCallback,
+  useContext,
   useReducer,
   useState,
 } from 'react'
@@ -13,9 +14,11 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useSigner } from 'wagmi'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
+import { BlockContainer, blockProp } from '@crcls/blocksui-sdk/dist/index.js'
 
 import Logo from '@/components/Logo'
 
+import { GlobalContext } from '../context/GlobalContext'
 import useContracts from '../hooks/use-contracts'
 import useLit from '../hooks/use-lit'
 import useIPFS from '../hooks/use-ipfs'
@@ -50,7 +53,7 @@ const blockConfig = [
       {
         children: ['Hello!'],
         props: {
-          level: ['value', 1],
+          level: blockProp(1),
         },
         type: 'Heading',
       },
@@ -63,7 +66,7 @@ const blockConfig = [
       {
         children: ["Let's go!"],
         props: {
-          href: 'https://crcls.xyz',
+          href: blockProp('https://crcls.xyz'),
         },
         type: 'Link',
       },
@@ -146,6 +149,7 @@ function normalizeName(name: string): string {
 }
 
 const Publish: NextPage = () => {
+  const globalCtx = useContext(GlobalContext)
   const { getContract } = useContracts()
   const { data: signer } = useSigner()
   const { createAuthCondition, encryptFile, saveEncryption } = useLit()
@@ -382,14 +386,9 @@ const Publish: NextPage = () => {
             >
               MoonMail Contact Form
             </h2>
-            <button
-              type="button"
-              className="relative my-6 block w-full rounded-lg border-2 border-dashed border-neutral-300 p-12 text-center hover:border-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
-            >
-              <span className="mt-2 block text-sm font-medium text-neutral-900">
-                Block Preview
-              </span>
-            </button>
+            {typeof window !== 'undefined' && (
+              <BlockContainer config={blockConfig} host={globalCtx.apiHost} />
+            )}
             <dl className="hidden space-y-6 border-t border-neutral-200 pt-6 text-sm font-medium text-neutral-900 lg:block">
               <div className="flex items-center justify-between">
                 <dt className="text-base">Price</dt>
