@@ -3,18 +3,18 @@ import { Fragment } from 'react'
 import Button from '@/components/Button'
 import clsx from 'clsx'
 
-import { useAccount, useEnsAvatar } from 'wagmi'
+// import { useAccount, useEnsAvatar } from 'wagmi'
 
 const LoggedInButtonPopUp = () => {
-  const account = useAccount()
-  const { data: ensAvatar } = useEnsAvatar({ addressOrName: account?.address })
+  // const account = useAccount()
+  // const { data: ensAvatar } = useEnsAvatar({ addressOrName: account?.address })
   // TODO ensAvatar not working
   return (
     <div className="flex items-center space-x-8">
       <Menu as="div" className="relative inline-block text-left">
         <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-offset-2">
           <span className="sr-only">Open user menu</span>
-          <img className="h-8 w-8 rounded-full" src={ensAvatar} alt="" />
+          {/* <img className="h-8 w-8 rounded-full" src={ensAvatar} alt="" /> */}
         </Menu.Button>
         <Transition
           as={Fragment}
