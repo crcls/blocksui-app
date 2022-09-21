@@ -4,6 +4,7 @@ import {
   Fragment,
   useCallback,
   useContext,
+  useEffect,
   useReducer,
   useState,
 } from 'react'
@@ -165,6 +166,11 @@ const Publish: NextPage = () => {
   const [error, setError] = useState<Error | undefined>()
   const [progressMsg, setProgressMsg] = useState('Initializing...')
   const [isMinting, setIsMinting] = useState(false)
+  const [isBrowser, setIsBrowser] = useState(false)
+
+  useEffect(() => {
+    setIsBrowser(typeof window !== 'undefined')
+  }, [])
 
   const handleContinue = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -386,7 +392,7 @@ const Publish: NextPage = () => {
             >
               MoonMail Contact Form
             </h2>
-            {typeof window !== 'undefined' && (
+            {isBrowser && (
               <BlockContainer config={blockConfig} host={globalCtx.apiHost} />
             )}
             <dl className="hidden space-y-6 border-t border-neutral-200 pt-6 text-sm font-medium text-neutral-900 lg:block">

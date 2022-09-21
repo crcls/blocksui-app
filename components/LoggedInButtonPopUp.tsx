@@ -1,20 +1,33 @@
-import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import Button from '@/components/Button'
+import { Menu, Transition } from '@headlessui/react'
+import { useMoralis } from 'react-moralis'
+import { useEnsName, useEnsAvatar } from 'wagmi'
+import Image from 'next/future/image'
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import clsx from 'clsx'
 
-// import { useAccount, useEnsAvatar } from 'wagmi'
+import Button from '@/components/Button'
 
 const LoggedInButtonPopUp = () => {
-  // const account = useAccount()
-  // const { data: ensAvatar } = useEnsAvatar({ addressOrName: account?.address })
-  // TODO ensAvatar not working
+  const { logout, user } = useMoralis()
+  const { data: ensName } = useEnsName({ address: user?.attributes.ethAddress })
+  const { data: ensAvatar } = useEnsAvatar({
+    addressOrName: user?.attributes.ethAddress,
+  })
+
   return (
     <div className="flex items-center space-x-8">
       <Menu as="div" className="relative inline-block text-left">
-        <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-offset-2">
+        <Menu.Button className="flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
           <span className="sr-only">Open user menu</span>
-          {/* <img className="h-8 w-8 rounded-full" src={ensAvatar} alt="" /> */}
+          <span className="px-4 text-sm font-medium text-neutral-900">
+            {ensName}
+          </span>
+          {ensAvatar ? (
+            <Image className="h-8 w-8 rounded-full" src={ensAvatar} alt="" />
+          ) : (
+            <Jazzicon diameter={32} seed={jsNumberForAddress(ensName || '')} />
+          )}
         </Menu.Button>
         <Transition
           as={Fragment}
@@ -32,19 +45,7 @@ const LoggedInButtonPopUp = () => {
                   <button
                     className={clsx(
                       active ? 'bg-neutral-100' : '',
-                      'block px-4 py-2 text-sm text-neutral-700'
-                    )}
-                  >
-                    Profile
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={clsx(
-                      active ? 'bg-neutral-100' : '',
-                      'block px-4 py-2 text-sm text-neutral-700'
+                      'block w-full px-4 py-2 text-left text-sm text-neutral-700'
                     )}
                   >
                     My Blocks
@@ -56,8 +57,9 @@ const LoggedInButtonPopUp = () => {
                   <button
                     className={clsx(
                       active ? 'bg-neutral-100' : '',
-                      'block px-4 py-2 text-sm text-neutral-700'
+                      'block w-full px-4 py-2 text-left text-sm text-neutral-700'
                     )}
+                    onClick={logout}
                   >
                     Disconnect
                   </button>

@@ -1,21 +1,15 @@
-import { useMoralis } from 'react-moralis'
-import MetamaskButton from './MetamaskButton'
+import MetaMaskButton from '@/components/LoginModal/MetaMaskButton'
 
 const ConnectWalletModalContent = () => {
-  const { logout } = useMoralis()
-
   return (
     <>
-      <h2 className="text-xl font-medium text-gray-900 sm:pr-12">
+      <h2 className="text-xl font-medium text-neutral-900 sm:pr-12">
         Connect wallet
       </h2>
       <p>Connect with one of our available wallet providers.</p>
-      <ul>
+      <ul role="list" className="mt-4 divide-y divide-neutral-200">
         <li>
-          <MetamaskButton />
-        </li>
-        <li>
-          <button onClick={logout}>disconnect</button>
+          <MetaMaskButton />
         </li>
       </ul>
     </>
