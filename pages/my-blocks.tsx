@@ -88,7 +88,6 @@ const MyBlocks: NextPage = () => {
       }
     }
   }, [contractsLoaded, getContractABI])
-  console.log('blocks', myBlocks)
   return (
     <>
       <Head>
