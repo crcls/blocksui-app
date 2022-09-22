@@ -14,8 +14,11 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useSigner } from 'wagmi'
+import { useApiContract } from 'react-moralis'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
+// TODO: fix import path
 import { BlockContainer, blockProp } from '@crcls/blocksui-sdk/dist/index.js'
+import { ethers } from 'ethers'
 
 import Logo from '@/components/Logo'
 
@@ -52,24 +55,108 @@ const blockConfig = [
   {
     children: [
       {
-        children: ['Hello!'],
+        id: 'moonMailConnector',
+        type: 'MoonmailConnector',
         props: {
-          level: blockProp(1),
+          accountId: blockProp('2a397d1e-86db-4eb9-8191-78ae896744ab'),
+        },
+        connections: [
+          {
+            action: 'success',
+            hooks: {
+              fadeTransitionSuccess: ['show'],
+              fadeTransitionInProgress: ['hide'],
+              fadeTransitionError: ['hide'],
+            },
+          },
+          {
+            action: 'error',
+            hooks: {
+              fadeTransitionSuccess: ['hide'],
+              fadeTransitionInProgress: ['hide'],
+              fadeTransitionError: ['show'],
+            },
+          },
+          {
+            action: 'inProgress',
+            hooks: {
+              fadeTransitionSuccess: ['hide'],
+              fadeTransitionInProgress: ['show'],
+              fadeTransitionError: ['hide'],
+            },
+          },
+        ],
+      },
+      {
+        children: ['MoonMail Contact Form'],
+        className: 'text-lg font-medium text-neutral-900',
+        props: {
+          level: blockProp(2),
         },
         type: 'Heading',
       },
       {
-        children: [
-          'Aenean sodales nunc augue, quis mollis dolor tempor at. Nam interdum, mauris nec commodo rutrum, velit felis tempor dui, vitae elementum massa diam eget nulla. Vivamus rutrum ullamcorper lorem sed sollicitudin. Praesent maximus lorem sed accumsan convallis. Etiam nec risus ac arcu pulvinar placerat. Proin fermentum ligula gravida purus fermentum malesuada. Maecenas condimentum tempor pulvinar.',
+        connections: [
+          { action: 'submit', hooks: { moonMailConnector: ['post'] } },
         ],
-        type: 'Paragraph',
+        children: [
+          {
+            id: 'input',
+            props: {
+              name: blockProp('Address'),
+              placeholder: blockProp('dobby@hogwarts.com'),
+              type: blockProp('email'),
+              label: blockProp('Email'),
+            },
+            state: {
+              value: '',
+            },
+            type: 'Input',
+          },
+          {
+            children: ['Submit'],
+            className:
+              'w-full rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-50 sm:order-last sm:mt-3 sm:w-auto',
+            connections: [
+              {
+                action: 'click',
+                hooks: { logger: ['log'] },
+              },
+            ],
+            id: 'button',
+            props: {
+              type: blockProp('submit'),
+            },
+            type: 'Button',
+          },
+        ],
+        type: 'Form',
       },
       {
-        children: ["Let's go!"],
+        id: 'fadeTransitionSuccess',
+        type: 'FadeTransition',
         props: {
-          href: blockProp('https://crcls.xyz'),
+          time: blockProp('300ms'),
         },
-        type: 'Link',
+        children: ['Success'],
+      },
+      {
+        id: 'fadeTransitionInProgress',
+        type: 'FadeTransition',
+        children: ['Loading ...'],
+        className: 'bui-fade-in-loading',
+        props: {
+          time: blockProp('300ms'),
+        },
+      },
+      {
+        id: 'fadeTransitionError',
+        type: 'FadeTransition',
+        children: ['Error!'],
+        className: 'bui-fade-in',
+        props: {
+          time: blockProp('300ms'),
+        },
       },
     ],
     type: 'Container',
@@ -149,9 +236,39 @@ function normalizeName(name: string): string {
   return name.replace(/[^a-z0-9]/gi, '_').toLowerCase()
 }
 
+interface PubCostProps {
+  address: string
+  abi: any
+}
+
+const PublishCost: FC<PubCostProps> = ({ address, abi }) => {
+  const { runContractFunction, data, isLoading } = useApiContract({
+    abi,
+    address,
+    chain: 'mumbai',
+    functionName: 'publishPrice',
+  })
+
+  console.log(data)
+
+  useEffect(() => {
+    if (data === null) {
+      runContractFunction().catch(console.error)
+    }
+  }, [data, runContractFunction])
+
+  console.log(isLoading, data)
+
+  return (
+    <dd className="text-base">
+      {data ? ethers.utils.formatEther(data) + ' MATIC' : <span>Loading</span>}
+    </dd>
+  )
+}
+
 const Publish: NextPage = () => {
   const globalCtx = useContext(GlobalContext)
-  const { getContract } = useContracts()
+  const { contractsLoaded, getContract, getContractABI } = useContracts()
   const { data: signer } = useSigner()
   const { createAuthCondition, encryptFile, saveEncryption } = useLit()
   const { addIPFS, addWeb3Storage } = useIPFS()
@@ -167,10 +284,8 @@ const Publish: NextPage = () => {
   const [progressMsg, setProgressMsg] = useState('Initializing...')
   const [isMinting, setIsMinting] = useState(false)
   const [isBrowser, setIsBrowser] = useState(false)
-
-  useEffect(() => {
-    setIsBrowser(typeof window !== 'undefined')
-  }, [])
+  const [address, setAddress] = useState<string | undefined>()
+  const [abi, setAbi] = useState<string | undefined>()
 
   const handleContinue = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -335,6 +450,22 @@ const Publish: NextPage = () => {
     ]
   )
 
+  useEffect(() => {
+    if (contractsLoaded) {
+      try {
+        const config = getContractABI('BUIBlockNFT')
+        setAbi(config.abi)
+        setAddress(config.address)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }, [contractsLoaded, getContractABI])
+
+  useEffect(() => {
+    setIsBrowser(typeof window !== 'undefined')
+  }, [])
+
   return (
     <>
       <Head>
@@ -388,9 +519,9 @@ const Publish: NextPage = () => {
           <div className="mx-auto max-w-lg lg:max-w-none">
             <h2
               id="summary-heading"
-              className="text-lg font-medium text-neutral-900"
+              className="mb-3 text-lg font-medium text-neutral-900"
             >
-              MoonMail Contact Form
+              Block Preview
             </h2>
             {isBrowser && (
               <BlockContainer config={blockConfig} host={globalCtx.apiHost} />
@@ -398,7 +529,7 @@ const Publish: NextPage = () => {
             <dl className="hidden space-y-6 border-t border-neutral-200 pt-6 text-sm font-medium text-neutral-900 lg:block">
               <div className="flex items-center justify-between">
                 <dt className="text-base">Price</dt>
-                <dd className="text-base">0.33 ETH</dd>
+                {address && <PublishCost address={address} abi={abi} />}
               </div>
             </dl>
             <Popover className="fixed inset-x-0 bottom-0 flex flex-col-reverse text-sm font-medium text-neutral-900 lg:hidden">
