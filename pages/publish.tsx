@@ -303,11 +303,7 @@ const Publish: NextPage = () => {
       }
 
       // Need to get this before the dispatch removes the inputs
-      let formdata
-
-      if (event.currentTarget) {
-        formdata = new FormData(event.currentTarget)
-      }
+      const formdata = new FormData(event.currentTarget)
 
       dispatch({ step })
       setStep(step + 1)
