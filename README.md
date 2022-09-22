@@ -1,17 +1,120 @@
-# Blocks UI App
+<p align="center">
+  <a href="https://blocksui.xyz/">
+    <img alt="Blocks UI Protocol" src="assets/logo.svg" width="320" />
+  </a>
+</p>
 
-Blocks UI app.
+<h1 align="center">
+  Blocks UI Protocol: Decentralized UI Software as an NFT
+</h1>
+
+<p align="center">
+  🌎 💽 🤑
+</p>
+
+<p align="center">
+  <strong>
+    Decentralized. UI Software. As NFTs.
+  </strong>
+</p>
+
+<p align="center">
+  Providing an open and decentralized framework for building user interface software that is simple enough for anyone to use.
+</p>
+
+<p align="center">
+  <a>
+    <img src="assets/filecoin.svg" alt="Filecoin logo">
+  </a>
+  <a>
+    <img src="assets/ipfs.svg" alt="IPFS logo">
+  </a>
+  <a>
+    <img src="assets/lit-protocol.svg" alt="Lit Protocol logo">
+  </a>
+  <a>
+    <img src="assets/moralis.svg" alt="Moralis logo">
+  </a>
+  <a>
+    <img src="assets/polygon.svg" alt="Polygon logo">
+  </a>
+  <a>
+    <img src="assets/web3-storage.svg" alt="Web3 Storage logo">
+  </a>
+</p>
+
+This project is the entry to the [Moralis](https://moralis.io/) x [Filecoin](https://filecoin.io/) hackathon from the CRCLS team. It consists of five repositories:
+
+- [Blocks UI App](https://github.com/crcls/blocksui-app)
+- [Blocks UI Blocks](https://github.com/crcls/blocksui-blocks)
+- [Blocks UI Contracts](https://github.com/crcls/blocksui-contract)
+- [Blocks UI Network](https://github.com/crcls/blocksui-network)
+- [Blocks UI SDK](https://github.com/crcls/blocksui-sdk)
 
 ## Table of Contents
 
-- [Contributing](#contributing)
+- [Features](#-features)
+- [Heading](#-heading)
+- [Heading](#-heading)
+- [Heading](#-heading)
+- [Heading](#-heading)
+- [Heading](#-heading)
+- [Contributing](#-contributing)
   - [Types](#types)
   - [Branches](#branches)
   - [Commits](#commits)
   - [Pull Requests](#pull-requests)
   - [Merging Into Main](#merging-into-main)
+- [License](#-license)
+- [Thanks](#-thanks)
 
-## Contributing
+Lorem ipsum.
+
+- **Some Feature.** Some description.
+
+- **Some Feature.** Some description.
+
+- **Some Feature.** Some description.
+
+- **Some Feature.** Some description.
+
+- **Some Feature.** Some description.
+
+[<img src="assets/screenshot-1.png" alt="Blocks UI app">](https://blocksui.xyz/)
+
+[<img src="assets/screenshot-2.png" alt="Blocks UI app">](https://blocksui.xyz/)
+
+[**Open the Blocks UI app**](https://blocksui.xyz/)
+
+## ✨ Features
+
+- [Feature]()—as xyz.
+- [Feature]()—for xyz.
+- [Feature]()—as xyz.
+- [Feature]()—for xyz.
+- [Feature]()—as xyz.
+
+## Heading
+
+Lorem ipsum.
+
+## Heading
+
+Lorem ipsum.
+
+## Heading
+
+Lorem ipsum.
+
+## Heading
+
+Lorem ipsum.
+
+## Heading
+
+Lorem ipsum.
+
+## 🤝 Contributing
 
 Code changes can fall into the types from the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 
@@ -106,3 +209,12 @@ feat: add xyz
 ### Merging Into Main
 
 Always “Squash & merge” your commits into `main`.
+
+## 🧐 License
+
+Licensed under the [MIT License](./LICENSE).
+
+## 💜 Thanks
+
+Thanks go out to all of the many sponsors, [Filecoin](https://filecoin.io/).
+, and [Moralis](https://moralis.io/).
