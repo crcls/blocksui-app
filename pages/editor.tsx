@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/20/solid'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import { DndProvider } from 'react-dnd'
@@ -99,6 +100,7 @@ const block = {
 
 const Editor: NextPage = () => {
   const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     document.documentElement.classList.add('h-full', 'bg-neutral-100')
@@ -331,6 +333,7 @@ const Editor: NextPage = () => {
                               <button
                                 type="button"
                                 className="relative inline-flex items-center rounded-l-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-black hover:bg-neutral-50 focus:z-10 focus:border-neutral-600 focus:outline-none focus:ring-1 focus:ring-neutral-600"
+                                onClick={() => router.push('/my-blocks')}
                               >
                                 <ArrowUturnLeftIcon
                                   className="mr-2.5 h-5 w-5 text-neutral-400"

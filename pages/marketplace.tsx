@@ -11,7 +11,7 @@ import {
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import clsx from 'clsx'
-import { useMoralis, useChain, useWeb3Contract } from 'react-moralis'
+import { useWeb3Contract } from 'react-moralis'
 import { BigNumber } from 'ethers'
 
 import Header from '@/components/Header'
@@ -161,46 +161,8 @@ const ListingItems: FC<{ address: string; abi: any }> = ({ address, abi }) => {
 
 const Marketplace: NextPage = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-  const { switchNetwork, chain } = useChain()
-  const [error, setError] = useState<Error | null>(null)
-  const { enableWeb3, isWeb3Enabled } = useMoralis()
-  const [loading, setLoading] = useState(false)
-  const [provider, setProvider] = useState<any | null>(null)
   const { getContractABI, contractsLoaded } = useContracts()
   const [config, setConfig] = useState<Record<string, any> | null>(null)
-
-  useEffect(() => {
-    if (!loading) {
-      if (!isWeb3Enabled) {
-        setLoading(true)
-        console.log('Enabling Web3')
-        enableWeb3({
-          chainId: 80001,
-        })
-          .then((resp) => {
-            setProvider(resp)
-            setLoading(false)
-          })
-          .catch((e) => {
-            setError(e)
-            setLoading(false)
-          })
-      } else if (chain?.networkId !== 80001) {
-        setLoading(true)
-        setError(new Error('Switching network to Polygon Mumbai'))
-        switchNetwork('0x13801').catch(console.error)
-        setLoading(false)
-      }
-    }
-  }, [
-    loading,
-    setLoading,
-    provider,
-    switchNetwork,
-    chain,
-    enableWeb3,
-    isWeb3Enabled,
-  ])
 
   useEffect(() => {
     if (contractsLoaded && config === null) {
@@ -478,7 +440,6 @@ const Marketplace: NextPage = () => {
               ))}
             </form>
             <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:col-span-3 lg:gap-x-8">
-              {error && <p>error.message</p>}
               {config !== null && (
                 <ListingItems address={config.address} abi={config.abi} />
               )}
