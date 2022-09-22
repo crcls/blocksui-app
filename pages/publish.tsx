@@ -283,7 +283,7 @@ const Publish: NextPage = () => {
   const router = useRouter()
   const [buttonLabel, setButtonlabel] = useState('Continue')
   const [error, setError] = useState<Error | undefined>()
-  const [progressMsg, setProgressMsg] = useState('Initializing...')
+  const [progressMsg, setProgressMsg] = useState<string | null>(null)
   const [isMinting, setIsMinting] = useState(false)
   const [isBrowser, setIsBrowser] = useState(false)
   const [address, setAddress] = useState<string | undefined>()
@@ -372,7 +372,7 @@ const Publish: NextPage = () => {
           setProgressMsg('Uploading metadata...')
 
           // Step one is to rename the file to make it easier to retrieve
-          const imgData = new UintArray(await readFile(image))
+          const imgData = new Uint8Array(await readFile(image))
           let nameVal = formdata.get('blockName')
           if (nameVal === null) {
             nameVal = 'BlocksUI Block'
@@ -621,7 +621,7 @@ const Publish: NextPage = () => {
                   </h2>
                   <p className="mt-6 text-sm font-medium text-neutral-700">
                     {error === undefined ? '' : error.message}
-                    {!error && progressMsg}
+                    {!error && progressMsg && progressMsg}
                   </p>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3">
                     <div className="sm:col-span-3">
