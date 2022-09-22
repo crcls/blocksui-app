@@ -21,3 +21,21 @@ export function strToUint8(data: string): Uint8Array {
 export function uint8ToStr(data: Uint8Array, enc: any): string {
   return toString(data, enc)
 }
+
+export async function readFile(file: File): Promise<ArrayBuffer> {
+  return await new Promise((resolve, reject) => {
+    // Create file reader
+    const reader = new FileReader()
+    // Register event listeners
+    reader.addEventListener('loadend', (e) => {
+      if (e.target?.result) {
+        resolve(e.target.result as ArrayBuffer)
+      } else {
+        reject(new Error('file was empty'))
+      }
+    })
+    reader.addEventListener('error', reject)
+    // Read file
+    reader.readAsArrayBuffer(file)
+  })
+}
