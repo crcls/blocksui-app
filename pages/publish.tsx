@@ -239,14 +239,13 @@ function normalizeName(name: string): string {
 interface PubCostProps {
   address: string
   abi: any
-  chain: string
 }
 
-const PublishCost: FC<PubCostProps> = ({ address, abi, chain }) => {
+const PublishCost: FC<PubCostProps> = ({ address, abi }) => {
   const { runContractFunction, data, isLoading } = useApiContract({
     abi,
     address,
-    chain,
+    chain: 'mumbai',
     functionName: 'publishPrice',
   })
 
@@ -530,9 +529,7 @@ const Publish: NextPage = () => {
             <dl className="hidden space-y-6 border-t border-neutral-200 pt-6 text-sm font-medium text-neutral-900 lg:block">
               <div className="flex items-center justify-between">
                 <dt className="text-base">Price</dt>
-                {address && (
-                  <PublishCost address={address} abi={abi} chain="mumbai" />
-                )}
+                {address && <PublishCost address={address} abi={abi} />}
               </div>
             </dl>
             <Popover className="fixed inset-x-0 bottom-0 flex flex-col-reverse text-sm font-medium text-neutral-900 lg:hidden">
