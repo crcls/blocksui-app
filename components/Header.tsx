@@ -110,9 +110,6 @@ const Header: FC = () => {
                             </MobileNavLink>
                             <MobileNavLink href="/editor">Editor</MobileNavLink>
                             <MobileNavLink href="/faqs">FAQs</MobileNavLink>
-                            <MobileNavLink href="/documentation">
-                              Documentation
-                            </MobileNavLink>
                           </div>
                           <div className="mt-8 flex flex-col gap-4">
                             {isAuthenticated ? (

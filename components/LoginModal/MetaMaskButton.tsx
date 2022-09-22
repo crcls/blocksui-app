@@ -9,7 +9,7 @@ const MetaMaskButton = () => {
 
   return (
     <button
-      className="block hover:bg-neutral-50"
+      className="block w-full hover:bg-neutral-50"
       onClick={async () =>
         await authenticate({
           signingMessage: 'Authorize linking of your wallet',
@@ -25,7 +25,7 @@ const MetaMaskButton = () => {
               alt=""
             />
           </div>
-          <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+          <div className="min-w-0 flex-1 px-4 text-left md:grid md:grid-cols-2 md:gap-4">
             <div>
               <p className="truncate text-sm font-medium text-neutral-600">
                 MetaMask
