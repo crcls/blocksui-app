@@ -17,7 +17,6 @@ import useContracts from '../hooks/use-contracts'
 
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import Logo from '@/components/Logo'
 // import { useMoralis } from 'react-moralis'
 
 const sortOptions = [
@@ -89,7 +88,7 @@ const MyBlocks: NextPage = () => {
       }
     }
   }, [contractsLoaded, getContractABI])
-
+  console.log('blocks', myBlocks)
   return (
     <>
       <Head>
@@ -359,18 +358,15 @@ const MyBlocks: NextPage = () => {
               {myBlocks.length !== 0 && (
                 <>
                   {myBlocks.map((block: any) => (
-                    <a
-                      key={block.token_id}
-                      href={block.metadata.image}
-                      className="group text-sm"
-                    >
+                    <button key={block.token_id} className="group text-sm">
                       <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-neutral-100 group-hover:opacity-75">
-                        {/* <img
-                      src={product.imageSrc}
-                      alt={product.imageAlt}
-                      className="h-full w-full object-cover object-center"
-                    /> */}
-                        <Logo className="h-full w-full object-cover object-center p-24" />
+                        <img
+                          src={`https://ipfs.io/ipfs${block.metadata.image.slice(
+                            6
+                          )}`}
+                          alt={block.metadata.description}
+                          className="h-full w-full object-cover object-center"
+                        />
                       </div>
                       <h3 className="mt-4 font-medium text-black">
                         {block.metadata.name}
@@ -379,7 +375,7 @@ const MyBlocks: NextPage = () => {
                         {block.metadata.description}
                       </p>
                       <p className="mt-2 font-medium text-black">0.33 ETH</p>
-                    </a>
+                    </button>
                   ))}
                 </>
               )}
