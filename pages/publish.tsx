@@ -27,6 +27,7 @@ import useLit from '../hooks/use-lit'
 import useIPFS from '../hooks/use-ipfs'
 import { resolver } from '../utils/async'
 import { cidToBytes32, strToUint8, uint8ToStr, readFile } from '../utils/bytes'
+import LoggedInButtonPopUp from '@/components/LoggedInButtonPopUp'
 
 const reducer = (state: any, action: any) => {
   const { step } = action
@@ -163,7 +164,7 @@ const blockConfig = [
 ]
 
 const StepNav: FC<{ step: Step }> = ({ step }) => {
-  const Comp = step.href !== undefined ? 'a' : 'span'
+  const Comp = step.href !== '#' ? 'a' : 'span'
 
   if (step.status === StepStatus.current) {
     return (
@@ -295,14 +296,18 @@ const Publish: NextPage = () => {
       event.preventDefault()
       setError(undefined)
 
-      if (step === steps.length - 1) {
+      if (step === steps.length - 2) {
         setButtonlabel('My Blocks')
-      } else if (step === steps.length) {
-        await router.push('/marketplace')
+      } else if (step === steps.length - 1) {
+        await router.push('/my-blocks')
       }
 
       // Need to get this before the dispatch removes the inputs
-      const formdata = new FormData(event.currentTarget)
+      let formdata
+
+      if (event.currentTarget) {
+        formdata = new FormData(event.currentTarget)
+      }
 
       dispatch({ step })
       setStep(step + 1)
@@ -522,6 +527,9 @@ const Publish: NextPage = () => {
                 ))}
               </ol>
             </nav>
+            <div className="absolute right-0 -mt-2">
+              <LoggedInButtonPopUp />
+            </div>
             <p className="sm:hidden">Step 2 of 4</p>
           </div>
         </div>
@@ -535,12 +543,14 @@ const Publish: NextPage = () => {
           <div className="mx-auto max-w-lg lg:max-w-none">
             <h2
               id="summary-heading"
-              className="mb-3 text-lg font-medium text-neutral-900"
+              className="text-lg font-medium text-neutral-900"
             >
               Block Preview
             </h2>
             {isBrowser && (
-              <BlockContainer config={blockConfig} host={globalCtx.apiHost} />
+              <div className="py-6">
+                <BlockContainer config={blockConfig} host={globalCtx.apiHost} />
+              </div>
             )}
             <dl className="hidden space-y-6 border-t border-neutral-200 pt-6 text-sm font-medium text-neutral-900 lg:block">
               <div className="flex items-center justify-between">
@@ -745,9 +755,7 @@ const Publish: NextPage = () => {
                   {buttonLabel}
                 </button>
               )}
-              <p className="mt-4 text-center text-sm text-neutral-500 sm:mt-0 sm:text-left">
-                Lorem ipsum.
-              </p>
+              <p className="mt-4 text-center text-sm text-neutral-500 sm:mt-0 sm:text-left"></p>
             </div>
           </div>
         </form>
