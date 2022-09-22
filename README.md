@@ -46,7 +46,7 @@
 ## Table of Contents
 
 - [Moralis + Filecoin 1-2-Web3 Hackathon](#moralis--filecoin-1-2-web3-hackathon)
-  - [Use of hackathon tech]()
+  - [Use of hackathon tech](#use-of-hackathon-tech)
   - [blocksui-contracts](#blocksui-contracts)
   - [blocksui-network](#blocksui-network)
   - [blocksui-app](#blocksui-app)
