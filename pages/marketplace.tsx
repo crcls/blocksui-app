@@ -133,6 +133,11 @@ const ListingItems: FC<{ address: string; abi: any }> = ({ address, abi }) => {
 
   return (
     <>
+      {listings.length === 0 && (
+        <p className="mt-1 text-sm text-neutral-500">
+          Please sign in to view the Block listings.
+        </p>
+      )}
       {listings.map((listing, i) => (
         <a
           key={`blockListing-${i}`}
