@@ -13,8 +13,7 @@ import { Popover, Transition } from '@headlessui/react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { useSigner } from 'wagmi'
-import { useApiContract } from 'react-moralis'
+import { useMoralis, useApiContract } from 'react-moralis'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 // TODO: fix import path
 import { BlockContainer, blockProp } from '@crcls/blocksui-sdk/dist/index.js'
@@ -242,34 +241,37 @@ interface PubCostProps {
 }
 
 const PublishCost: FC<PubCostProps> = ({ address, abi }) => {
-  const { runContractFunction, data, isLoading } = useApiContract({
+  const [price, setPrice] = useState<string>('0')
+  const { runContractFunction, data } = useApiContract({
     abi,
     address,
     chain: 'mumbai',
     functionName: 'publishPrice',
   })
 
-  console.log(data)
-
   useEffect(() => {
     if (data === null) {
-      runContractFunction().catch(console.error)
+      runContractFunction()
+        .then((data) => {
+          if (data) {
+            setPrice(ethers.utils.formatEther(data))
+          }
+        })
+        .catch(console.error)
     }
   }, [data, runContractFunction])
 
-  console.log(isLoading, data)
-
   return (
     <dd className="text-base">
-      {data ? ethers.utils.formatEther(data) + ' MATIC' : <span>Loading</span>}
+      {data ? ethers.utils.formatEther(price) + ' MATIC' : <span>Loading</span>}
     </dd>
   )
 }
 
 const Publish: NextPage = () => {
+  const { web3 } = useMoralis()
   const globalCtx = useContext(GlobalContext)
   const { contractsLoaded, getContract, getContractABI } = useContracts()
-  const { data: signer } = useSigner()
   const { createAuthCondition, encryptFile, saveEncryption } = useLit()
   const { addIPFS, addWeb3Storage } = useIPFS()
   const [steps, dispatch] = useReducer(reducer, [
@@ -286,6 +288,7 @@ const Publish: NextPage = () => {
   const [isBrowser, setIsBrowser] = useState(false)
   const [address, setAddress] = useState<string | undefined>()
   const [abi, setAbi] = useState<string | undefined>()
+  const [signer, setSigner] = useState<any | undefined>()
 
   const handleContinue = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -463,6 +466,13 @@ const Publish: NextPage = () => {
   }, [contractsLoaded, getContractABI])
 
   useEffect(() => {
+    if (signer === undefined && web3 !== null) {
+      const signer = web3.getSigner()
+      setSigner(signer)
+    }
+  }, [web3, signer])
+
+  useEffect(() => {
     setIsBrowser(typeof window !== 'undefined')
   }, [])
 
@@ -603,6 +613,10 @@ const Publish: NextPage = () => {
                   >
                     Metadata
                   </h2>
+                  <p className="mt-6 text-sm font-medium text-neutral-700">
+                    {error === undefined ? '' : error.message}
+                    {!error && progressMsg}
+                  </p>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3">
                     <div className="sm:col-span-3">
                       <label
