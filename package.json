@@ -38,6 +38,7 @@
     "focus-visible": "^5.2.0",
     "framer-motion": "^7.3.5",
     "moralis": "^2.4.0",
+    "moralis-v1": "^1.11.0",
     "multihashes": "^4.0.3",
     "next": "^12.3.0",
     "react": "^18.2.0",

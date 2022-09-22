@@ -13,6 +13,7 @@ const MetaMaskButton = () => {
       onClick={async () =>
         await authenticate({
           signingMessage: 'Authorize linking of your wallet',
+          chainId: 80001,
         })
       }
     >
