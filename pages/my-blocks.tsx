@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/20/solid'
 import type { NextPage } from 'next'
 // import { useMoralis } from 'react-moralis'
-import axios from 'axios'
+import axios, { type Method } from 'axios'
 import Head from 'next/head'
 import clsx from 'clsx'
 
@@ -59,14 +59,18 @@ const MyBlocks: NextPage = () => {
         // const ethAddress = user?.attributes.ethAddress
         const ethAddress = '0xC72e1e431F932Ab50113701b3c6b2069311700d6'
         const options = {
-          method: 'GET',
+          method: 'GET' as Method,
           url: `https://deep-index.moralis.io/api/v2/${ethAddress}/nft`,
           params: {
             chain: 'mumbai',
             format: 'decimal',
             token_addresses: address,
           },
-          headers: { accept: 'application/json', 'X-API-Key': 'test' },
+          headers: {
+            accept: 'application/json',
+            'X-API-Key':
+              'I7PZ60blQCCrs744vJOWJBEar8NxLVpWShGa5jjnIZMEzQHx2MRORmwLra7CQjaQ',
+          },
         }
 
         axios
