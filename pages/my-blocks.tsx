@@ -10,14 +10,14 @@ import {
   Squares2X2Icon,
 } from '@heroicons/react/20/solid'
 import type { NextPage } from 'next'
+// import { useMoralis } from 'react-moralis'
 import axios from 'axios'
 import Head from 'next/head'
 import clsx from 'clsx'
-import useContracts from '../hooks/use-contracts'
 
+import useContracts from '@/hooks/use-contracts'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-// import { useMoralis } from 'react-moralis'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
