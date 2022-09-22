@@ -43,22 +43,14 @@
   </a>
 </p>
 
-This project is the entry to the [Moralis](https://moralis.io/) x [Filecoin](https://filecoin.io/) hackathon from the [CRCLS](https://github.com/crcls) team. It consists of five repositories:
-
-- [Blocks UI App](https://github.com/crcls/blocksui-app)
-- [Blocks UI Blocks](https://github.com/crcls/blocksui-blocks)
-- [Blocks UI Contracts](https://github.com/crcls/blocksui-contract)
-- [Blocks UI Network](https://github.com/crcls/blocksui-network)
-- [Blocks UI SDK](https://github.com/crcls/blocksui-sdk)
-
 ## Table of Contents
 
-- [Features](#-features)
-- [Heading](#-heading)
-- [Heading](#-heading)
-- [Heading](#-heading)
-- [Heading](#-heading)
-- [Heading](#-heading)
+- [Moralis + Filecoin 1-2-Web3 Hackathon](#moralis--filecoin-1-2-web3-hackathon)
+  - [Use of hackathon tech]()
+  - [blocksui-contracts](#blocksui-contracts)
+  - [blocksui-network](#blocksui-network)
+  - [blocksui-app](#blocksui-app)
+  - [blocksui-blocks](#blocksui-blocks)
 - [Contributing](#-contributing)
   - [Types](#types)
   - [Branches](#branches)
@@ -69,6 +61,16 @@ This project is the entry to the [Moralis](https://moralis.io/) x [Filecoin](htt
 - [Thanks](#-thanks)
 
 # Moralis + Filecoin 1-2-Web3 Hackathon.
+
+This project is the entry to the [Moralis](https://moralis.io/) x [Filecoin](https://filecoin.io/) hackathon from the [CRCLS](https://github.com/crcls) team. It consists of five repositories:
+
+- [Blocks UI App](https://github.com/crcls/blocksui-app)
+- [Blocks UI Blocks](https://github.com/crcls/blocksui-blocks)
+- [Blocks UI Contracts](https://github.com/crcls/blocksui-contract)
+- [Blocks UI Network](https://github.com/crcls/blocksui-network)
+- [Blocks UI SDK](https://github.com/crcls/blocksui-sdk)
+
+## Use of hackathon tech
 
 ## blocksui-contracts
 
@@ -108,61 +110,21 @@ This project is the entry to the [Moralis](https://moralis.io/) x [Filecoin](htt
 
 1. [scripts/upload.mjs](https://github.com/crcls/blocksui-blocks/blob/main/scripts/upload.mjs) - Used in the GitHub actions deploy CI to upload the compiled Block Primitives to Web3.Storage
 
-- **Some Feature.** Some description.
-
-- **Some Feature.** Some description.
-
-- **Some Feature.** Some description.
-
-- **Some Feature.** Some description.
-
-- **Some Feature.** Some description.
-
-Lorem ipsum.
-
-- **Some Feature.** Some description.
-
-- **Some Feature.** Some description.
-
-- **Some Feature.** Some description.
-
-- **Some Feature.** Some description.
-
-- **Some Feature.** Some description.
-
-[<img src="assets/screenshot-1.png" alt="Blocks UI app">](https://blocksui.xyz/)
-
-[<img src="assets/screenshot-2.png" alt="Blocks UI app">](https://blocksui.xyz/)
-
 [**Open the Blocks UI app**](https://blocksui.xyz/)
 
 ## ✨ Features
 
-- [Feature]()—as xyz.
-- [Feature]()—for xyz.
-- [Feature]()—as xyz.
-- [Feature]()—for xyz.
-- [Feature]()—as xyz.
+- [Marketplace](#marketplace)—for consumers to purchase Blocks
+- [Editor](#editor)-for builders to create new Blocks
 
-## Heading
+## Marketplace
 
-Lorem ipsum.
+Blocks can be bought, sold, or licensed through the Blocks UI Marketplace..
 
-## Heading
+## Editor
 
-Lorem ipsum.
-
-## Heading
-
-Lorem ipsum.
-
-## Heading
-
-Lorem ipsum.
-
-## Heading
-
-Lorem ipsum.
+Build your Blocks using the Blocks UI Editor. Drap and drop primitives
+to compose a Block.
 
 ## 🤝 Contributing
 
