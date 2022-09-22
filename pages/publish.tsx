@@ -13,6 +13,7 @@ import { Popover, Transition } from '@headlessui/react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useMoralis, useApiContract } from 'react-moralis'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 // TODO: fix import path
@@ -504,10 +505,10 @@ const Publish: NextPage = () => {
       <header className="relative border-b border-neutral-200 bg-white text-sm font-medium text-neutral-700">
         <div className="mx-auto max-w-7xl py-8 px-4 sm:px-6 lg:px-8">
           <div className="relative flex justify-end sm:justify-center">
-            <a href="/" className="absolute left-0 top-1/2 -mt-4">
+            <Link href="/" className="absolute left-0 top-1/2 -mt-4">
               <span className="sr-only">Blocks UI Protocol</span>
               <Logo className="h-8 w-auto" />
-            </a>
+            </Link>
             <nav aria-label="Progress" className="hidden sm:block">
               <ol role="list" className="flex space-x-4">
                 {steps.map((step: any, stepIdx: any) => (

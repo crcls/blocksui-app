@@ -9,6 +9,7 @@ import {
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import clsx from 'clsx'
 
 import { DndProvider } from 'react-dnd'
@@ -100,6 +101,7 @@ const block = {
 
 const Editor: NextPage = () => {
   const [open, setOpen] = useState(false)
+  const [isBannerOpen, setIsBannerOpen] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -118,14 +120,51 @@ const Editor: NextPage = () => {
     <>
       <DndProvider backend={HTML5Backend}>
         <div className="flex h-full flex-col">
+          {isBannerOpen && (
+            <div className="relative bg-black">
+              <div className="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
+                <div className="pr-16 sm:px-16 sm:text-center">
+                  <p className="font-medium text-white">
+                    <span className="hidden md:inline">
+                      Please note that the editor is missing features and is
+                      currently only for demo purposes. The demo block on the
+                      publish page has been hard-coded.
+                    </span>
+                    <span className="block sm:ml-2 sm:inline-block">
+                      <Link
+                        href="/publish"
+                        className="font-bold text-white underline"
+                      >
+                        Publish demo block
+                        <span aria-hidden="true"> &rarr;</span>
+                      </Link>
+                    </span>
+                  </p>
+                </div>
+                <div className="absolute inset-y-0 right-0 flex items-start pt-1 pr-1 sm:items-start sm:pt-1 sm:pr-2">
+                  <button
+                    type="button"
+                    className="flex rounded-md p-2 hover:bg-neutral-500 focus:outline-none focus:ring-2 focus:ring-white"
+                    onClick={() => setIsBannerOpen(false)}
+                  >
+                    <span className="sr-only">Dismiss</span>
+                    <XMarkIcon
+                      className="h-6 w-6 text-white"
+                      aria-hidden="true"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           <header className="relative flex h-16 flex-shrink-0 items-center bg-white">
             <div className="absolute inset-y-0 left-0 lg:static lg:flex-shrink-0">
-              <a
+              <Link
                 href="/"
                 className="flex h-16 w-16 items-center justify-center bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-600 lg:w-24"
               >
                 <Logo className="h-8 w-auto" />
-              </a>
+              </Link>
             </div>
             <div className="mx-auto lg:hidden">
               <div className="relative">
@@ -218,9 +257,9 @@ const Editor: NextPage = () => {
                       aria-label="Global"
                     >
                       <div className="flex h-16 items-center justify-between px-4 sm:px-6">
-                        <a href="/">
+                        <Link href="/">
                           <Logo className="block h-8 w-auto" />
-                        </a>
+                        </Link>
                         <button
                           type="button"
                           className="-mr-2 inline-flex items-center justify-center rounded-md p-2 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-600"
@@ -255,20 +294,20 @@ const Editor: NextPage = () => {
                       <div className="max-w-8xl mx-auto py-3 px-2 sm:px-4">
                         {navigation.map((item) => (
                           <Fragment key={item.name}>
-                            <a
+                            <Link
                               href={item.href}
                               className="block rounded-md py-2 px-3 text-base font-medium text-black hover:bg-neutral-100"
                             >
                               {item.name}
-                            </a>
+                            </Link>
                             {item.children.map((child: any) => (
-                              <a
+                              <Link
                                 key={child.name}
                                 href={child.href}
                                 className="block rounded-md py-2 pl-5 pr-3 text-base font-medium text-neutral-500 hover:bg-neutral-100"
                               >
                                 {child.name}
-                              </a>
+                              </Link>
                             ))}
                           </Fragment>
                         ))}

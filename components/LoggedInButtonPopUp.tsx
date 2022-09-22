@@ -65,7 +65,7 @@ const LoggedInButtonPopUp = () => {
       {isAuthenticated ? (
         <div className="flex items-center space-x-8">
           <Menu as="div" className="relative inline-block text-left">
-            <Menu.Button className="flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+            <Menu.Button className="flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-offset-2">
               <span className="sr-only">Open user menu</span>
               <span className="px-4 text-sm font-medium text-neutral-900">
                 {ensName}

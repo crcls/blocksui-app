@@ -10,7 +10,7 @@ import {
   Squares2X2Icon,
 } from '@heroicons/react/20/solid'
 import type { NextPage } from 'next'
-// import { useMoralis } from 'react-moralis'
+import { useMoralis } from 'react-moralis'
 import axios, { type Method } from 'axios'
 import Head from 'next/head'
 import clsx from 'clsx'
@@ -48,7 +48,7 @@ const filters = [
 const MyBlocks: NextPage = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const { contractsLoaded, getContractABI } = useContracts()
-  // const { user } = useMoralis()
+  const { user } = useMoralis()
   const [myBlocks, setMyBlocks] = useState([])
 
   useEffect(() => {
@@ -56,8 +56,8 @@ const MyBlocks: NextPage = () => {
       try {
         const config = getContractABI('BUIBlockNFT')
         const { address } = config
-        // const ethAddress = user?.attributes.ethAddress
-        const ethAddress = '0xC72e1e431F932Ab50113701b3c6b2069311700d6'
+        const ethAddress = user?.attributes.ethAddress
+        // const ethAddress = '0xC72e1e431F932Ab50113701b3c6b2069311700d6'
         const options = {
           method: 'GET' as Method,
           url: `https://deep-index.moralis.io/api/v2/${ethAddress}/nft`,
@@ -361,7 +361,10 @@ const MyBlocks: NextPage = () => {
               {myBlocks.length !== 0 && (
                 <>
                   {myBlocks.map((block: any) => (
-                    <button key={block.token_id} className="group text-sm">
+                    <button
+                      key={block.token_id}
+                      className="group text-left text-sm"
+                    >
                       <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-neutral-100 group-hover:opacity-75">
                         <img
                           src={`https://ipfs.io/ipfs${block.metadata.image.slice(
@@ -377,7 +380,7 @@ const MyBlocks: NextPage = () => {
                       <p className="italic text-neutral-500">
                         {block.metadata.description}
                       </p>
-                      <p className="mt-2 font-medium text-black">0.33 ETH</p>
+                      {/* <p className="mt-2 font-medium text-black">0.33 ETH</p> */}
                     </button>
                   ))}
                 </>
