@@ -26,7 +26,7 @@ import useContracts from '../hooks/use-contracts'
 import useLit from '../hooks/use-lit'
 import useIPFS from '../hooks/use-ipfs'
 import { resolver } from '../utils/async'
-import { cidToBytes32, strToUint8, uint8ToStr } from '../utils/bytes'
+import { cidToBytes32, strToUint8, uint8ToStr, readFile } from '../utils/bytes'
 
 const reducer = (state: any, action: any) => {
   const { step } = action
@@ -283,7 +283,7 @@ const Publish: NextPage = () => {
   const router = useRouter()
   const [buttonLabel, setButtonlabel] = useState('Continue')
   const [error, setError] = useState<Error | undefined>()
-  const [progressMsg, setProgressMsg] = useState('Initializing...')
+  const [progressMsg, setProgressMsg] = useState<string | null>(null)
   const [isMinting, setIsMinting] = useState(false)
   const [isBrowser, setIsBrowser] = useState(false)
   const [address, setAddress] = useState<string | undefined>()
@@ -358,6 +358,7 @@ const Publish: NextPage = () => {
         const image = formdata.get('image-upload') as File | null
         formdata.delete('image-upload')
 
+        // TODO: perform validation on input
         const formParams = serialize(formdata)
 
         if (image?.size !== 0) {
@@ -369,18 +370,24 @@ const Publish: NextPage = () => {
           }
 
           setProgressMsg('Uploading metadata...')
-          const imgData = await image.arrayBuffer()
+
+          // Step one is to rename the file to make it easier to retrieve
+          const imgData = new Uint8Array(await readFile(image))
           let nameVal = formdata.get('blockName')
           if (nameVal === null) {
             nameVal = 'BlocksUI Block'
           }
           const fileName = normalizeName(nameVal as string)
           const ext = image.type.split('/')[1]
+
           const file = new File(
             [new Blob([imgData], { type: image.type })],
             `${fileName}.${ext}`
           )
 
+          console.log(file.name, file.size, file.type)
+
+          // Next we upload it to Web3.Storage
           const [uerr, cid] = await resolver(addWeb3Storage([file]))
           if (uerr !== undefined || cid === undefined) {
             setError(new Error('Failed to upload image to Web3.Storage'))
@@ -392,7 +399,6 @@ const Publish: NextPage = () => {
           formParams.image = `ipfs://${cid}/${fileName}.${ext}`
         }
 
-        // TODO: perform validation on input
         const metadata = generateBlockMeta({
           ...(formParams as {
             blockName: string
@@ -615,7 +621,7 @@ const Publish: NextPage = () => {
                   </h2>
                   <p className="mt-6 text-sm font-medium text-neutral-700">
                     {error === undefined ? '' : error.message}
-                    {!error && progressMsg}
+                    {!error && progressMsg && progressMsg}
                   </p>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3">
                     <div className="sm:col-span-3">
