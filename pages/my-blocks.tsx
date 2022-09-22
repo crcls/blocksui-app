@@ -1,5 +1,6 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
+
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import {
   ChevronDownIcon,
@@ -9,13 +10,15 @@ import {
   Squares2X2Icon,
 } from '@heroicons/react/20/solid'
 import type { NextPage } from 'next'
-// import axios from 'axios'
+import axios from 'axios'
 import Head from 'next/head'
 import clsx from 'clsx'
+import useContracts from '../hooks/use-contracts'
 
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Logo from '@/components/Logo'
+// import { useMoralis } from 'react-moralis'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -42,53 +45,50 @@ const filters = [
     ],
   },
 ]
-const products = [
-  {
-    id: 1,
-    name: 'MoonMail Contact Form',
-    href: '/block/1',
-    price: '0.33 ETH',
-    description:
-      'A simple MoonMail contact form block with some validation that you can embed in your website',
-    imageSrc: '',
-    imageAlt:
-      'MoonMail Contact Form – A simple MoonMail contact form block with some validation that you can embed in your website',
-  },
-  {
-    id: 2,
-    name: 'MoonMail Contact Form',
-    href: '/block/2',
-    price: '0.33 ETH',
-    description:
-      'A simple MoonMail contact form block with some validation that you can embed in your website',
-    imageSrc: '',
-    imageAlt:
-      'MoonMail Contact Form – A simple MoonMail contact form block with some validation that you can embed in your website',
-  },
-]
 
 const MyBlocks: NextPage = () => {
-  // const options = {
-  //   method: 'GET',
-  //   url: 'https://deep-index.moralis.io/api/v2/0xC72e1e431F932Ab50113701b3c6b2069311700d6/nft',
-  //   params: {
-  //     chain: 'mumbai',
-  //     format: 'decimal',
-  //     token_addresses: '0x56a5e3BD4d70DFFE6b945fF67C0556869c4B50c6'
-  //   },
-  //   headers: {accept: 'application/json', 'X-API-Key': 'test'}
-  // };
-
-  // axios
-  //   .request(options)
-  //   .then(function (response) {
-  //     console.log(response.data);
-  //   })
-  //   .catch(function (error) {
-  //     console.error(error);
-  //   });
-
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const { contractsLoaded, getContractABI } = useContracts()
+  // const { user } = useMoralis()
+  const [myBlocks, setMyBlocks] = useState([])
+
+  useEffect(() => {
+    if (contractsLoaded) {
+      try {
+        const config = getContractABI('BUIBlockNFT')
+        const { address } = config
+        // const ethAddress = user?.attributes.ethAddress
+        const ethAddress = '0xC72e1e431F932Ab50113701b3c6b2069311700d6'
+        const options = {
+          method: 'GET',
+          url: `https://deep-index.moralis.io/api/v2/${ethAddress}/nft`,
+          params: {
+            chain: 'mumbai',
+            format: 'decimal',
+            token_addresses: address,
+          },
+          headers: { accept: 'application/json', 'X-API-Key': 'test' },
+        }
+
+        axios
+          .request(options)
+          .then(function (response: any) {
+            const filteredAndParsed = response.data.result
+              .filter((res: any) => res.metadata)
+              .map((element: any) => {
+                return { ...element, metadata: JSON.parse(element.metadata) }
+              })
+
+            setMyBlocks(filteredAndParsed)
+          })
+          .catch(function (error) {
+            console.error(error)
+          })
+      } catch (e) {
+        console.log('error', e)
+      }
+    }
+  }, [contractsLoaded, getContractABI])
 
   return (
     <>
@@ -356,29 +356,33 @@ const MyBlocks: NextPage = () => {
               ))}
             </form>
             <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:col-span-3 lg:gap-x-8">
-              {products.map((product) => (
-                <a
-                  key={product.id}
-                  href={product.href}
-                  className="group text-sm"
-                >
-                  <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-neutral-100 group-hover:opacity-75">
-                    {/* <img
+              {myBlocks.length !== 0 && (
+                <>
+                  {myBlocks.map((block: any) => (
+                    <a
+                      key={block.token_id}
+                      href={block.metadata.image}
+                      className="group text-sm"
+                    >
+                      <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-neutral-100 group-hover:opacity-75">
+                        {/* <img
                       src={product.imageSrc}
                       alt={product.imageAlt}
                       className="h-full w-full object-cover object-center"
                     /> */}
-                    <Logo className="h-full w-full object-cover object-center p-24" />
-                  </div>
-                  <h3 className="mt-4 font-medium text-black">
-                    {product.name}
-                  </h3>
-                  <p className="italic text-neutral-500">
-                    {product.description}
-                  </p>
-                  <p className="mt-2 font-medium text-black">{product.price}</p>
-                </a>
-              ))}
+                        <Logo className="h-full w-full object-cover object-center p-24" />
+                      </div>
+                      <h3 className="mt-4 font-medium text-black">
+                        {block.metadata.name}
+                      </h3>
+                      <p className="italic text-neutral-500">
+                        {block.metadata.description}
+                      </p>
+                      <p className="mt-2 font-medium text-black">0.33 ETH</p>
+                    </a>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </section>
