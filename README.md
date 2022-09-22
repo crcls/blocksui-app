@@ -24,26 +24,26 @@
 
 <p align="center">
   <a>
-    <img src="assets/filecoin.svg" alt="Filecoin logo">
+    <img src="assets/filecoin.svg" alt="Filecoin logo" width="40">
   </a>
   <a>
-    <img src="assets/ipfs.svg" alt="IPFS logo">
+    <img src="assets/ipfs.svg" alt="IPFS logo" width="40">
   </a>
   <a>
-    <img src="assets/lit-protocol.svg" alt="Lit Protocol logo">
+    <img src="assets/lit-protocol.svg" alt="Lit Protocol logo" width="40">
   </a>
   <a>
-    <img src="assets/moralis.svg" alt="Moralis logo">
+    <img src="assets/moralis.svg" alt="Moralis logo" width="40">
   </a>
   <a>
-    <img src="assets/polygon.svg" alt="Polygon logo">
+    <img src="assets/polygon.svg" alt="Polygon logo" width="40">
   </a>
   <a>
-    <img src="assets/web3-storage.svg" alt="Web3 Storage logo">
+    <img src="assets/web3-storage.svg" alt="Web3 Storage logo" width="40">
   </a>
 </p>
 
-This project is the entry to the [Moralis](https://moralis.io/) x [Filecoin](https://filecoin.io/) hackathon from the CRCLS team. It consists of five repositories:
+This project is the entry to the [Moralis](https://moralis.io/) x [Filecoin](https://filecoin.io/) hackathon from the [CRCLS](https://github.com/crcls) team. It consists of five repositories:
 
 - [Blocks UI App](https://github.com/crcls/blocksui-app)
 - [Blocks UI Blocks](https://github.com/crcls/blocksui-blocks)
@@ -216,5 +216,4 @@ Licensed under the [MIT License](./LICENSE).
 
 ## 💜 Thanks
 
-Thanks go out to all of the many sponsors, [Filecoin](https://filecoin.io/).
-, and [Moralis](https://moralis.io/).
+Thanks go out to all of the many sponsors, [Filecoin](https://filecoin.io/), and [Moralis](https://moralis.io/).
