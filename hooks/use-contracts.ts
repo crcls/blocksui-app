@@ -6,6 +6,7 @@ import ContractsContext from '../context/Contracts'
 
 interface ContractsHookValue {
   chain: string
+  contractsLoaded: boolean
   getContract: (name: string, signer: Signer) => Contract
   getContractABI: (name: string) => any
 }
@@ -13,6 +14,7 @@ interface ContractsHookValue {
 const useContracts = (): ContractsHookValue => {
   const ctx = useContext(ContractsContext)
   const [chain, setChain] = useState('')
+  const [loaded, setLoaded] = useState(false)
 
   const getContractABI = useCallback(
     (name: string): any => {
@@ -46,18 +48,20 @@ const useContracts = (): ContractsHookValue => {
   )
 
   useEffect(() => {
-    const newChain = ctx
-      ? ctx.network === 'mainnet'
-        ? ctx.chain
-        : ctx.network
-      : 'ethereum'
-    if (chain !== newChain) {
+    if (ctx.chain !== undefined) {
+      const newChain = ctx
+        ? ctx.network === 'mainnet'
+          ? ctx.chain
+          : ctx.network
+        : 'ethereum'
       setChain(newChain)
+      setLoaded(true)
     }
   }, [chain, ctx])
 
   return {
     chain,
+    contractsLoaded: loaded,
     getContract,
     getContractABI,
   }
