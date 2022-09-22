@@ -1,9 +1,8 @@
 // @ts-nocheck
 import '@/styles/globals.css'
 import 'focus-visible'
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
-// import { InjectedConnector } from 'wagmi/connectors/injected'
+import { createClient, WagmiConfig } from 'wagmi'
+import { getDefaultProvider } from 'ethers'
 import type { AppProps } from 'next/app'
 import { MoralisProvider } from 'react-moralis'
 
@@ -11,14 +10,9 @@ import { GlobalProvider } from '@/context/GlobalContext'
 import ContractsProvider from '@/providers/ContractsProvider'
 import IPFSProvider from '@/providers/IPFSProvider'
 
-const { provider } = configureChains(
-  [chain.polygonMumbai, chain.mainnet],
-  [publicProvider()]
-)
-
 const client = createClient({
   autoConnect: true,
-  provider,
+  provider: getDefaultProvider(),
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
