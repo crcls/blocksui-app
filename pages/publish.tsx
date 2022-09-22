@@ -263,7 +263,7 @@ const PublishCost: FC<PubCostProps> = ({ address, abi }) => {
 
   return (
     <dd className="text-base">
-      {data ? ethers.utils.formatEther(price) + ' MATIC' : <span>Loading</span>}
+      {data ? `${price} MATIC` : <span>Loading</span>}
     </dd>
   )
 }
