@@ -9,7 +9,6 @@ const NavLinks: any = () => {
     ['Marketplace', '/marketplace'],
     ['Editor', '/editor'],
     ['FAQs', '/faqs'],
-    ['Documentation', '/documentation'],
   ].map(([label, href], index) => (
     <Link
       className="relative -my-2 -mx-3 rounded-lg px-3 py-2 text-sm text-neutral-700 transition-colors delay-150 hover:text-black hover:delay-[0ms]"

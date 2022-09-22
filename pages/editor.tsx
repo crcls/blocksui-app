@@ -36,7 +36,6 @@ const navigation = [
   },
   { name: 'Editor', href: '/editor', children: [] },
   { name: 'FAQs', href: '/faqs', children: [] },
-  { name: 'Documentation', href: '/documentation', children: [] },
 ]
 const userNavigation = [
   { name: 'Profile', href: '/profile' },

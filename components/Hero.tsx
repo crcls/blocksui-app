@@ -21,7 +21,7 @@ const BackgroundIllustration = (props: any) => {
         viewBox="0 0 1026 1026"
         fill="none"
         aria-hidden="true"
-        className="animate-spin-slow absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-full animate-spin-slow"
       >
         <path
           d="M1025 513c0 282.77-229.23 512-512 512S1 795.77 1 513 230.23 1 513 1s512 229.23 512 512Z"
@@ -51,7 +51,7 @@ const BackgroundIllustration = (props: any) => {
         viewBox="0 0 1026 1026"
         fill="none"
         aria-hidden="true"
-        className="animate-spin-reverse-slower absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-full animate-spin-reverse-slower"
       >
         <path
           d="M913 513c0 220.914-179.086 400-400 400S113 733.914 113 513s179.086-400 400-400 400 179.086 400 400Z"
