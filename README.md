@@ -32,25 +32,13 @@
   <a href="https://litprotocol.com/" style="display: inline-block">
     <img src="assets/lit-protocol.svg" alt="Lit Protocol logo" width="54">
   </a>
-  <a href="https://moralis.io/" style="display: inline-block">
-    <img src="assets/moralis.svg" alt="Moralis logo" width="154">
-  </a>
   <a href="https://polygon.technology/" style="display: inline-block">
     <img src="assets/polygon.svg" alt="Polygon logo" width="166">
-  </a>
-  <a href="https://web3.storage/" style="display: inline-block">
-    <img src="assets/web3-storage.svg" alt="Web3 Storage logo" width="40">
   </a>
 </p>
 
 ## Table of Contents
 
-- [Moralis + Filecoin 1-2-Web3 Hackathon](#moralis--filecoin-1-2-web3-hackathon)
-  - [Use of hackathon tech](#use-of-hackathon-tech)
-  - [blocksui-contracts](#blocksui-contracts)
-  - [blocksui-network](#blocksui-network)
-  - [blocksui-app](#blocksui-app)
-  - [blocksui-blocks](#blocksui-blocks)
 - [Contributing](#-contributing)
   - [Types](#types)
   - [Branches](#branches)
@@ -60,55 +48,13 @@
 - [License](#-license)
 - [Thanks](#-thanks)
 
-# Moralis + Filecoin 1-2-Web3 Hackathon.
-
-This project is the entry to the [Moralis](https://moralis.io/) x [Filecoin](https://filecoin.io/) hackathon from the [CRCLS](https://github.com/crcls) team. It consists of five repositories:
+## Blocks UI Protocol Repos
 
 - [Blocks UI App](https://github.com/crcls/blocksui-app)
 - [Blocks UI Blocks](https://github.com/crcls/blocksui-blocks)
 - [Blocks UI Contracts](https://github.com/crcls/blocksui-contract)
 - [Blocks UI Network](https://github.com/crcls/blocksui-network)
 - [Blocks UI SDK](https://github.com/crcls/blocksui-sdk)
-
-## Use of hackathon tech
-
-## blocksui-contracts
-
-1. [hardhat.config.ts L19-L21](https://github.com/crcls/blocksui-contracts/blob/main/hardhat.config.ts#L19-L21) - Used Web3.Storage to upload the contract configs for the app to use.
-
-## blocksui-network
-
-1. [node/ipfs/ipfs.go L86-L152](https://github.com/crcls/blocksui-network/blob/main/node/ipfs/ipfs.go#L86-L152) - Used Web3.Storage for getting the Block Primitive files to server to the app
-2. [node/docker/aws.Dockerfile L11-L12](https://github.com/crcls/blocksui-network/blob/main/node/docker/aws.Dockerfile#L11-L12) - Install a local IPFS node in the Server Node container
-3. [node/modd.prod.conf L2](https://github.com/crcls/blocksui-network/blob/main/node/modd.prod.conf#L2) - Run the ipfs daemon in the docker container
-4. [node/ipfs/ipfs.go L20-L84](https://github.com/crcls/blocksui-network/blob/main/node/ipfs/ipfs.go#L20-L84) - Connect to the local IPFS node and optionally start a new daemon if there isn’t one.
-5. [node/server/server.go L109](https://github.com/crcls/blocksui-network/blob/main/node/server/server.go#L109) - Upload the Block config to IPFS (Needed CID v0)
-6. [node/server/server.go L29-L66](https://github.com/crcls/blocksui-network/blob/main/node/server/server.go#L29-L66) - Fetch the Primitives from routes /primitives/:name
-7. [node/contracts/contracts.go L58](https://github.com/crcls/blocksui-network/blob/main/node/contracts/contract.go#L58) - Fetch contract configs from Web3.Storage
-
-## blocksui-app
-
-#### Moralis:
-
-1. [pages/publish.tsx L244-L263](https://github.com/crcls/blocksui-app/blob/main/pages/publish.tsx#L244-L263) - useApiContract to get the publish price from the BUIBlocksNFT contract
-2. [pages/publish.tsx L273](https://github.com/crcls/blocksui-app/blob/main/pages/publish.tsx#L273) - useMoralis to get the web3 object.
-3. [pages/publish.tsx L475-L480](https://github.com/crcls/blocksui-app/blob/main/pages/publish.tsx#L475-L480) - get signer from the Moralis Web3 object
-4. [pages/my-blocks.tsx L61-L89](https://github.com/crcls/blocksui-app/blob/main/pages/my-blocks.tsx#L61-L89) - Fetch the Blocks for the signed in account using the Moralis API
-5. [pages/marketplace.tsx L74-L128](https://github.com/crcls/blocksui-app/blob/main/pages/marketplace.tsx#L74-L128) - useWeb3Contract - Fetch the Block Listings from the BUIMarketplace contract
-6. [components/MetaMaskButton.tsx L8-L19](https://github.com/crcls/blocksui-app/blob/main/components/LoginModal/MetaMaskButton.tsx#L8-L19) - useMoralis (authenticate)
-
-#### Filecoin:
-
-1. [providers/IPFSProvider.ts L13](https://github.com/crcls/blocksui-app/blob/main/providers/IPFSProvider.tsx#L13) - Initialize the Web3Storage client
-2. [hooks/use-ipfs.ts L18-L67](https://github.com/crcls/blocksui-app/blob/main/hooks/use-ipfs.ts#L18-L67) - Get and Add files from Web3.Storage and IPFS (through our server node)
-3. [pages/publish.tsx L327](https://github.com/crcls/blocksui-app/blob/main/pages/publish.tsx#L327) - Upload Block file to IPFS (returning a CID v0)
-4. [pages/publish.tsx L392](https://github.com/crcls/blocksui-app/blob/main/pages/publish.tsx#L392) - Upload Block Marketing image to Web3.Storage
-5. [pages/publish.tsx L421](https://github.com/crcls/blocksui-app/blob/main/pages/publish.tsx#L421) - Upload Block metadata to Web3.Storage
-6. [.github/workflows/main.yml L43](https://github.com/crcls/blocksui-app/blob/main/.github/workflows/main.yml#L43) - Deploy the app with Fleek
-
-## blocksui-blocks
-
-1. [scripts/upload.mjs](https://github.com/crcls/blocksui-blocks/blob/main/scripts/upload.mjs) - Used in the GitHub actions deploy CI to upload the compiled Block Primitives to Web3.Storage
 
 [**Open the Blocks UI app**](https://blocksui.xyz/)
 
@@ -228,4 +174,4 @@ Licensed under the [MIT License](./LICENSE).
 
 ## 💜 Thanks
 
-Thanks go out to all of the many sponsors, [Filecoin](https://filecoin.io/), and [Moralis](https://moralis.io/).
+Thanks go out to all of the many sponsors, [Filecoin](https://filecoin.io/)

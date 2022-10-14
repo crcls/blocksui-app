@@ -1,7 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { useChain, useMoralis } from 'react-moralis'
-import { useEnsName, useEnsAvatar } from 'wagmi'
 import { useRouter } from 'next/router'
 import Image from 'next/future/image'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
@@ -13,52 +11,17 @@ import Button from '@/components/Button'
 import LoginModal from '@/components/LoginModal/LoginModal'
 
 const LoggedInButtonPopUp = () => {
-  const { isAuthenticated, enableWeb3, isWeb3Enabled, logout, user } =
-    useMoralis()
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const { switchNetwork, chain } = useChain()
   const [dismissed, setDismissed] = useState(false)
-  const { data: ensName } = useEnsName({ address: user?.attributes.ethAddress })
-  const { data: ensAvatar } = useEnsAvatar({
-    addressOrName: user?.attributes.ethAddress,
-  })
   const router = useRouter()
   const [modalOpened, setModalOpened] = useState(false)
+  const [isAuthenticated] = useState(false)
 
   useEffect(() => {
     if (isAuthenticated) {
       setModalOpened(false)
     }
   }, [isAuthenticated, setModalOpened])
-
-  useEffect(() => {
-    if (user) {
-      if (!loading) {
-        if (!isWeb3Enabled) {
-          setLoading(true)
-          enableWeb3({
-            chainId: 80001,
-          })
-            .then((resp) => {
-              setLoading(false)
-            })
-            .catch((e) => {
-              setError(e)
-              setLoading(false)
-            })
-        } else if (chain?.networkId !== 80001) {
-          // setLoading(true)
-          // setError(new Error('Switching network to Polygon Mumbai'))
-          // switchNetwork('0x13801').catch(console.error)
-          // setLoading(false)
-          if (!dismissed && !error) {
-            setError(new Error('Switch to Polygon Mumbai'))
-          }
-        }
-      }
-    }
-  }, [switchNetwork, chain, enableWeb3, isWeb3Enabled])
 
   return (
     <>
@@ -101,9 +64,9 @@ const LoggedInButtonPopUp = () => {
                           active ? 'bg-neutral-100' : '',
                           'block w-full px-4 py-2 text-left text-sm text-neutral-700'
                         )}
-                        onClick={async () => await router.push('/my-blocks')}
+                        onClick={async () => await router.push('/collection')}
                       >
-                        My Blocks
+                        Collection
                       </button>
                     )}
                   </Menu.Item>

@@ -38,8 +38,6 @@
     "ethers": "^5.7.1",
     "focus-visible": "^5.2.0",
     "framer-motion": "^7.3.5",
-    "moralis": "^2.4.0",
-    "moralis-v1": "^1.11.0",
     "multihashes": "^4.0.3",
     "next": "^12.3.0",
     "react": "^18.2.0",
@@ -47,12 +45,9 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-jazzicon": "^1.0.4",
-    "react-moralis": "^1.4.2",
     "shortid": "^2.2.16",
     "tailwindcss": "^3.1.8",
-    "use-debounce": "^8.0.4",
-    "wagmi": "^0.6.6",
-    "web3.storage": "^4.4.0"
+    "use-debounce": "^8.0.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",

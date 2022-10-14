@@ -1,21 +1,13 @@
-import { useMoralis } from 'react-moralis'
 import Image from 'next/future/image'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
 import logoMetaMask from '@/assets/metamask.svg'
 
 const MetaMaskButton = () => {
-  const { authenticate } = useMoralis()
-
   return (
     <button
       className="block w-full hover:bg-neutral-50"
-      onClick={async () =>
-        await authenticate({
-          signingMessage: 'Authorize linking of your wallet',
-          chainId: 80001,
-        })
-      }
+      onClick={async () => {}}
     >
       <div className="flex items-center px-4 py-4 sm:px-6">
         <div className="flex min-w-0 flex-1 items-center">
