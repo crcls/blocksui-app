@@ -178,4 +178,4 @@ Licensed under the [MIT License](./LICENSE).
 
 ## 💜 Thanks
 
-Thanks go out to all of the many sponsors, [Filecoin](https://filecoin.io/)
+Thanks go out to all of the many sponsors.
