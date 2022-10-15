@@ -1,31 +1,31 @@
 import Image from 'next/future/image'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
-import logoMetaMask from '@/assets/metamask.svg'
+import logoCoinbase from '@/assets/coinbase-wallet-logo.svg'
 import useAccount from '@/hooks/use-account'
 import { Wallets } from '@/context/AccountContext'
 
-const MetaMaskButton = () => {
+const CoinbaseButton = () => {
   const { signIn } = useAccount()
 
   return (
     <button
       className="block w-full hover:bg-neutral-50"
-      onClick={() => signIn(Wallets.metamask)}
+      onClick={() => signIn(Wallets.coinbase)}
     >
       <div className="flex items-center px-4 py-4 sm:px-6">
         <div className="flex min-w-0 flex-1 items-center">
           <div className="flex-shrink-0">
             <Image
               className="h-12 w-12 rounded-full"
-              src={logoMetaMask}
+              src={logoCoinbase}
               alt=""
             />
           </div>
           <div className="min-w-0 flex-1 px-4 text-left md:grid md:grid-cols-2 md:gap-4">
             <div>
               <p className="truncate text-sm font-medium text-neutral-600">
-                MetaMask
+                Coinbase
               </p>
             </div>
           </div>
@@ -41,4 +41,4 @@ const MetaMaskButton = () => {
   )
 }
 
-export default MetaMaskButton
+export default CoinbaseButton

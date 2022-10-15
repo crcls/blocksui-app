@@ -41,7 +41,7 @@ const navigation = [
 ]
 const userNavigation = [
   { name: 'Profile', href: '/profile' },
-  { name: 'My Blocks', href: '/my-blocks' },
+  { name: 'Collection', href: '/collection' },
   { name: 'Disconnect', href: '#' },
 ]
 const elements = [
@@ -372,7 +372,7 @@ const Editor: NextPage = () => {
                               <button
                                 type="button"
                                 className="relative inline-flex items-center rounded-l-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-black hover:bg-neutral-50 focus:z-10 focus:border-neutral-600 focus:outline-none focus:ring-1 focus:ring-neutral-600"
-                                onClick={() => router.push('/my-blocks')}
+                                onClick={() => router.push('/collection')}
                               >
                                 <ArrowUturnLeftIcon
                                   className="mr-2.5 h-5 w-5 text-neutral-400"

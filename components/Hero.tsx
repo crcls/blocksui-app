@@ -8,9 +8,7 @@ import Button from '@/components/Button'
 import logoFilecoin from '@/assets/filecoin.svg'
 import logoIpfs from '@/assets/ipfs.svg'
 import logoLitProtocol from '@/assets/lit-protocol.svg'
-import logoMoralis from '@/assets/moralis.svg'
 import logoPolygon from '@/assets/polygon.svg'
-import logoWeb3Storage from '@/assets/web3-storage.svg'
 
 const BackgroundIllustration = (props: any) => {
   const id = useId()
@@ -117,9 +115,7 @@ const Hero: FC = () => {
                 ['Filecoin', logoFilecoin],
                 ['IPFS', logoIpfs],
                 ['Lit Protocol', logoLitProtocol],
-                ['Moralis', logoMoralis],
                 ['Polygon', logoPolygon],
-                ['Web3 Storage', logoWeb3Storage],
               ].map(([name, logo, className]) => (
                 <li className={clsx('flex', className)} key={name}>
                   <Image alt={name} className="h-8 w-auto" src={logo} />

@@ -1,4 +1,4 @@
-import { FC, Fragment, useCallback, useState, useEffect } from 'react'
+import { FC, Fragment, useState, useEffect } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import {
@@ -11,16 +11,12 @@ import {
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import clsx from 'clsx'
-import { useWeb3Contract } from 'react-moralis'
 import { BigNumber } from 'ethers'
 
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-import useContracts from '../hooks/use-contracts'
-import useIPFS from '../hooks/use-ipfs'
-import { resolver } from '../utils/async'
-import { uint8ToStr, readFile } from '../utils/bytes'
+import useContracts from '@/hooks/use-contracts'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -48,11 +44,6 @@ const filters = [
   },
 ]
 
-function ipfsToHttp(ipfs?: string): string {
-  if (!ipfs) return ''
-  return `https://ipfs.io/ipfs/${ipfs.split('//')[1]}`
-}
-
 interface ListingBase {
   licensable: boolean
   metaDataURI: string
@@ -68,64 +59,9 @@ interface Listing extends ListingBase {
   name?: string
 }
 
-const ListingItems: FC<{ address: string; abi: any }> = ({ address, abi }) => {
-  const [listings, setListings] = useState<Listing[]>([])
-  const [error, setError] = useState<Error | null>(null)
-  const { getWeb3Storage } = useIPFS()
-  const { data, runContractFunction, isLoading } = useWeb3Contract({
-    abi,
-    contractAddress: address,
-    functionName: 'getListings',
-    params: {
-      amount: 25,
-      page: 0, // TODO: add pagination
-    },
-  })
-
-  const resolveMetadata = useCallback(
-    async (items: ListingBase[]): Promise<Listing[]> => {
-      const result = items.reduce<Promise<any[]>>(async (memo, listing) => {
-        if (listing.owner === '0x0000000000000000000000000000000000000000')
-          return await Promise.resolve(memo)
-
-        const cid = listing.metaDataURI.split('//')[1].split('/')[0]
-        const [err, files] = await resolver(getWeb3Storage(cid))
-
-        if (err !== undefined || files === undefined) {
-          throw new Error('Failed to fetch metadata')
-        }
-
-        const data = new Uint8Array(await readFile(files[0]))
-        const json = uint8ToStr(data, 'utf8')
-        const metadata = JSON.parse(json)
-
-        return await Promise.resolve([
-          ...(await memo),
-          {
-            ...listing,
-            ...metadata,
-          },
-        ])
-      }, Promise.resolve([]))
-
-      return await result
-    },
-    [getWeb3Storage]
-  )
-
-  useEffect(() => {
-    if (data === null && !isLoading) {
-      runContractFunction()
-        .then(async (data) => {
-          if (data) {
-            resolveMetadata(data as ListingBase[])
-              .then(setListings)
-              .catch(setError)
-          }
-        })
-        .catch(setError)
-    }
-  }, [resolveMetadata, data, runContractFunction, isLoading])
+const ListingItems: FC<{ address: string; abi: Record<string, any> }> = () => {
+  const [listings] = useState<Listing[]>([])
+  const [error] = useState<Error | null>(null)
 
   if (error) {
     return <p>{error.message}</p>
@@ -134,9 +70,7 @@ const ListingItems: FC<{ address: string; abi: any }> = ({ address, abi }) => {
   return (
     <>
       {listings.length === 0 && (
-        <p className="mt-1 text-sm text-neutral-500">
-          Please sign in to view the Block listings.
-        </p>
+        <p className="mt-1 text-sm text-neutral-500">No listings yet...</p>
       )}
       {listings.map((listing, i) => (
         <a
@@ -146,7 +80,7 @@ const ListingItems: FC<{ address: string; abi: any }> = ({ address, abi }) => {
         >
           <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-neutral-100 group-hover:opacity-75">
             <img
-              src={ipfsToHttp(listing.image)}
+              src={listing.image}
               alt={listing.name}
               className="h-full w-full object-cover object-center"
             />

@@ -33,6 +33,7 @@ module.exports = {
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/triple-slash-reference': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     'jsx-a11y/no-redundant-roles': 'off',
     'no-unneeded-ternary': 'off',
     'react/react-in-jsx-scope': 'off',

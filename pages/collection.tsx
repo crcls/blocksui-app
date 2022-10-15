@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 
 import { XMarkIcon } from '@heroicons/react/24/outline'
@@ -10,12 +10,9 @@ import {
   Squares2X2Icon,
 } from '@heroicons/react/20/solid'
 import type { NextPage } from 'next'
-import { useMoralis } from 'react-moralis'
-import axios, { type Method } from 'axios'
 import Head from 'next/head'
 import clsx from 'clsx'
 
-import useContracts from '@/hooks/use-contracts'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -45,53 +42,10 @@ const filters = [
   },
 ]
 
-const MyBlocks: NextPage = () => {
+const Collection: NextPage = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-  const { contractsLoaded, getContractABI } = useContracts()
-  const { user } = useMoralis()
-  const [myBlocks, setMyBlocks] = useState([])
+  const [blocks] = useState([])
 
-  useEffect(() => {
-    if (contractsLoaded) {
-      try {
-        const config = getContractABI('BUIBlockNFT')
-        const { address } = config
-        const ethAddress = user?.attributes.ethAddress
-        // const ethAddress = '0xC72e1e431F932Ab50113701b3c6b2069311700d6'
-        const options = {
-          method: 'GET' as Method,
-          url: `https://deep-index.moralis.io/api/v2/${ethAddress}/nft`,
-          params: {
-            chain: 'mumbai',
-            format: 'decimal',
-            token_addresses: address,
-          },
-          headers: {
-            accept: 'application/json',
-            'X-API-Key':
-              'I7PZ60blQCCrs744vJOWJBEar8NxLVpWShGa5jjnIZMEzQHx2MRORmwLra7CQjaQ',
-          },
-        }
-
-        axios
-          .request(options)
-          .then(function (response: any) {
-            const filteredAndParsed = response.data.result
-              .filter((res: any) => res.metadata)
-              .map((element: any) => {
-                return { ...element, metadata: JSON.parse(element.metadata) }
-              })
-
-            setMyBlocks(filteredAndParsed)
-          })
-          .catch(function (error) {
-            console.error(error)
-          })
-      } catch (e) {
-        console.log('error', e)
-      }
-    }
-  }, [contractsLoaded, getContractABI])
   return (
     <>
       <Head>
@@ -219,7 +173,7 @@ const MyBlocks: NextPage = () => {
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-baseline justify-between border-b border-neutral-200 pt-24 pb-6">
           <h1 className="text-4xl font-medium tracking-tight text-black">
-            My Blocks
+            Collection
           </h1>
           <div className="flex items-center">
             <Menu as="div" className="relative inline-block text-left">
@@ -358,9 +312,9 @@ const MyBlocks: NextPage = () => {
               ))}
             </form>
             <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:col-span-3 lg:gap-x-8">
-              {myBlocks.length !== 0 && (
+              {blocks.length !== 0 && (
                 <>
-                  {myBlocks.map((block: any) => (
+                  {blocks.map((block: any) => (
                     <button
                       key={block.token_id}
                       className="group text-left text-sm"
@@ -394,4 +348,4 @@ const MyBlocks: NextPage = () => {
   )
 }
 
-export default MyBlocks
+export default Collection

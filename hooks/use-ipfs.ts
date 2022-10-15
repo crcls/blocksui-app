@@ -1,47 +1,15 @@
 import { useCallback, useContext } from 'react'
-import { Web3File } from 'web3.storage'
 
 import { GlobalContext } from '../context/GlobalContext'
-import IPFSContext from '../context/IPFSContext'
+// import IPFSContext from '../context/IPFSContext'
 import { resolver } from '../utils/async'
 
 export interface IPFSHookValue {
   addIPFS: (name: string, file: Uint8Array) => Promise<string>
-  addWeb3Storage: (files: File[]) => Promise<string>
-  getWeb3Storage: (cid: string) => Promise<any>
 }
 
 const useIPFS = (): IPFSHookValue => {
   const { apiHost } = useContext(GlobalContext)
-  const { w3sClient } = useContext(IPFSContext)
-
-  const getWeb3Storage = useCallback(
-    async (cid: string): Promise<Web3File[]> => {
-      if (w3sClient === null) {
-        throw new Error('web3.storage client not found')
-      }
-
-      const [err, res] = await resolver(w3sClient.get(cid))
-      if (err !== undefined || !res?.ok) {
-        throw new Error(err ? err.message : 'Response not OK.')
-      }
-
-      const files = await res.files()
-      return files
-    },
-    [w3sClient]
-  )
-
-  const addWeb3Storage = useCallback(
-    async (files: File[]): Promise<string> => {
-      if (w3sClient === null) {
-        throw new Error('web3.storage client not found')
-      }
-
-      return await w3sClient.put(files)
-    },
-    [w3sClient]
-  )
 
   const addIPFS = useCallback(
     async (name: string, file: Uint8Array): Promise<string> => {
@@ -68,8 +36,6 @@ const useIPFS = (): IPFSHookValue => {
 
   return {
     addIPFS,
-    addWeb3Storage,
-    getWeb3Storage,
   }
 }
 
