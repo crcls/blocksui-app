@@ -9,23 +9,36 @@ import { XMarkIcon } from '@heroicons/react/20/solid'
 
 import Button from '@/components/Button'
 import LoginModal from '@/components/LoginModal/LoginModal'
+import useAccount from '@/hooks/use-account'
 
 const LoggedInButtonPopUp = () => {
   const [error, setError] = useState<Error | null>(null)
   const [dismissed, setDismissed] = useState(false)
   const router = useRouter()
   const [modalOpened, setModalOpened] = useState(false)
-  const [isAuthenticated] = useState(false)
+  const { account, signOut } = useAccount()
+  const [ensName, setEnsName] = useState('')
+  const [ensAvatar, setEnsAvatar] = useState('')
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (account) {
       setModalOpened(false)
+
+      account.name().then(async (name) => {
+        setEnsName(name)
+
+        const avatar = await account.ensAvatar()
+        setEnsAvatar(avatar)
+      })
+    } else {
+      setEnsName(null)
+      setEnsAvatar(null)
     }
-  }, [isAuthenticated, setModalOpened])
+  }, [account, setModalOpened])
 
   return (
     <>
-      {isAuthenticated ? (
+      {account ? (
         <div className="flex items-center space-x-8">
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-offset-2">
@@ -77,7 +90,7 @@ const LoggedInButtonPopUp = () => {
                           active ? 'bg-neutral-100' : '',
                           'block w-full px-4 py-2 text-left text-sm text-neutral-700'
                         )}
-                        onClick={logout}
+                        onClick={signOut}
                       >
                         Disconnect
                       </button>

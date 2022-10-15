@@ -1,5 +1,12 @@
+const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '.env') })
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    ALCHEMY_ID: process.env.ALCHEMY_ID,
+    INFURA_ID: process.env.INFURA_ID,
+  },
   exportPathMap: async function (
     defaultPathMap,
     { dev, dir, outDir, distDir, buildId }

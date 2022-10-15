@@ -1,3 +1,7 @@
+# ⚠️ WIP: This project is being actively worked on.👷
+
+Please see the [Contributing Guide](#-contributing) below.
+
 <p align="center">
   <a href="https://blocksui.xyz/">
     <img alt="Blocks UI Protocol" src="assets/blocksui.png" width="320" />
