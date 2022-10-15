@@ -3,16 +3,22 @@ import {
   WebSocketProvider,
   Web3Provider as W3Provider,
 } from '@ethersproject/providers'
+import { IEthereumProvider } from 'eip1193-provider'
 
 export interface AlchemyEnhancedApiProvider {
   send: (method: string, params?: { [param: string]: any }) => Promise<Object>
 }
 
-interface GasRates {
+export interface GasRates {
   date: number
   ethUsd: number
   fast: number
   limit: number
+}
+
+export interface NativeProvider extends IEthereumProvider {
+  isMetaMask?: boolean
+  isCoinbaseWallet?: boolean
 }
 
 export enum Networks {

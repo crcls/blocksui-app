@@ -59,7 +59,7 @@ interface Listing extends ListingBase {
   name?: string
 }
 
-const ListingItems: FC<> = () => {
+const ListingItems: FC<{ address: string; abi: Record<string, any> }> = () => {
   const [listings] = useState<Listing[]>([])
   const [error] = useState<Error | null>(null)
 

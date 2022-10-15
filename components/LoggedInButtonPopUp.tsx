@@ -17,14 +17,14 @@ const LoggedInButtonPopUp = () => {
   const router = useRouter()
   const [modalOpened, setModalOpened] = useState(false)
   const { account, signOut } = useAccount()
-  const [ensName, setEnsName] = useState('')
-  const [ensAvatar, setEnsAvatar] = useState('')
+  const [ensName, setEnsName] = useState<string | null>(null)
+  const [ensAvatar, setEnsAvatar] = useState<string | null>(null)
 
   useEffect(() => {
     if (account) {
       setModalOpened(false)
 
-      account.name().then(async (name) => {
+      account.name().then(async (name: string) => {
         setEnsName(name)
 
         const avatar = await account.ensAvatar()

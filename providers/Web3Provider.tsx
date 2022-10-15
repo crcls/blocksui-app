@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import * as ethers from 'ethers'
 import {
   WebSocketProvider,
@@ -45,7 +45,7 @@ export function initWalletConnectProvider(network: Networks): W3Provider {
   return new ethers.providers.Web3Provider(provider)
 }
 
-const Web3Provider: FC = ({ children }) => {
+const Web3Provider: FC<{ children: ReactNode }> = ({ children }) => {
   const [network, setNetwork] = useState<Networks | undefined>()
   const [fetchingGasRates, setFetchingGasRates] = useState(false)
   // Use this for API calls

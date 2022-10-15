@@ -1,8 +1,10 @@
 import { createContext } from 'react'
 import { IEthereumProvider, RequestArguments } from 'eip1193-provider'
 import { Signer } from '@ethersproject/abstract-signer'
+import { Provider } from '@ethersproject/abstract-provider'
 import { Deferrable, defineReadOnly } from '@ethersproject/properties'
 import {
+  BaseProvider,
   TransactionRequest,
   TransactionResponse,
 } from '@ethersproject/providers'
@@ -19,28 +21,34 @@ export interface EthProvider extends IEthereumProvider {
   disconnect?: () => void
 }
 
-export class Account implements Signer {
+export class Account extends Signer {
+  _address: string
+  _signer: Signer
+
+  private _ensname: string | null = null
+  private _ensavatar: string | null = null
+
   constructor(address: string, signer: Signer) {
-    defineReadOnly(this, '_isSigner', true)
+    super()
+    this._address = address
+    this._signer = signer
     defineReadOnly(this, '_address', address)
     defineReadOnly(this, '_signer', signer)
   }
 
-  connect() {
+  connect(provider: Provider): Signer {
     throw new Error('Changing providers is not supported.')
   }
 
-  get shortAddress(): string | undefined {
-    if (this._address) {
-      return (
-        this._address.substring(0, 4) +
-        '...' +
-        this._address.substring(this._address.length - 4)
-      )
-    }
+  get shortAddress(): string {
+    return (
+      this._address.substring(0, 4) +
+      '...' +
+      this._address.substring(this._address.length - 4)
+    )
   }
 
-  async name(): string {
+  async name(): Promise<string> {
     const ens = await this.ensName()
 
     if (ens === null) {
@@ -50,26 +58,28 @@ export class Account implements Signer {
     return ens
   }
 
-  async ensName(): string {
-    if (this._ensname === undefined) {
+  async ensName(): Promise<string> {
+    if (this._ensname === null && this._signer?.provider) {
       this._ensname = await this._signer.provider.lookupAddress(this._address)
     }
 
-    return this._ensname
+    return this._ensname || ''
   }
 
-  async ensAvatar(): string {
-    if (this._ensavatar === undefined) {
+  async ensAvatar(): Promise<string> {
+    if (this._ensavatar === null && this._signer?.provider) {
       const name = await this.ensName()
 
       if (name === null) {
         return ''
       }
 
-      this._ensavatar = await this._signer.provider.getAvatar(name)
+      this._ensavatar = await (this._signer.provider as BaseProvider).getAvatar(
+        name
+      )
     }
 
-    return this._ensavatar
+    return this._ensavatar || ''
   }
 
   async getAddress(): Promise<string> {
@@ -79,15 +89,15 @@ export class Account implements Signer {
   async sendTransaction(
     transaction: Deferrable<TransactionRequest>
   ): Promise<TransactionResponse> {
-    return this._signer.sendTransaction(transaction)
+    return await this._signer.sendTransaction(transaction)
   }
 
   async signMessage(message: string): Promise<string> {
-    return this._signer.signMessage(message)
+    return await this._signer.signMessage(message)
   }
 
   async signTransaction(tx: TransactionRequest): Promise<string> {
-    return this._signer.signTransactions(tx)
+    return await this._signer.signTransaction(tx)
   }
 }
 
@@ -99,4 +109,4 @@ export interface AccountContextType {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-export default createContext<ContractsContextType | Record<string, any>>(null!)
+export default createContext<AccountContextType | Record<string, any>>(null!)
