@@ -12,11 +12,12 @@ import LoginModal from '@/components/LoginModal/LoginModal'
 import useAccount from '@/hooks/use-account'
 
 const LoggedInButtonPopUp = () => {
+  const router = useRouter()
+  const { account, signOut } = useAccount()
+
   const [error, setError] = useState<Error | null>(null)
   const [dismissed, setDismissed] = useState(false)
-  const router = useRouter()
   const [modalOpened, setModalOpened] = useState(false)
-  const { account, signOut } = useAccount()
   const [accountName, setAccountName] = useState<string | null>(null)
   const [ensAvatar, setEnsAvatar] = useState<string | null>(null)
 
@@ -26,16 +27,12 @@ const LoggedInButtonPopUp = () => {
       account
         .getChainId()
         .then((network: number) => {
-          if (network <= 5) {
-            account.name().then(async (name: string) => {
-              setAccountName(name)
+          account.name().then(async (name: string) => {
+            setAccountName(name)
 
-              const avatar = await account.ensAvatar()
-              setEnsAvatar(avatar)
-            })
-          } else {
-            setAccountName(account.shortAddress)
-          }
+            const avatar = await account.ensAvatar()
+            setEnsAvatar(avatar)
+          })
         })
         .catch(console.error)
     } else {
@@ -63,7 +60,7 @@ const LoggedInButtonPopUp = () => {
               ) : (
                 <Jazzicon
                   diameter={32}
-                  seed={jsNumberForAddress(accountName || '')}
+                  seed={jsNumberForAddress(account.address!)}
                 />
               )}
             </Menu.Button>

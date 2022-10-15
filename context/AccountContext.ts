@@ -24,16 +24,19 @@ export interface EthProvider extends IEthereumProvider {
 export class Account extends Signer {
   _address: string
   _signer: Signer
+  _ethProvider: BaseProvider
 
   private _ensname: string | null = null
   private _ensavatar: string | null = null
 
-  constructor(address: string, signer: Signer) {
+  constructor(address: string, signer: Signer, ethProvider: BaseProvider) {
     super()
     this._address = address
     this._signer = signer
+    this._ethProvider = ethProvider
     defineReadOnly(this, '_address', address)
     defineReadOnly(this, '_signer', signer)
+    defineReadOnly(this, '_ethProvider', ethProvider)
   }
 
   connect(provider: Provider): Signer {
@@ -48,10 +51,14 @@ export class Account extends Signer {
     )
   }
 
+  get address(): string {
+    return this._address
+  }
+
   async name(): Promise<string> {
     const ens = await this.ensName()
 
-    if (ens === null) {
+    if (ens === null || ens === '') {
       return this.shortAddress
     }
 
@@ -59,24 +66,22 @@ export class Account extends Signer {
   }
 
   async ensName(): Promise<string> {
-    if (this._ensname === null && this._signer?.provider) {
-      this._ensname = await this._signer.provider.lookupAddress(this._address)
+    if (this._ensname === null) {
+      this._ensname = await this._ethProvider.lookupAddress(this._address)
     }
 
     return this._ensname || ''
   }
 
   async ensAvatar(): Promise<string> {
-    if (this._ensavatar === null && this._signer?.provider) {
+    if (this._ensavatar === null) {
       const name = await this.ensName()
 
       if (name === null) {
         return ''
       }
 
-      this._ensavatar = await (this._signer.provider as BaseProvider).getAvatar(
-        name
-      )
+      this._ensavatar = await this._ethProvider.getAvatar(name)
     }
 
     return this._ensavatar || ''

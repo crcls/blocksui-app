@@ -14,8 +14,13 @@ import { resolver } from '@/utils/async'
 import useWeb3 from '@/hooks/use-web3'
 
 const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { metamaskProvider, coinbaseProvider, walletConnectProvider, network } =
-    useWeb3()
+  const {
+    alchemyWsProvider,
+    metamaskProvider,
+    coinbaseProvider,
+    walletConnectProvider,
+    network,
+  } = useWeb3()
   const [account, setAccount] = useState<Account | null>(null)
   const [provider, setProvider] = useState<EthProvider | null>(null)
   const [signer, setSigner] = useState<Signer | null>(null)
@@ -70,7 +75,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
       return
     }
 
-    const newAccount = new Account(addresses[0], newSigner)
+    const newAccount = new Account(addresses[0], newSigner, alchemyWsProvider)
 
     setAccount(newAccount)
     setProvider(newProvider)
@@ -96,7 +101,11 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
       if (err || addresses === undefined) return
 
-      const newAccount = new Account(addresses[0], newProvider.getSigner())
+      const newAccount = new Account(
+        addresses[0],
+        newProvider.getSigner(),
+        alchemyWsProvider
+      )
 
       setAccount(newAccount)
       setProvider(newProvider.provider as EthProvider)
@@ -118,7 +127,8 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
         if (accounts.length) {
           const newAccount = new Account(
             accounts[0],
-            new ethers.providers.Web3Provider(provider).getSigner()
+            new ethers.providers.Web3Provider(provider).getSigner(),
+            alchemyWsProvider
           )
           setAccount(newAccount)
         } else {
