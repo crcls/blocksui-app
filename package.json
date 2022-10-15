@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "next build && next export",
-    "dev": "next dev",
+    "dev": "NODE_ENV=development next dev",
     "format": "prettier --write \"**/*.{cjs,css,js,json,jsx,md,mjs,scss,ts,tsx,yml}\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

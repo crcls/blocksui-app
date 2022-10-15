@@ -17,21 +17,29 @@ const LoggedInButtonPopUp = () => {
   const router = useRouter()
   const [modalOpened, setModalOpened] = useState(false)
   const { account, signOut } = useAccount()
-  const [ensName, setEnsName] = useState<string | null>(null)
+  const [accountName, setAccountName] = useState<string | null>(null)
   const [ensAvatar, setEnsAvatar] = useState<string | null>(null)
 
   useEffect(() => {
     if (account) {
       setModalOpened(false)
+      account
+        .getChainId()
+        .then((network: number) => {
+          if (network <= 5) {
+            account.name().then(async (name: string) => {
+              setAccountName(name)
 
-      account.name().then(async (name: string) => {
-        setEnsName(name)
-
-        const avatar = await account.ensAvatar()
-        setEnsAvatar(avatar)
-      })
+              const avatar = await account.ensAvatar()
+              setEnsAvatar(avatar)
+            })
+          } else {
+            setAccountName(account.shortAddress)
+          }
+        })
+        .catch(console.error)
     } else {
-      setEnsName(null)
+      setAccountName(null)
       setEnsAvatar(null)
     }
   }, [account, setModalOpened])
@@ -44,7 +52,7 @@ const LoggedInButtonPopUp = () => {
             <Menu.Button className="flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-offset-2">
               <span className="sr-only">Open user menu</span>
               <span className="px-4 text-sm font-medium text-neutral-900">
-                {ensName}
+                {accountName}
               </span>
               {ensAvatar ? (
                 <Image
@@ -55,7 +63,7 @@ const LoggedInButtonPopUp = () => {
               ) : (
                 <Jazzicon
                   diameter={32}
-                  seed={jsNumberForAddress(ensName || '')}
+                  seed={jsNumberForAddress(accountName || '')}
                 />
               )}
             </Menu.Button>

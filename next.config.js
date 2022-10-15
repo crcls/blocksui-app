@@ -6,6 +6,7 @@ const nextConfig = {
   env: {
     ALCHEMY_ID: process.env.ALCHEMY_ID,
     INFURA_ID: process.env.INFURA_ID,
+    ENV: process.env.NODE_ENV,
   },
   exportPathMap: async function (
     defaultPathMap,

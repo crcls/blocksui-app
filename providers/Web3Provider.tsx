@@ -154,11 +154,11 @@ const Web3Provider: FC<{ children: ReactNode }> = ({ children }) => {
     if (network === undefined) {
       const hostParts = location.host.split('.')
       const subdomain = hostParts.shift() as string
-      let net = Networks.mumbai // TODO: make this configurable
+      let net = Networks.mumbai // TODO: switch to mainnet
 
-      Object.values(Networks).forEach((netId) => {
-        if (Networks[netId as number] === subdomain) net = netId as Networks
-      })
+      if (process.env.ENV === 'development' || subdomain === 'testnets') {
+        net = Networks.mumbai
+      }
 
       setNetwork(net)
     } else {

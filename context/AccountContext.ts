@@ -86,6 +86,10 @@ export class Account extends Signer {
     return this._address
   }
 
+  async getChainId(): Promise<number> {
+    return await this._signer.getChainId()
+  }
+
   async sendTransaction(
     transaction: Deferrable<TransactionRequest>
   ): Promise<TransactionResponse> {
