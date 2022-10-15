@@ -25,14 +25,12 @@ const LoggedInButtonPopUp = () => {
     if (account) {
       setModalOpened(false)
       account
-        .getChainId()
-        .then((network: number) => {
-          account.name().then(async (name: string) => {
-            setAccountName(name)
+        .name()
+        .then(async (name: string) => {
+          setAccountName(name)
 
-            const avatar = await account.ensAvatar()
-            setEnsAvatar(avatar)
-          })
+          const avatar = await account.ensAvatar()
+          setEnsAvatar(avatar)
         })
         .catch(console.error)
     } else {
