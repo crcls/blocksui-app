@@ -18,5 +18,6 @@ export type DragItemProps = {
 export type DragItemWithDropZoneProps = {
   children?: ReactNode
   id?: any
+  showButtons: Boolean
   type: string
 }

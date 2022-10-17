@@ -5,6 +5,7 @@ import {
   DropItemAction,
   DropItemInItemAction,
   GlobalProviderProps,
+  MoveItemAction,
   State,
 } from './types'
 import Reducer from './Reducer'
@@ -19,7 +20,7 @@ const initialState: State = {
 export const GlobalContext = createContext<{
   state: State
   dispatch: React.Dispatch<
-    ConnectWalletAction | DropItemAction | DropItemInItemAction
+    ConnectWalletAction | DropItemAction | DropItemInItemAction | MoveItemAction
   >
   apiHost: string
   web3Token: string

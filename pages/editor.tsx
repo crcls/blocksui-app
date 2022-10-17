@@ -53,12 +53,22 @@ const elements = [
   {
     id: 2,
     name: 'PrimitiveContainer',
-    preview: <DragItemWithDropZone type={PrimitiveTypes.PRIMITIVE_CONTAINER} />,
+    preview: (
+      <DragItemWithDropZone
+        showButtons={false}
+        type={PrimitiveTypes.PRIMITIVE_CONTAINER}
+      />
+    ),
   },
   {
     id: 3,
     name: 'PrimitiveForm',
-    preview: <DragItemWithDropZone type={PrimitiveTypes.PRIMITIVE_FORM} />,
+    preview: (
+      <DragItemWithDropZone
+        showButtons={false}
+        type={PrimitiveTypes.PRIMITIVE_FORM}
+      />
+    ),
   },
   {
     id: 4,
@@ -75,6 +85,7 @@ const elements = [
     name: 'PrimitiveMoonMailConnector',
     preview: (
       <DragItemWithDropZone
+        showButtons={false}
         type={PrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR}
       />
     ),
@@ -88,7 +99,10 @@ const elements = [
     id: 8,
     name: 'PrimitiveTransition',
     preview: (
-      <DragItemWithDropZone type={PrimitiveTypes.PRIMITIVE_TRANSITION} />
+      <DragItemWithDropZone
+        showButtons={false}
+        type={PrimitiveTypes.PRIMITIVE_TRANSITION}
+      />
     ),
   },
 ]

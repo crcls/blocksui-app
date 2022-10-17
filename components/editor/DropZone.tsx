@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import shortid from 'shortid'
+import clsx from 'clsx'
 
 import { PrimitiveTypes } from '@/components/editor/types'
 import DragItem from '@/components/editor/DragItem'
@@ -17,7 +18,11 @@ const primitiveToComponent = (droppedItem: any) => {
     return <DragItem type={droppedItem.type} />
   } else {
     return (
-      <DragItemWithDropZone id={droppedItem.id} type={droppedItem.type}>
+      <DragItemWithDropZone
+        id={droppedItem.id}
+        showButtons={true}
+        type={droppedItem.type}
+      >
         {droppedItem.children.map((droppedItemChild: any, index: any) => (
           <div key={index}>{primitiveToComponent(droppedItemChild)}</div>
         ))}
@@ -37,10 +42,11 @@ const DropZone = () => {
   const { state } = useContext(GlobalContext)
   const { droppedItems } = state
   // eslint-disable-next-line
-  const [{ isOver, isOverCurrent }, drop] = useDrop(
+  const [{ canDrop, isOver, isOverCurrent }, drop] = useDrop(
     () => ({
       accept: ACCEPTS,
       collect: (monitor) => ({
+        canDrop: monitor.canDrop(),
         isOver: monitor.isOver(),
         isOverCurrent: monitor.isOver({ shallow: true }),
       }),
@@ -67,11 +73,13 @@ const DropZone = () => {
     [greedy, setHasDropped, setHasDroppedOnChild]
   )
 
+  const className = clsx(
+    'h-full space-y-2 py-4 sm:space-y-4 sm:px-6 lg:px-8',
+    canDrop && isOverCurrent ? 'bg-green-100' : 'bg-white'
+  )
+
   return (
-    <div
-      className="h-full space-y-2 py-4 sm:space-y-4 sm:px-6 lg:px-8"
-      ref={drop}
-    >
+    <div className={className} ref={drop}>
       {!droppedItems.length && (
         <div className="flex h-full">
           <div className="m-auto text-center">
