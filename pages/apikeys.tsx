@@ -31,11 +31,11 @@ enum ACTION {
   ADD = 'add',
   REMOVE = 'remove',
   UPDATE_KEY = 'update_key',
+  REPLACE = 'replace',
 }
 
 interface Action {
   type: ACTION
-  index: number
 }
 
 interface AddKey extends Action {
@@ -45,22 +45,28 @@ interface AddKey extends Action {
 
 interface UpdateKey extends Action {
   type: ACTION.UPDATE_KEY
+  index: number
   key: string
 }
 
 interface RemoveKey extends Action {
   type: ACTION.REMOVE
+  index: number
 }
 
-type ActionType = AddKey | UpdateKey | RemoveKey
+interface ReplaceKeys extends Action {
+  type: ACTION.REPLACE
+  keys: ApiKey[]
+}
+
+type ActionType = AddKey | UpdateKey | RemoveKey | ReplaceKeys
 
 function reducer(state: ApiKey[], action: ActionType) {
   const newState = [...state]
 
   switch (action.type) {
     case ACTION.ADD: {
-      newState.splice(action.index, 0, action.key)
-      return newState
+      return [action.key, ...newState]
     }
     case ACTION.UPDATE_KEY:
       newState[action.index].key = action.key
@@ -68,6 +74,8 @@ function reducer(state: ApiKey[], action: ActionType) {
     case ACTION.REMOVE:
       newState.splice(action.index, 1)
       return newState
+    case ACTION.REPLACE:
+      return action.keys
     default:
       return state
   }
@@ -101,28 +109,26 @@ const ApiKeys: NextPage = () => {
   const loadOrigins = useCallback(async () => {
     if (contract && !loadingOrigins) {
       setLoadingOrigins(true)
-      const origins = store.get(`origins:${account.address}`, [])
+      const cache = store.get(`origins:${account.address}`, [])
       const domains = await contract.originsForOwner(account.address)
-      domains.forEach((domain: string) => {
+      const origins = domains.map((domain: string) => {
         let key = buildKey(domain)
 
-        for (let i = 0; i < origins.length; i++) {
-          if (origins[i].domain === domain) {
-            key = origins[i]
+        for (let i = 0; i < cache.length; i++) {
+          if (cache[i].domain === domain) {
+            key = cache[i]
             break
           }
         }
 
-        dispatch({
-          type: ACTION.ADD,
-          index: keys.length,
-          key,
-        })
+        return key
       })
+
+      dispatch({ type: ACTION.REPLACE, keys: origins })
       setOriginsLoaded(true)
       setLoadingOrigins(false)
     }
-  }, [account, contract, loadingOrigins, keys])
+  }, [account, contract, loadingOrigins])
 
   const register = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -134,14 +140,26 @@ const ApiKeys: NextPage = () => {
         const domain = formData.get('domain')
         if (domain && domain !== '') {
           try {
-            await contract.register(domain as string)
+            const tx = await contract.register(domain as string)
+            // TODO: add loading states
+            await tx.wait()
             dispatch({
               type: ACTION.ADD,
-              index: 0,
               key: buildKey(domain as string),
             })
           } catch (e) {
-            setError(e as Error)
+            let msg =
+              e instanceof Error
+                ? e.message
+                : 'Transaction reverted. There was an error'
+
+            if (msg.includes('This origin is already registered')) {
+              msg = 'This origin is already registered'
+            } else if (msg.includes('user rejected transaction')) {
+              msg = 'Transaction rejected'
+            }
+
+            setError(new Error(msg))
           }
         }
       }
@@ -150,7 +168,7 @@ const ApiKeys: NextPage = () => {
   )
 
   useEffect(() => {
-    if (account && contractsLoaded) {
+    if (contract === undefined && account && contractsLoaded) {
       try {
         const contract = getContract('BUIOriginRegistry', account.signer)
         setContract(contract)
@@ -159,13 +177,13 @@ const ApiKeys: NextPage = () => {
         console.log(e)
       }
     }
-  }, [contractsLoaded, getContract, account])
+  }, [contract, contractsLoaded, getContract, account])
 
   useEffect(() => {
-    if (contract) {
+    if (account && contract) {
       loadOrigins().catch(console.error)
     }
-  }, [contract, loadOrigins])
+  }, [account, contract])
 
   useEffect(() => {
     if (account && originsLoaded) {
@@ -190,7 +208,6 @@ const ApiKeys: NextPage = () => {
           <h2 id="products-heading" className="sr-only">
             Products
           </h2>
-          {error?.message}
           <form onSubmit={register} className="display-flex px">
             <input
               className="flex-inline mr-2 rounded-lg"
@@ -205,6 +222,9 @@ const ApiKeys: NextPage = () => {
               Register a new domain
             </button>
           </form>
+          {error !== null && (
+            <p className="mt text-sm text-red-500">{error.message}</p>
+          )}
           <div className="mt-6 border-t">
             <ul>
               {keys.length === 0 && (

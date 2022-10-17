@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from 'react'
+import { FC, useCallback, ReactNode, useEffect, useState } from 'react'
 import { Signer } from '@ethersproject/abstract-signer'
 import WalletConnectProvider from '@walletconnect/ethereum-provider'
 import { Web3Provider as W3Provider } from '@ethersproject/providers'
@@ -26,7 +26,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [signer, setSigner] = useState<Signer | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     if (provider !== null) {
       if (provider.disconnect !== undefined) {
         provider.disconnect()
@@ -39,80 +39,99 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     setAccount(null)
     setSigner(null)
-  }
+  }, [provider])
 
-  const signIn = async (wallet: keyof typeof Wallets) => {
-    let newProvider: EthProvider
-    let newSigner: Signer
+  const signIn = useCallback(
+    async (wallet: keyof typeof Wallets) => {
+      let newProvider: EthProvider
+      let newSigner: Signer
 
-    if (
-      wallet === Wallets.walletconnect &&
-      walletConnectProvider !== undefined
-    ) {
-      try {
-        await (walletConnectProvider.provider as WalletConnectProvider).enable()
-      } catch (e) {
-        // TODO: show toast alert
-        console.log(e)
+      if (
+        wallet === Wallets.walletconnect &&
+        walletConnectProvider !== undefined
+      ) {
+        try {
+          await (
+            walletConnectProvider.provider as WalletConnectProvider
+          ).enable()
+        } catch (e) {
+          // TODO: show toast alert
+          console.log(e)
+        }
+        newProvider = walletConnectProvider.provider as EthProvider
+        newSigner = walletConnectProvider.getSigner()
+      } else if (
+        wallet === Wallets.metamask &&
+        metamaskProvider !== undefined
+      ) {
+        newProvider = metamaskProvider.provider as EthProvider
+        newSigner = metamaskProvider.getSigner()
+      } else if (
+        wallet === Wallets.coinbase &&
+        coinbaseProvider !== undefined
+      ) {
+        newProvider = coinbaseProvider.provider as EthProvider
+        newSigner = coinbaseProvider.getSigner()
+      } else {
+        throw new Error('Wallet not supported')
       }
-      newProvider = walletConnectProvider.provider as EthProvider
-      newSigner = walletConnectProvider.getSigner()
-    } else if (wallet === Wallets.metamask && metamaskProvider !== undefined) {
-      newProvider = metamaskProvider.provider as EthProvider
-      newSigner = metamaskProvider.getSigner()
-    } else if (wallet === Wallets.coinbase && coinbaseProvider !== undefined) {
-      newProvider = coinbaseProvider.provider as EthProvider
-      newSigner = coinbaseProvider.getSigner()
-    } else {
-      throw new Error('Wallet not supported')
-    }
 
-    const [error, addresses] = await resolver<string[]>(
-      newProvider.request<string[]>({ method: 'eth_requestAccounts' })
-    )
+      const [error, addresses] = await resolver<string[]>(
+        newProvider.request<string[]>({ method: 'eth_requestAccounts' })
+      )
 
-    if (error || addresses === undefined) {
-      console.error(error || 'No addresses')
-      return
-    }
+      if (error || addresses === undefined) {
+        console.error(error || 'No addresses')
+        return
+      }
 
-    const newAccount = new Account(addresses[0], newSigner, alchemyWsProvider)
+      const newAccount = new Account(addresses[0], newSigner, alchemyWsProvider)
 
-    setAccount(newAccount)
-    setProvider(newProvider)
-    setSigner(newSigner)
-  }
+      setAccount(newAccount)
+      setProvider(newProvider)
+      setSigner(newSigner)
+    },
+    [
+      walletConnectProvider,
+      metamaskProvider,
+      coinbaseProvider,
+      alchemyWsProvider,
+    ]
+  )
 
-  const initState = async (newProvider: W3Provider) => {
-    const [error, accounts] = await resolver(
-      (newProvider.provider as EthProvider).request({
-        method: 'eth_accounts',
-      })
-    )
-
-    if (error || accounts === undefined) {
-      console.error(error?.message)
-      // Probably don't need to do anything here.
-    } else if ((accounts as string[]).length) {
-      const [err, addresses] = await resolver<string[]>(
+  const initState = useCallback(
+    async (newProvider: W3Provider) => {
+      const [error, accounts] = await resolver(
         (newProvider.provider as EthProvider).request({
-          method: 'eth_requestAccounts',
+          method: 'eth_accounts',
         })
       )
 
-      if (err || addresses === undefined) return
+      if (error || accounts === undefined) {
+        console.error(error?.message)
+        // Probably don't need to do anything here.
+      } else if ((accounts as string[]).length) {
+        const [err, addresses] = await resolver<string[]>(
+          (newProvider.provider as EthProvider).request({
+            method: 'eth_requestAccounts',
+          })
+        )
 
-      const newAccount = new Account(
-        addresses[0],
-        newProvider.getSigner(),
-        alchemyWsProvider
-      )
+        if (err || addresses === undefined) return
 
-      setAccount(newAccount)
-      setProvider(newProvider.provider as EthProvider)
-      setSigner(newProvider.getSigner())
-    }
-  }
+        const newAccount = new Account(
+          addresses[0],
+          newProvider.getSigner(),
+          alchemyWsProvider
+        )
+
+        setAccount(newAccount)
+        setProvider(newProvider.provider as EthProvider)
+        setSigner(newProvider.getSigner())
+      }
+    },
+    [alchemyWsProvider]
+  )
 
   useEffect(() => {
     const newProvider = metamaskProvider || coinbaseProvider
@@ -124,7 +143,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
         })
         .catch(console.error)
     }
-  }, [account, metamaskProvider, coinbaseProvider])
+  }, [account, metamaskProvider, coinbaseProvider, initState])
 
   useEffect(() => {
     if (provider && network) {
@@ -159,7 +178,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
         provider.removeListener('chainChanged', updateChain)
       }
     }
-  }, [provider, network, signOut])
+  }, [provider, network, signOut, alchemyWsProvider])
 
   return (
     <AccountContext.Provider
