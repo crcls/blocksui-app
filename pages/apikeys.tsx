@@ -146,7 +146,7 @@ const ApiKeys: NextPage = () => {
         }
       }
     },
-    [contract, account]
+    [contract]
   )
 
   useEffect(() => {
@@ -165,7 +165,7 @@ const ApiKeys: NextPage = () => {
     if (contract) {
       loadOrigins().catch(console.error)
     }
-  }, [contract])
+  }, [contract, loadOrigins])
 
   useEffect(() => {
     if (account && originsLoaded) {
