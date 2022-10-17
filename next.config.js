@@ -17,8 +17,9 @@ const nextConfig = {
       '/editor': { page: '/editor' },
       '/faqs': { page: '/faqs' },
       '/marketplace': { page: '/marketplace' },
-      '/collection': { page: '/collection' },
       '/publish': { page: '/publish' },
+      '/collection': { page: '/collection' },
+      '/apikeys': { page: '/apikeys' },
     }
   },
   experimental: {

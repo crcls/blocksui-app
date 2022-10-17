@@ -24,6 +24,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [account, setAccount] = useState<Account | null>(null)
   const [provider, setProvider] = useState<EthProvider | null>(null)
   const [signer, setSigner] = useState<Signer | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const signOut = async () => {
     if (provider !== null) {
@@ -117,7 +118,11 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const newProvider = metamaskProvider || coinbaseProvider
 
     if (newProvider !== undefined && account === null) {
-      initState(newProvider).catch(console.error)
+      initState(newProvider)
+        .then(() => {
+          setIsLoading(false)
+        })
+        .catch(console.error)
     }
   }, [account, metamaskProvider, coinbaseProvider])
 
@@ -160,6 +165,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
     <AccountContext.Provider
       value={{
         account,
+        isLoading,
         signer,
         signIn,
         signOut,
