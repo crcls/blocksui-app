@@ -15,6 +15,7 @@ import clsx from 'clsx'
 
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import AuthenticatedPage from '@/components/AuthenticatedPage'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -47,14 +48,14 @@ const Collection: NextPage = () => {
   const [blocks] = useState([])
 
   return (
-    <>
+    <AuthenticatedPage>
       <Head>
-        <title>Decentralized UI software as an NFT – Blocks UI Protocol</title>
+        <title>Blocks UI Protocol - Decentralized UI software as an NFT</title>
         <meta
           name="description"
           content="Providing an open and decentralized framework for building user interface software that is simple enough for anyone to use."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <Header />
       <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -344,7 +345,7 @@ const Collection: NextPage = () => {
         </section>
       </main>
       <Footer />
-    </>
+    </AuthenticatedPage>
   )
 }
 

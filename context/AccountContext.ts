@@ -55,6 +55,10 @@ export class Account extends Signer {
     return this._address
   }
 
+  get signer(): Signer {
+    return this._signer
+  }
+
   async name(): Promise<string> {
     const ens = await this.ensName()
 
@@ -115,6 +119,7 @@ export interface AccountContextType {
   signer: Signer | null
   signIn: (wallet: keyof typeof Wallets) => Promise<void>
   signOut: () => Promise<void>
+  isLoading: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

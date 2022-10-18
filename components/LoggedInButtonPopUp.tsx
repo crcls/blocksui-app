@@ -93,6 +93,19 @@ const LoggedInButtonPopUp = () => {
                           active ? 'bg-neutral-100' : '',
                           'block w-full px-4 py-2 text-left text-sm text-neutral-700'
                         )}
+                        onClick={async () => await router.push('/apikeys')}
+                      >
+                        API Keys
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={clsx(
+                          active ? 'bg-neutral-100' : '',
+                          'block w-full px-4 py-2 text-left text-sm text-neutral-700'
+                        )}
                         onClick={signOut}
                       >
                         Disconnect

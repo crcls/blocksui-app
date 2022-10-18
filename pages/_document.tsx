@@ -8,6 +8,7 @@ export default function Document() {
           href="https://blocksui.io/primitives/blocksui.css"
           rel="stylesheet"
         ></link>
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <body className="flex h-full flex-col">
         <Main />
