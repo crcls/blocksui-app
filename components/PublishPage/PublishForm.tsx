@@ -15,68 +15,12 @@ interface EthersError {
 
 const PublishForm = () => {
   const { apiHost } = useContext(GlobalContext)
-  const {
-    account,
-    blockConfig,
-    contract,
-    price,
-    setBlockReceipt,
-    setStep,
-    step,
-  } = useContext(PublishContext)
+  const { account, blockConfig, contract, setBlockReceipt, setStep, step } =
+    useContext(PublishContext)
   const [coverFile, setCoverFile] = useState<File | null>(null)
   const [progressMessage, setProgressMessage] = useState('')
   const [error, setError] = useState<Error | null>(null)
   const [receipt, setReceipt] = useState<Partial<BlockReceipt>>({})
-
-  const handleSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      setError(null)
-
-      if (account && contract) {
-        setProgressMessage('Compiling...')
-        setStep(1)
-
-        const [compErr, compRes] = await resolver(
-          compileBlock(event.currentTarget)
-        )
-
-        if (compErr) {
-          setError(compErr)
-          setProgressMessage('')
-          setStep(0)
-          return
-        }
-
-        setReceipt((prevState) => ({
-          ...prevState,
-          ...compRes,
-        }))
-
-        setProgressMessage('Minting...')
-        const [mintErr, tx] = await resolver(
-          mintBlock(compRes.cid, compRes.metadataURI)
-        )
-        if (mintErr) {
-          console.log(mintErr)
-          setError(mintErr)
-          setStep(0)
-          setProgressMessage('')
-          return
-        }
-        setProgressMessage('Confirming your transaction...')
-
-        const txReceipt = await (tx as TransactionResponse).wait()
-        setReceipt((prevState) => ({
-          ...prevState,
-          txHash: txReceipt.transactionHash,
-          gasUsed: txReceipt.gasUsed,
-        }))
-      }
-    },
-    [account, contract]
-  )
 
   const compileBlock = useCallback(
     async (formElement: HTMLFormElement) => {
@@ -158,7 +102,56 @@ const PublishForm = () => {
         return tx
       }
     },
-    [contract, price]
+    [contract]
+  )
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+      setError(null)
+
+      if (account && contract) {
+        setProgressMessage('Compiling...')
+        setStep(1)
+
+        const [compErr, compRes] = await resolver(
+          compileBlock(event.currentTarget)
+        )
+
+        if (compErr) {
+          setError(compErr)
+          setProgressMessage('')
+          setStep(0)
+          return
+        }
+
+        setReceipt((prevState) => ({
+          ...prevState,
+          ...compRes,
+        }))
+
+        setProgressMessage('Minting...')
+        const [mintErr, tx] = await resolver(
+          mintBlock(compRes.cid, compRes.metadataURI)
+        )
+        if (mintErr) {
+          console.log(mintErr)
+          setError(mintErr)
+          setStep(0)
+          setProgressMessage('')
+          return
+        }
+        setProgressMessage('Confirming your transaction...')
+
+        const txReceipt = await (tx as TransactionResponse).wait()
+        setReceipt((prevState) => ({
+          ...prevState,
+          txHash: txReceipt.transactionHash,
+          gasUsed: txReceipt.gasUsed,
+        }))
+      }
+    },
+    [account, contract, compileBlock, mintBlock, setStep]
   )
 
   useEffect(() => {
@@ -166,7 +159,7 @@ const PublishForm = () => {
       setBlockReceipt(receipt as BlockReceipt)
       setStep(2)
     }
-  }, [receipt])
+  }, [receipt, setBlockReceipt, setStep])
 
   useEffect(() => {
     if (coverFile) {
