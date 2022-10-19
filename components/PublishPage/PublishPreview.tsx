@@ -9,7 +9,7 @@ import { GlobalContext } from '@/context/GlobalContext'
 import { PublishContext } from '@/context/PublishContext'
 
 const PublishPreview = () => {
-  const globalCtx = useContext(GlobalContext)
+  const { apiHost } = useContext(GlobalContext)
   const { blockConfig, price } = useContext(PublishContext)
 
   const [isBrowser, setIsBrowser] = useState(false)
@@ -32,7 +32,7 @@ const PublishPreview = () => {
         </h2>
         {isBrowser && (
           <div className="py-6">
-            <BlockContainer config={blockConfig} host={globalCtx.apiHost} />
+            <BlockContainer config={blockConfig} host={apiHost} />
           </div>
         )}
         <dl className="hidden space-y-6 border-t border-neutral-200 pt-6 text-sm font-medium text-neutral-900 lg:block">

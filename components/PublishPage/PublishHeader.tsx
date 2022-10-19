@@ -36,12 +36,12 @@ const PublishHeader = () => {
                   >
                     {stepName}
                   </span>
-                  {stepIdx !== steps.length - 1 ? (
+                  {stepIdx !== steps.length - 1 && (
                     <ChevronRightIcon
                       className="ml-4 h-5 w-5 text-neutral-300"
                       aria-hidden="true"
                     />
-                  ) : null}
+                  )}
                 </li>
               ))}
             </ol>

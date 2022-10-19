@@ -15,8 +15,15 @@ interface EthersError {
 
 const PublishForm = () => {
   const { apiHost } = useContext(GlobalContext)
-  const { account, blockConfig, contract, setBlockReceipt, setStep, step } =
-    useContext(PublishContext)
+  const {
+    account,
+    blockConfig,
+    contract,
+    price,
+    setBlockReceipt,
+    setStep,
+    step,
+  } = useContext(PublishContext)
   const [coverFile, setCoverFile] = useState<File | null>(null)
   const [progressMessage, setProgressMessage] = useState('')
   const [error, setError] = useState<Error | null>(null)
@@ -65,7 +72,7 @@ const PublishForm = () => {
 
   const mintBlock = useCallback(
     async (cid: string, metadataURI: string) => {
-      if (contract) {
+      if (contract && price) {
         contract.once(
           'BUIBlockPublished',
           (cid: string, blockProps: { [key: string]: any }) => {
@@ -84,7 +91,7 @@ const PublishForm = () => {
 
         const [error, tx] = await resolver<TransactionResponse>(
           contract.publish(cid, metadataURI, {
-            value: ethers.utils.parseEther('0.1'),
+            value: ethers.utils.parseEther(price),
           })
         )
         if (error) {
@@ -102,7 +109,7 @@ const PublishForm = () => {
         return tx
       }
     },
-    [contract]
+    [contract, price]
   )
 
   const handleSubmit = useCallback(
