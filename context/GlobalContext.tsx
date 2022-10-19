@@ -36,8 +36,8 @@ export const GlobalProvider: FC<GlobalProviderProps> = (props) => {
       value={{
         state,
         dispatch,
-        // apiHost: 'https://blocksui.io',
-        apiHost: 'http://127.0.0.1:8081',
+        apiHost: 'https://blocksui.io',
+        // apiHost: 'http://127.0.0.1:8081',
       }}
     >
       {props.children}
