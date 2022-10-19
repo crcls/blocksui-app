@@ -1,0 +1,110 @@
+[
+  {
+    "children": [
+      {
+        "id": "moonMailConnector",
+        "type": "MoonmailConnector",
+        "props": {
+          "accountId": ["value", "2a397d1e-86db-4eb9-8191-78ae896744ab"]
+        },
+        "connections": [
+          {
+            "action": "success",
+            "hooks": {
+              "fadeTransitionSuccess": ["show"],
+              "fadeTransitionInProgress": ["hide"],
+              "fadeTransitionError": ["hide"]
+            }
+          },
+          {
+            "action": "error",
+            "hooks": {
+              "fadeTransitionSuccess": ["hide"],
+              "fadeTransitionInProgress": ["hide"],
+              "fadeTransitionError": ["show"]
+            }
+          },
+          {
+            "action": "inProgress",
+            "hooks": {
+              "fadeTransitionSuccess": ["hide"],
+              "fadeTransitionInProgress": ["show"],
+              "fadeTransitionError": ["hide"]
+            }
+          }
+        ]
+      },
+      {
+        "children": ["MoonMail Contact Form"],
+        "className": "text-lg font-medium text-neutral-900",
+        "props": {
+          "level": ["value", 2]
+        },
+        "type": "Heading"
+      },
+      {
+        "connections": [
+          { "action": "submit", "hooks": { "moonMailConnector": ["post"] } }
+        ],
+        "children": [
+          {
+            "id": "input",
+            "props": {
+              "name": ["value", "Address"],
+              "placeholder": ["value", "dobby@hogwarts.com"],
+              "type": ["value", "email"],
+              "label": ["value", "Email"]
+            },
+            "state": {
+              "value": ""
+            },
+            "type": "Input"
+          },
+          {
+            "children": ["Submit"],
+            "className": "w-full rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-50 sm:order-last sm:mt-3 sm:w-auto",
+            "connections": [
+              {
+                "action": "click",
+                "hooks": { "logger": ["log"] }
+              }
+            ],
+            "id": "button",
+            "props": {
+              "type": ["value", "submit"]
+            },
+            "type": "Button"
+          }
+        ],
+        "type": "Form"
+      },
+      {
+        "id": "fadeTransitionSuccess",
+        "type": "FadeTransition",
+        "props": {
+          "time": ["value", "300ms"]
+        },
+        "children": ["Success"]
+      },
+      {
+        "id": "fadeTransitionInProgress",
+        "type": "FadeTransition",
+        "children": ["Loading ..."],
+        "className": "bui-fade-in-loading",
+        "props": {
+          "time": ["value", "300ms"]
+        }
+      },
+      {
+        "id": "fadeTransitionError",
+        "type": "FadeTransition",
+        "children": ["Error!"],
+        "className": "bui-fade-in",
+        "props": {
+          "time": ["value", "300ms"]
+        }
+      }
+    ],
+    "type": "Container"
+  }
+]
