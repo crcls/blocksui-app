@@ -7,7 +7,7 @@ import Logo from '@/components/Logo'
 
 import { PublishContext } from '@/context/PublishContext'
 
-const steps = ['Compile', 'Mint', 'Complete']
+const steps = ['Details', 'Mint', 'Complete']
 
 const PublishHeader = () => {
   const { step } = useContext(PublishContext)
