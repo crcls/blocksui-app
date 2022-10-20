@@ -101,6 +101,8 @@ const PublishForm = () => {
 
           if (msg.toLowerCase().includes('insufficient funds')) {
             msg = 'Insufficient funds to publish'
+          } else if (msg.toLowerCase().includes('user rejected transaction')) {
+            msg = 'Transaction rejected'
           }
 
           throw new Error(msg)

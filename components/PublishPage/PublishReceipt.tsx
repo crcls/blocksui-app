@@ -36,7 +36,7 @@ const PublishReceipt = () => {
           <div className="col-start-1 max-w-full py-6 lg:row-start-1">
             <img
               alt={blockReceipt!.name}
-              src={blockReceipt!.coverURI}
+              src={blockReceipt!.coverURI || '/blocksui.png'}
               className="h-auto max-w-full rounded-lg"
             />
           </div>

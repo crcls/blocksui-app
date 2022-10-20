@@ -31,7 +31,7 @@ export enum Networks {
 export const NETWORKS: { [key: string]: string } = {
   development: 'mumbai',
   staging: 'mumbai',
-  production: 'polygon',
+  production: 'mumbai', // TODO: switch to mainnet
 }
 
 export interface Web3ContextType {
