@@ -4,9 +4,11 @@ require('dotenv').config({ path: path.join(__dirname, '.env') })
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    ALCHEMY_ID: process.env.ALCHEMY_ID,
-    INFURA_ID: process.env.INFURA_ID,
-    ENV: process.env.NODE_ENV,
+    ETHEREUM_ALCHEMY_API: process.env.ETHEREUM_ALCHEMY_API,
+    GOERLI_ALCHEMY_API: process.env.GOERLI_ALCHEMY_API,
+    MUMBAI_ALCHEMY_API: process.env.MUMBAI_ALCHEMY_API,
+    POLYGON_ALCHEMY_API: process.env.POLYGON_ALCHEMY_API,
+    ENV: process.env.NODE_ENV || 'production',
   },
   exportPathMap: async function (
     defaultPathMap,

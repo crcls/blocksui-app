@@ -11,34 +11,62 @@ import {
   AlchemyEnhancedApiProvider,
   GasRates,
   Networks,
+  NETWORKS,
   NativeProvider,
   Web3Context,
 } from '@/context/Web3Context'
 import { resolver } from '@/utils/async'
 
-export function initAlchemyEnhancedApiProvider(): AlchemyEnhancedApiProvider {
-  const baseUrl = `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_ID}`
+function apiKeyForNetwork(network: string): string {
+  switch (network) {
+    case 'ethereum':
+      return process.env.MAINNET_ALCHEMY_API || ''
+    case 'goerli':
+      return process.env.GOERLI_ALCHEMY_API || ''
+    case 'mumbai':
+      return process.env.MUMBAI_ALCHEMY_API || ''
+    default:
+      return process.env.POLYGON_ALCHEMY_API || ''
+  }
+}
+
+export function initAlchemyEnhancedApiProvider(
+  network: string
+): AlchemyEnhancedApiProvider {
+  const apiKey = apiKeyForNetwork(network)
+  const baseUrl = `https://polygon-${network}.g.alchemy.com/v2/${apiKey}`
 
   return {
     async send(
       method: string,
       params?: { [param: string]: any }
-    ): Promise<Object> {
+    ): Promise<{ [key: string]: any }> {
       let url = `${baseUrl}/${method}`
 
       if (params !== undefined) {
-        const urlParams = new URLSearchParams(params[0])
+        const urlParams = new URLSearchParams(params)
         url = `${url}?${urlParams.toString()}`
       }
 
-      return await fetch(url).then((response) => response.json())
+      return await fetch(url).then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+
+        throw new Error('Failed to fetch from alchemy')
+      })
     },
   }
 }
 
 export function initWalletConnectProvider(network: Networks): W3Provider {
   const provider = new WalletConnectProvider({
-    infuraId: process.env.INFURA_ID,
+    rpc: {
+      1: `https://eth-mainnet.g.alchemy.com/v2/${process.env.ETHEREUM_ALCHEMY_API}`,
+      5: `https://eth-goerli.g.alchemy.com/v2/${process.env.GOERLI_ALCHEMY_API}`,
+      137: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.POLYGON_ALCHEMY_API}`,
+      80001: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.MUMBAI_ALCHEMY_API}`,
+    },
     chainId: network,
   })
 
@@ -50,7 +78,7 @@ const Web3Provider: FC<{ children: ReactNode }> = ({ children }) => {
   const [fetchingGasRates, setFetchingGasRates] = useState(false)
   // Use this for API calls
   const [alchemyEnhancedApiProvider] = useState(
-    initAlchemyEnhancedApiProvider()
+    initAlchemyEnhancedApiProvider(NETWORKS[process.env.ENV || 'production'])
   )
   // Use this for reading from the archive nodes
   const [alchemyWsProvider] = useState(
