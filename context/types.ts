@@ -20,7 +20,10 @@ export type GlobalProviderProps = {
 }
 
 export type MoveItemAction = {
-  payload: any
+  payload: {
+    direction: string
+    id: string
+  }
   type: 'MOVE_ITEM'
 }
 

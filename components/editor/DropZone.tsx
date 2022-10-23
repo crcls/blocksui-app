@@ -107,8 +107,8 @@ const DropZone = () => {
           </div>
         </div>
       )}
-      {droppedItems.map((droppedItem: any, index) => (
-        <div key={index}>{primitiveToComponent(droppedItem)}</div>
+      {droppedItems.map((droppedItem: any) => (
+        <div key={droppedItem.id}>{primitiveToComponent(droppedItem)}</div>
       ))}
     </div>
   )

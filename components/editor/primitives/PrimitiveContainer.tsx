@@ -2,25 +2,32 @@ import { FC, ReactNode } from 'react'
 import clsx from 'clsx'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 
-const baseStyles: string =
+import { PrimitiveTypes } from '@/components/editor/types'
+
+const baseStyles =
   'relative cursor-move space-y-2 border-2 border-dashed px-4 py-6 sm:rounded-lg sm:px-6'
+
+type TypeKeys = keyof typeof PrimitiveTypes
+type TypeValues = typeof PrimitiveTypes[TypeKeys]
 
 interface Props {
   children?: ReactNode
   handleDownClick: Function
+  handleUpClick: Function
   id: any
   isOver: Boolean
   showButtons: Boolean
-  handleUpClick: Function
+  type: TypeValues
 }
 
 const PrimitiveContainer: FC<Props> = ({
   children,
   handleDownClick,
+  handleUpClick,
   id,
   isOver,
   showButtons,
-  handleUpClick,
+  type,
 }) => {
   const className = clsx(
     baseStyles,
@@ -55,7 +62,22 @@ const PrimitiveContainer: FC<Props> = ({
               </button>
             </div>
           )}
-          <div>Container</div>
+          <div>
+            {(() => {
+              switch (type) {
+                case PrimitiveTypes.PRIMITIVE_CONTAINER:
+                  return 'Container'
+                case PrimitiveTypes.PRIMITIVE_FORM:
+                  return 'Form'
+                case PrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR:
+                  return 'MoonMail Connector'
+                case PrimitiveTypes.PRIMITIVE_TRANSITION:
+                  return 'Transition'
+                default:
+                  return null
+              }
+            })()}
+          </div>
         </div>
       </div>
       {children}

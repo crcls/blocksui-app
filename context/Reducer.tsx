@@ -29,7 +29,7 @@ const moveChildItem = (element: any, payload: any) => {
     (child: any) => child.id === payload.id
   )
 
-  if (childIndex !== -1) {
+  if (childIndex > -1) {
     if (
       (childIndex === 0 && payload.direction === 'up') ||
       (childIndex === element.children.length && payload.direction === 'down')
