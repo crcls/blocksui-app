@@ -19,6 +19,14 @@ export type GlobalProviderProps = {
   children: ReactNode
 }
 
+export type MoveItemAction = {
+  payload: {
+    direction: string
+    id: string
+  }
+  type: 'MOVE_ITEM'
+}
+
 type DroppedItem = {
   [key: string]: any
 }

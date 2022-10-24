@@ -8,13 +8,11 @@ import {
 } from '@/components/editor/types'
 import { GlobalContext } from '@/context/GlobalContext'
 import PrimitiveContainer from '@/components/editor/primitives/PrimitiveContainer'
-import PrimitiveForm from '@/components/editor/primitives/PrimitiveForm'
-import PrimitiveMoonMailConnector from '@/components/editor/primitives/PrimitiveMoonMailConnector'
-import PrimitiveTransition from '@/components/editor/primitives/PrimitiveTransition'
 
 const DragItemWithDropZone: FC<DragItemWithDropZoneProps> = ({
   children,
   id,
+  showButtons,
   type,
 }) => {
   const [, drag] = useDrag(() => ({
@@ -29,10 +27,11 @@ const DragItemWithDropZone: FC<DragItemWithDropZoneProps> = ({
   // eslint-disable-next-line
   const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false)
   // eslint-disable-next-line
-  const [{ isOver, isOverCurrent }, drop] = useDrop(
+  const [{ canDrop, isOver, isOverCurrent }, drop] = useDrop(
     () => ({
       accept: ACCEPTS,
       collect: (monitor) => ({
+        canDrop: monitor.canDrop(),
         isOver: monitor.isOver(),
         isOverCurrent: monitor.isOver({ shallow: true }),
       }),
@@ -60,27 +59,39 @@ const DragItemWithDropZone: FC<DragItemWithDropZoneProps> = ({
     [greedy, setHasDropped, setHasDroppedOnChild]
   )
 
+  const handleDownClick = (id: any) => {
+    dispatch({
+      payload: {
+        direction: 'down',
+        id,
+      },
+      type: 'MOVE_ITEM',
+    })
+  }
+
+  const handleUpClick = (id: any) => {
+    dispatch({
+      payload: {
+        direction: 'up',
+        id,
+      },
+      type: 'MOVE_ITEM',
+    })
+  }
+
   return (
     <div ref={drag}>
       <div ref={drop}>
-        {(() => {
-          switch (type) {
-            case PrimitiveTypes.PRIMITIVE_CONTAINER:
-              return <PrimitiveContainer>{children}</PrimitiveContainer>
-            case PrimitiveTypes.PRIMITIVE_FORM:
-              return <PrimitiveForm>{children}</PrimitiveForm>
-            case PrimitiveTypes.PRIMITIVE_MOONMAIL_CONNECTOR:
-              return (
-                <PrimitiveMoonMailConnector>
-                  {children}
-                </PrimitiveMoonMailConnector>
-              )
-            case PrimitiveTypes.PRIMITIVE_TRANSITION:
-              return <PrimitiveTransition>{children}</PrimitiveTransition>
-            default:
-              return null
-          }
-        })()}
+        <PrimitiveContainer
+          handleDownClick={handleDownClick}
+          handleUpClick={handleUpClick}
+          id={id}
+          isOver={canDrop && isOverCurrent}
+          showButtons={showButtons}
+          type={type}
+        >
+          {children}
+        </PrimitiveContainer>
       </div>
     </div>
   )
