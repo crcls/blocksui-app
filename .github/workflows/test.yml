@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build:
-    name: Build
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
@@ -33,18 +33,3 @@ jobs:
 
       # - name: Test
       #   run: npm run test:ci
-
-      - name: Build
-        run: npm run build
-        env:
-          NODE_ENV: production
-          ETHEREUM_ALCHEMY_API: ${{ secrets.ETHEREUM_ALCHEMY_API }}
-          GOERLI_ALCHEMY_API: ${{ secrets.GOERLI_ALCHEMY_API }}
-          MUMBAI_ALCHEMY_API: ${{ secrets.MUMBAI_ALCHEMY_API }}
-          POLYGON_ALCHEMY_API: ${{ secrets.POLYGON_ALCHEMY_API }}
-      - name: Deploy
-        if: contains(github.ref, 'main')
-        id: deploy
-        uses: fleekhq/action-deploy@v1
-        with:
-          apiKey: ${{ secrets.FLEEK_API_KEY }}
