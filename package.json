@@ -22,8 +22,8 @@
     "prepare": "husky install && npx next telemetry disable",
     "start": "next start",
     "test": "jest --watch",
-    "typecheck": "tsc -p .",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "type-check": "tsc -p ."
   },
   "dependencies": {
     "@crcls/blocksui-sdk": "^0.0.14",
