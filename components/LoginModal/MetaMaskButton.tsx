@@ -1,7 +1,7 @@
 import Image from 'next/future/image'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
-import logoMetaMask from '@/assets/metamask.svg'
+import logoMetaMask from '../../assets/metamask.svg'
 import useAccount from '@/hooks/use-account'
 import { Wallets } from '@/context/AccountContext'
 

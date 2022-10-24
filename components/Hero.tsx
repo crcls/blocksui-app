@@ -5,10 +5,10 @@ import Image from 'next/future/image'
 import Container from '@/components/Container'
 import Button from '@/components/Button'
 
-import logoFilecoin from '@/assets/filecoin.svg'
-import logoIpfs from '@/assets/ipfs.svg'
-import logoLitProtocol from '@/assets/lit-protocol.svg'
-import logoPolygon from '@/assets/polygon.svg'
+import logoFilecoin from '../assets/filecoin.svg'
+import logoIpfs from '../assets/ipfs.svg'
+import logoLitProtocol from '../assets/lit-protocol.svg'
+import logoPolygon from '../assets/polygon.svg'
 
 const BackgroundIllustration = (props: any) => {
   const id = useId()

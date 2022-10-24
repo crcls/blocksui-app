@@ -16,7 +16,7 @@ import {
   PublishReceipt,
 } from '@/components/PublishPage'
 
-import blockConfig from '@/assets/demo-block-config.json'
+import blockConfig from '../assets/demo-block-config.json'
 
 const Publish: NextPage = () => {
   const { account } = useAccount()

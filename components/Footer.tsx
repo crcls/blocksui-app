@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Container from '@/components/Container'
 import Logo from '@/components/Logo'
 import NavLinks from '@/components/NavLinks'
-import github from '@/assets/github.svg'
+import github from '../assets/github.svg'
 import CrclsLogo from '@/components/CrclsLogo'
 
 const Footer: FC = () => {
