@@ -15,7 +15,7 @@ import useWeb3 from '@/hooks/use-web3'
 
 const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const {
-    alchemyWsProvider,
+    ethMainnetProvider,
     metamaskProvider,
     coinbaseProvider,
     walletConnectProvider,
@@ -85,7 +85,11 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return
       }
 
-      const newAccount = new Account(addresses[0], newSigner, alchemyWsProvider)
+      const newAccount = new Account(
+        addresses[0],
+        newSigner,
+        ethMainnetProvider
+      )
 
       setAccount(newAccount)
       setProvider(newProvider)
@@ -95,12 +99,13 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
       walletConnectProvider,
       metamaskProvider,
       coinbaseProvider,
-      alchemyWsProvider,
+      ethMainnetProvider,
     ]
   )
 
   const initState = useCallback(
     async (newProvider: W3Provider) => {
+      console.log('init state')
       const [error, accounts] = await resolver(
         (newProvider.provider as EthProvider).request({
           method: 'eth_accounts',
@@ -122,7 +127,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
         const newAccount = new Account(
           addresses[0],
           newProvider.getSigner(),
-          alchemyWsProvider
+          ethMainnetProvider
         )
 
         setAccount(newAccount)
@@ -130,7 +135,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setSigner(newProvider.getSigner())
       }
     },
-    [alchemyWsProvider]
+    [ethMainnetProvider]
   )
 
   useEffect(() => {
@@ -152,7 +157,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
           const newAccount = new Account(
             accounts[0],
             new ethers.providers.Web3Provider(provider).getSigner(),
-            alchemyWsProvider
+            ethMainnetProvider
           )
           setAccount(newAccount)
         } else {
@@ -178,7 +183,7 @@ const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
         provider.removeListener('chainChanged', updateChain)
       }
     }
-  }, [provider, network, signOut, alchemyWsProvider])
+  }, [provider, network, signOut, ethMainnetProvider])
 
   return (
     <AccountContext.Provider

@@ -36,8 +36,8 @@ export const NETWORKS: { [key: string]: string } = {
 
 export interface Web3ContextType {
   alchemyEnhancedApiProvider: AlchemyEnhancedApiProvider
-  alchemyWsProvider: WebSocketProvider
-  infuraWsProvider?: WebSocketProvider
+  ethMainnetProvider: WebSocketProvider
+  alchemyWsProvider?: WebSocketProvider
   walletConnectProvider?: W3Provider
   metamaskProvider?: W3Provider
   coinbaseProvider?: W3Provider
