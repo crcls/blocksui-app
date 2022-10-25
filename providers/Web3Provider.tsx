@@ -81,17 +81,17 @@ const Web3Provider: FC<{ children: ReactNode }> = ({ children }) => {
     initAlchemyEnhancedApiProvider(NETWORKS[process.env.ENV || 'production'])
   )
   // Use this for reading from the archive nodes
-  const [alchemyWsProvider] = useState(
-    ethers.providers.AlchemyProvider.getWebSocketProvider(
-      1,
-      process.env.ALCHEMY_ID
-    )
-  )
-  // Use this for contract interaction
-  const [infuraWsProvider, setInfuraWsProvider] = useState<
+  const [alchemyWsProvider, setAlchemyWsProvider] = useState<
     WebSocketProvider | undefined
   >()
-  // Use this or injected providers to sign and send transactions
+  // Use this for reading from the archive nodes on Ethereum Mainnet
+  const [ethMainnetProvider] = useState(
+    ethers.providers.AlchemyProvider.getWebSocketProvider(
+      1,
+      process.env.ETHEREUM_ALCHEMY_API
+    )
+  )
+  // Use this for injected providers to sign and send transactions
   const [walletConnectProvider, setWalletConnectProvider] = useState<
     W3Provider | undefined
   >()
@@ -190,20 +190,20 @@ const Web3Provider: FC<{ children: ReactNode }> = ({ children }) => {
 
       setNetwork(net)
     } else {
-      setInfuraWsProvider(
-        ethers.providers.InfuraProvider.getWebSocketProvider(
+      setWalletConnectProvider(initWalletConnectProvider(network))
+      setAlchemyWsProvider(
+        ethers.providers.AlchemyProvider.getWebSocketProvider(
           network,
-          process.env.INFURA_ID
+          apiKeyForNetwork(NETWORKS[process.env.ENV || 'production'])
         )
       )
-      setWalletConnectProvider(initWalletConnectProvider(network))
     }
   }, [network])
 
   const ctx = {
     alchemyEnhancedApiProvider,
     alchemyWsProvider,
-    infuraWsProvider,
+    ethMainnetProvider,
     walletConnectProvider,
     metamaskProvider,
     coinbaseProvider,
