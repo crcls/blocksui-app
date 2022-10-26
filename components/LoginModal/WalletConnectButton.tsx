@@ -1,7 +1,7 @@
 import Image from 'next/future/image'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
-import logoWalletConnect from '../../assets/walletConnect.svg'
+import logoWalletConnect from '@/assets/walletConnect.svg'
 import useAccount from '@/hooks/use-account'
 import { Wallets } from '@/context/AccountContext'
 

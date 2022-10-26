@@ -89,6 +89,9 @@
     "*{cjs,js,jsx,mjs,ts,tsx}": [
       "eslint ."
     ],
+    "*{ts,tsx}": [
+      "tsc -p ."
+    ],
     "*.{cjs,css,js,json,jsx,md,mjs,scss,ts,tsx,yml}": [
       "prettier --write"
     ]

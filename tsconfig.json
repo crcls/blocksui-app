@@ -13,6 +13,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
+      "@/assets/*": ["assets/*"],
       "@/components/*": ["components/*"],
       "@/context/*": ["context/*"],
       "@/hooks/*": ["hooks/*"],
