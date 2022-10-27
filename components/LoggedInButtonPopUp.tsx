@@ -7,9 +7,9 @@ import clsx from 'clsx'
 import { XCircleIcon } from '@heroicons/react/24/outline'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 
-import Button from '@/components/Button'
-import LoginModal from '@/components/LoginModal/LoginModal'
-import useAccount from '@/hooks/use-account'
+import Button from 'components/Button'
+import LoginModal from 'components/LoginModal/LoginModal'
+import useAccount from 'hooks/use-account'
 
 const LoggedInButtonPopUp = () => {
   const router = useRouter()

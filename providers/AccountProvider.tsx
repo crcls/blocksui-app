@@ -8,10 +8,10 @@ import AccountContext, {
   Account,
   EthProvider,
   Wallets,
-} from '@/context/AccountContext'
-import { Networks } from '@/context/Web3Context'
-import { resolver } from '@/utils/async'
-import useWeb3 from '@/hooks/use-web3'
+} from 'context/AccountContext'
+import { Networks } from 'context/Web3Context'
+import { resolver } from 'utils/async'
+import useWeb3 from 'hooks/use-web3'
 
 const AccountProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const {

@@ -3,10 +3,10 @@ import Link from 'next/link'
 import { FC } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import Container from '@/components/Container'
-import Logo from '@/components/Logo'
-import NavLinks from '@/components/NavLinks'
-import LoggedInButtonPopUp from '@/components/LoggedInButtonPopUp'
+import Container from 'components/Container'
+import Logo from 'components/Logo'
+import NavLinks from 'components/NavLinks'
+import LoggedInButtonPopUp from 'components/LoggedInButtonPopUp'
 
 const ChevronUpIcon = (props: any) => (
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>

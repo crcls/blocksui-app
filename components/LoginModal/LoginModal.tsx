@@ -2,7 +2,7 @@ import { FC, Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
-import ConnectWalletModalContent from '@/components/LoginModal/ConnectWalletModalContent'
+import ConnectWalletModalContent from 'components/LoginModal/ConnectWalletModalContent'
 
 interface Props {
   handleClose: any

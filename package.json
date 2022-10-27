@@ -23,7 +23,7 @@
     "start": "next start",
     "test": "jest --watch",
     "test:ci": "jest --ci",
-    "type-check": "tsc -p ."
+    "type-check": "tsc"
   },
   "dependencies": {
     "@crcls/blocksui-sdk": "^0.0.14",
@@ -90,7 +90,7 @@
       "eslint ."
     ],
     "*{ts,tsx}": [
-      "tsc -p ."
+      "tsc"
     ],
     "*.{cjs,css,js,json,jsx,md,mjs,scss,ts,tsx,yml}": [
       "prettier --write"

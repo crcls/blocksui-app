@@ -5,9 +5,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import clsx from 'clsx'
 
-import Header from '@/components/Header'
-import Logo from '@/components/Logo'
-import Footer from '@/components/Footer'
+import Header from 'components/Header'
+import Logo from 'components/Logo'
+import Footer from 'components/Footer'
 
 const product = {
   name: 'MoonMail Contact Form',

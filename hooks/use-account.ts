@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import AccountContext from '@/context/AccountContext'
+import AccountContext from 'context/AccountContext'
 
 const useAccount = () => {
   return useContext(AccountContext)

@@ -3,14 +3,14 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Contract } from 'ethers'
 
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import FilterForm from '@/components/FilterForm'
-import SortHeader from '@/components/SortHeader'
-import AuthenticatedPage from '@/components/AuthenticatedPage'
-import useWeb3 from '@/hooks/use-web3'
-import useContracts from '@/hooks/use-contracts'
-import useAccount from '@/hooks/use-account'
+import Header from 'components/Header'
+import Footer from 'components/Footer'
+import FilterForm from 'components/FilterForm'
+import SortHeader from 'components/SortHeader'
+import AuthenticatedPage from 'components/AuthenticatedPage'
+import useWeb3 from 'hooks/use-web3'
+import useContracts from 'hooks/use-contracts'
+import useAccount from 'hooks/use-account'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },

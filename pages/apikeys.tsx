@@ -5,13 +5,13 @@ import store from 'store2'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import AuthenticatedPage from '@/components/AuthenticatedPage'
+import Header from 'components/Header'
+import Footer from 'components/Footer'
+import AuthenticatedPage from 'components/AuthenticatedPage'
 
-import useAccount from '@/hooks/use-account'
-import useContracts from '@/hooks/use-contracts'
-import { ApiKeysHeader } from '@/components/ApiKeysPage'
+import useAccount from 'hooks/use-account'
+import useContracts from 'hooks/use-contracts'
+import { ApiKeysHeader } from 'components/ApiKeysPage'
 
 interface ApiKey {
   domain: string

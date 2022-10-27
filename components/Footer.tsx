@@ -2,11 +2,11 @@ import { FC } from 'react'
 import Image from 'next/future/image'
 import Link from 'next/link'
 
-import Container from '@/components/Container'
-import Logo from '@/components/Logo'
-import NavLinks from '@/components/NavLinks'
-import github from '@/assets/github.svg'
-import CrclsLogo from '@/components/CrclsLogo'
+import Container from 'components/Container'
+import Logo from 'components/Logo'
+import NavLinks from 'components/NavLinks'
+import github from 'assets/github.svg'
+import CrclsLogo from 'components/CrclsLogo'
 
 const Footer: FC = () => {
   return (

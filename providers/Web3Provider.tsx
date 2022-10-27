@@ -14,8 +14,8 @@ import {
   NETWORKS,
   NativeProvider,
   Web3Context,
-} from '@/context/Web3Context'
-import { resolver } from '@/utils/async'
+} from 'context/Web3Context'
+import { resolver } from 'utils/async'
 
 function apiKeyForNetwork(network: string): string {
   switch (network) {

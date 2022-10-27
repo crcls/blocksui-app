@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-import useAccount from '@/hooks/use-account'
+import useAccount from 'hooks/use-account'
 
 interface Props {
   children: ReactNode
