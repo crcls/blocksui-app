@@ -28,7 +28,7 @@ const Footer: FC = () => {
           </div>
           <div className="group relative -mx-4 flex items-center self-stretch p-4 transition-colors hover:bg-neutral-100 sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6">
             <div className="relative flex h-24 w-24 flex-none items-center justify-center">
-              <GitHub className="w-full" />
+              <GitHub className="h-full w-full" />
             </div>
             <div className="ml-8 lg:w-64">
               <p className="text-base font-semibold text-black">

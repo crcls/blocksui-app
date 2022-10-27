@@ -5,7 +5,7 @@ interface Props {
   className?: string
 }
 
-const baseStyles = 'icon h-20 w-32 fill-current'
+const baseStyles = 'icon fill-current'
 
 const IPFS: FC<Props> = ({ className }) => {
   className = clsx(baseStyles, className)
