@@ -12,21 +12,11 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
-    "paths": {
-      "@/assets/*": ["assets/*"],
-      "@/components/*": ["components/*"],
-      "@/context/*": ["context/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/pages/*": ["pages/*"],
-      "@/providers/*": ["providers/*"],
-      "@/styles/*": ["styles/*"],
-      "@/utils/*": ["utils/*"]
-    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "es2020"
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", "types.d.ts"]
 }

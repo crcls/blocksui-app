@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react'
 import clsx from 'clsx'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 
-import { PrimitiveTypes } from '@/components/editor/types'
+import { PrimitiveTypes } from 'components/editor/types'
 
 const baseStyles =
   'relative cursor-move space-y-2 border-2 border-dashed px-4 py-6 sm:rounded-lg sm:px-6'

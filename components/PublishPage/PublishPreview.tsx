@@ -5,8 +5,8 @@ import { Popover, Transition } from '@headlessui/react'
 // TODO: fix import path
 import { BlockContainer } from '@crcls/blocksui-sdk/dist/index.js'
 
-import { GlobalContext } from '@/context/GlobalContext'
-import { PublishContext } from '@/context/PublishContext'
+import { GlobalContext } from 'context/GlobalContext'
+import { PublishContext } from 'context/PublishContext'
 
 const PublishPreview = () => {
   const { apiHost } = useContext(GlobalContext)

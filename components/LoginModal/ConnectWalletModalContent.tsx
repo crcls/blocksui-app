@@ -1,8 +1,8 @@
-import useWeb3 from '@/hooks/use-web3'
+import useWeb3 from 'hooks/use-web3'
 
-import MetaMaskButton from '@/components/LoginModal/MetaMaskButton'
-import CoinbaseButton from '@/components/LoginModal/CoinbaseButton'
-import WalletConnectButton from '@/components/LoginModal/WalletConnectButton'
+import MetaMaskButton from 'components/LoginModal/MetaMaskButton'
+import CoinbaseButton from 'components/LoginModal/CoinbaseButton'
+import WalletConnectButton from 'components/LoginModal/WalletConnectButton'
 
 const ConnectWalletModalContent = () => {
   const { metamaskProvider, coinbaseProvider } = useWeb3()

@@ -5,3 +5,9 @@
 #__next {
   min-height: 100%;
 }
+
+.st1-logo {
+  clip-rule: evenodd;
+  fill: #fff;
+  fill-rule: evenodd;
+}

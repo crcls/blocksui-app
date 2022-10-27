@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 import { Contract, BigNumber } from 'ethers'
 
-import type { Account } from '@/context/AccountContext'
+import type { Account } from 'context/AccountContext'
 import type { BlockConfig } from '@crcls/blocksui-sdk'
 
 export interface BlockReceipt {

@@ -5,9 +5,9 @@ import shortid from 'shortid'
 import {
   DragItemWithDropZoneProps,
   PrimitiveTypes,
-} from '@/components/editor/types'
-import { GlobalContext } from '@/context/GlobalContext'
-import PrimitiveContainer from '@/components/editor/primitives/PrimitiveContainer'
+} from 'components/editor/types'
+import { GlobalContext } from 'context/GlobalContext'
+import PrimitiveContainer from 'components/editor/primitives/PrimitiveContainer'
 
 const DragItemWithDropZone: FC<DragItemWithDropZoneProps> = ({
   children,

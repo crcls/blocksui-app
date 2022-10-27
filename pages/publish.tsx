@@ -5,18 +5,18 @@ import { BigNumber, ethers, Contract } from 'ethers'
 
 import type { BlockConfig } from '@crcls/blocksui-sdk'
 
-import useContracts from '@/hooks/use-contracts'
-import useAccount from '@/hooks/use-account'
-import { PublishContext, BlockReceipt } from '@/context/PublishContext'
+import useContracts from 'hooks/use-contracts'
+import useAccount from 'hooks/use-account'
+import { PublishContext, BlockReceipt } from 'context/PublishContext'
 
 import {
   PublishForm,
   PublishHeader,
   PublishPreview,
   PublishReceipt,
-} from '@/components/PublishPage'
+} from 'components/PublishPage'
 
-import blockConfig from '@/assets/demo-block-config.json'
+import blockConfig from 'assets/demo-block-config.json'
 
 const Publish: NextPage = () => {
   const { account } = useAccount()

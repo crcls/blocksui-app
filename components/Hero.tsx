@@ -1,14 +1,13 @@
 import { FC, useId } from 'react'
 import clsx from 'clsx'
-import Image from 'next/future/image'
 
-import Container from '@/components/Container'
-import Button from '@/components/Button'
+import Container from 'components/Container'
+import Button from 'components/Button'
 
-import logoFilecoin from '@/assets/filecoin.svg'
-import logoIpfs from '@/assets/ipfs.svg'
-import logoLitProtocol from '@/assets/lit-protocol.svg'
-import logoPolygon from '@/assets/polygon.svg'
+import Filecoin from 'components/Svg/Filecoin'
+import IPFS from 'components/Svg/IPFS'
+import LitProtocol from 'components/Svg/LitProtocol'
+import Polygon from 'components/Svg/Polygon'
 
 const BackgroundIllustration = (props: any) => {
   const id = useId()
@@ -112,13 +111,13 @@ const Hero: FC = () => {
               role="list"
             >
               {[
-                ['Filecoin', logoFilecoin],
-                ['IPFS', logoIpfs],
-                ['Lit Protocol', logoLitProtocol],
-                ['Polygon', logoPolygon],
-              ].map(([name, logo, className]) => (
-                <li className={clsx('flex', className)} key={name}>
-                  <Image alt={name} className="h-8 w-auto" src={logo} />
+                ['Filecoin', Filecoin],
+                ['IPFS', IPFS],
+                ['Lit Protocol', LitProtocol],
+                ['Polygon', Polygon],
+              ].map(([name, Logo, className]) => (
+                <li className={clsx('flex', className)} key={name as any}>
+                  <Logo className="h-8 w-auto" />
                 </li>
               ))}
             </ul>

@@ -2,10 +2,10 @@ import { useContext } from 'react'
 import Link from 'next/link'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
-import LoggedInButtonPopUp from '@/components/LoggedInButtonPopUp'
-import Logo from '@/components/Logo'
+import LoggedInButtonPopUp from 'components/LoggedInButtonPopUp'
+import Logo from 'components/Logo'
 
-import { PublishContext } from '@/context/PublishContext'
+import { PublishContext } from 'context/PublishContext'
 
 const steps = ['Details', 'Mint', 'Complete']
 

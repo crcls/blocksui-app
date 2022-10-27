@@ -3,10 +3,10 @@ import { useDrop } from 'react-dnd'
 import shortid from 'shortid'
 import clsx from 'clsx'
 
-import { PrimitiveTypes } from '@/components/editor/types'
-import DragItem from '@/components/editor/DragItem'
-import DragItemWithDropZone from '@/components/editor/DragItemWithDropZone'
-import { GlobalContext } from '@/context/GlobalContext'
+import { PrimitiveTypes } from 'components/editor/types'
+import DragItem from 'components/editor/DragItem'
+import DragItemWithDropZone from 'components/editor/DragItemWithDropZone'
+import { GlobalContext } from 'context/GlobalContext'
 
 const primitiveToComponent = (droppedItem: any) => {
   if (

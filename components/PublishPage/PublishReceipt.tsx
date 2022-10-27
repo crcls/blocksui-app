@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import Link from 'next/link'
 
-import { PublishContext } from '@/context/PublishContext'
+import { PublishContext } from 'context/PublishContext'
 
 const PublishReceipt = () => {
   const { blockReceipt, price } = useContext(PublishContext)

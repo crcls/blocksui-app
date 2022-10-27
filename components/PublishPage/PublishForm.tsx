@@ -2,11 +2,11 @@ import { FormEvent, useCallback, useEffect, useContext, useState } from 'react'
 import { ethers } from 'ethers'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 
-import FileUpload from '@/components/FileUpload'
+import FileUpload from 'components/FileUpload'
 
-import { GlobalContext } from '@/context/GlobalContext'
-import { PublishContext, BlockReceipt } from '@/context/PublishContext'
-import { resolver } from '@/utils/async'
+import { GlobalContext } from 'context/GlobalContext'
+import { PublishContext, BlockReceipt } from 'context/PublishContext'
+import { resolver } from 'utils/async'
 
 interface EthersError {
   data?: Error

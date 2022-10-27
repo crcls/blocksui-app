@@ -1,9 +1,8 @@
-import Image from 'next/future/image'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
-import logoMetaMask from '@/assets/metamask.svg'
-import useAccount from '@/hooks/use-account'
-import { Wallets } from '@/context/AccountContext'
+import MetaMask from 'components/Svg/MetaMask'
+import useAccount from 'hooks/use-account'
+import { Wallets } from 'context/AccountContext'
 
 const MetaMaskButton = () => {
   const { signIn } = useAccount()
@@ -16,11 +15,7 @@ const MetaMaskButton = () => {
       <div className="flex items-center px-4 py-4 sm:px-6">
         <div className="flex min-w-0 flex-1 items-center">
           <div className="flex-shrink-0">
-            <Image
-              className="h-12 w-12 rounded-full"
-              src={logoMetaMask}
-              alt=""
-            />
+            <MetaMask className="h-12 w-12 rounded-full" />
           </div>
           <div className="min-w-0 flex-1 px-4 text-left md:grid md:grid-cols-2 md:gap-4">
             <div>

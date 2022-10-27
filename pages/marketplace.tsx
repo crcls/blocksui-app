@@ -13,10 +13,10 @@ import Head from 'next/head'
 import clsx from 'clsx'
 import { BigNumber } from 'ethers'
 
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import Header from 'components/Header'
+import Footer from 'components/Footer'
 
-import useContracts from '@/hooks/use-contracts'
+import useContracts from 'hooks/use-contracts'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },

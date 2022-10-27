@@ -6,8 +6,8 @@ import {
   FunnelIcon,
   Squares2X2Icon,
 } from '@heroicons/react/20/solid'
-import Drawer from '@/components/Drawer'
-import FilterForm from '@/components/FilterForm'
+import Drawer from 'components/Drawer'
+import FilterForm from 'components/FilterForm'
 
 export interface Option {
   name: string
